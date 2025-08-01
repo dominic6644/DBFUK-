@@ -7,19 +7,30 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
+const path = require('path');
 
-const app = express(); // ✅ This must come before app.use()
+const app = express();
 
 const port = process.env.PORT || 3000;
 
-// ✅ Now safe to use
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public')); // serves contact.html etc.
-app.use('/css', express.static('C:\puppeteer tutorial\css'));
-app.use(express.json());
 
+
+
+// Other configurations and routes...
+
+app.use(express.static(path.join(__dirname)));
+
+// Example route (optional, just loads index.html at root)
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 
 
@@ -243,3 +254,4 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
