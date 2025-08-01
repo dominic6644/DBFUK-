@@ -178,10 +178,7 @@ app.post('/submit-form', (req, res) => {
 });
 
 
-// Start server
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+
 
 // === BLOG ROUTES ===
 
@@ -262,3 +259,4 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
