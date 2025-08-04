@@ -345,7 +345,7 @@
             // Fetch Products and display them
             async function fetchProducts() {
                 try {
-                    const response = await fetch('http://localhost:3000/products?table=motocross'); // Fetch from enduro table
+                    const response = await fetch('https://dbfuk.onrender.com/products?table=motocross'); // Fetch from enduro table
                     const products = await response.json();
                     const container = document.getElementById('product-container');
 
@@ -382,3 +382,4 @@
 
 	</body>
 </html>
+
