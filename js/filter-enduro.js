@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fetch all products (no filter)
     async function fetchProducts() {
         try {
-            const response = await fetch('http://localhost:3000/products?table=enduro');
+           const response = await fetch('https://dbfuk.onrender.com/products?table=enduro');
             const products = await response.json();
             displayProducts(products);
         } catch (error) {
@@ -52,12 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Filtering with:', { maxPrice, selectedBikeTypes });
 
-        try {
-            const response = await fetch('http://localhost:3000/products?table=enduro', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ maxPrice, bikeTypes: selectedBikeTypes })
-            });
+      try {
+    const response = await fetch('https://dbfuk.onrender.com/products?table=enduro', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ maxPrice, bikeTypes: selectedBikeTypes })
+    });
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -106,3 +106,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial fetch for all products when the page loads
     fetchProducts();
 });
+
