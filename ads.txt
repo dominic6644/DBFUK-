@@ -1,1 +1,3 @@
 google.com, pub-7960582198518252, DIRECT, f08c47fec0942fa0
+
+smartyads.com, 20999, DIRECT, fd2bde0ff2e62c5d
