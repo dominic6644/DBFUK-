@@ -260,3 +260,9 @@ app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
 
+app.get('/ads.txt', (req, res) => {
+  res.redirect(301, 'https://srv.adstxtmanager.com/19390/dirtbikefinderuk.co.uk');
+});
+
+
+
