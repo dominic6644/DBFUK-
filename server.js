@@ -223,7 +223,7 @@ app.use(session({
 
 // Mock user data (replace with database query in a real application)
 const users = [
-    { id: 1, username: 'admin', password: bcrypt.hashSync('password', 10) }
+    { id: 1, username: 'Dominic123', password: bcrypt.hashSync('Adidas123', 10) }
 ];
 
 app.post('/api/login', async (req, res) => {
@@ -259,6 +259,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
