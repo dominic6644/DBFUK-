@@ -10,6 +10,8 @@
                 <meta name="google-site-verification" content="c6ko7FLeqmJzVKUDiISbYriFRTTeyIV0O95gq_coA9I" />
 		        <meta name="msvalidate.01" content="8C40BE4E1CF3E30C6AAC030D72B1C9C8" />
 	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
+		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
+     crossorigin="anonymous"></script>
 		
 
 		
@@ -463,9 +465,9 @@
     fetchProducts('motocross', 'motocross-product-container');
 
 	
-    async function loadPosts() {
+async function loadPosts() {
     try {
-         const res = await fetch('https://dbfuk.onrender.com/api/posts');
+        const res = await fetch('https://dbfuk.onrender.com/api/posts');
         const posts = await res.json();
         const container = document.getElementById('posts');
         container.innerHTML = ''; // Clear loading text
@@ -476,10 +478,11 @@
         }
 
         // Sort posts by published_date in descending order and take the latest 3
-        const latestPosts = posts.sort((a, b) => new Date(b.published_date) - new Date(a.published_date)).slice(0, 3);
+        const latestPosts = posts
+            .sort((a, b) => new Date(b.published_date) - new Date(a.published_date))
+            .slice(0, 3);
 
         latestPosts.forEach(post => {
-            // Truncate content to first few lines
             const truncatedContent = truncateContent(post.content);
 
             container.innerHTML += `
@@ -494,8 +497,20 @@
                         ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}">` : ''}
                     </div>
                 </div>
+
+                <!-- Ad block under each article -->
+               <!-- home-1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7960582198518252"
+     data-ad-slot="2411620199"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
             `;
         });
+
+        // Render all ads
+        (adsbygoogle = window.adsbygoogle || []).push({});
     } catch (err) {
         console.error('Failed to load posts:', err);
         document.getElementById('posts').innerHTML = '<p>Error loading posts.</p>';
@@ -513,11 +528,11 @@ loadPosts();
 
 
 
-
 </script>
 
 	</body>
 </html>
+
 
 
 
