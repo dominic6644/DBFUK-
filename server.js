@@ -246,7 +246,7 @@ app.get('/post/:slug', async (req, res) => {
 <meta property="og:title" content="${post.title}" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image" content="${image}" />
-<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
 <div id="post">
@@ -310,6 +310,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
