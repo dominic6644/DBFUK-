@@ -182,37 +182,88 @@ app.post('/submit-form', (req, res) => {
 
 // === BLOG ROUTES ===
 
-// Get all blog posts
+// --- BLOG ROUTES ---
+// Get all posts
 app.get('/api/posts', async (req, res) => {
     try {
         const result = await pool.query('SELECT * FROM blog_posts ORDER BY published_date DESC');
         res.json(result.rows);
     } catch (err) {
-        console.error('Error fetching blog posts:', err);
-        res.status(500).json({ error: "Error fetching blog posts" });
+        console.error(err);
+        res.status(500).json({ error: 'Error fetching blog posts' });
+    }
+});
+
+// Get single post by slug (API)
+app.get('/api/posts/:slug', async (req, res) => {
+    const { slug } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM blog_posts WHERE slug = $1', [slug]);
+        if (result.rows.length === 0) return res.status(404).json({ error: 'Post not found' });
+        res.json(result.rows[0]);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error fetching blog post' });
     }
 });
 
 // Add a new blog post
 app.post('/api/posts', async (req, res) => {
     const { title, slug, content, author, featured_image } = req.body;
-
-    // Validate required fields
-    if (!title || !slug || !content || !author) {
-        return res.status(400).json({ error: "Missing required fields" });
-    }
+    if (!title || !slug || !content || !author) return res.status(400).json({ error: 'Missing required fields' });
 
     try {
         await pool.query(
-            'INSERT INTO blog_posts (title, slug, content, author, featured_image) VALUES ($1, $2, $3, $4, $5)',
+            'INSERT INTO blog_posts (title, slug, content, author, featured_image) VALUES ($1,$2,$3,$4,$5)',
             [title, slug, content, author, featured_image]
         );
-        res.status(201).json({ message: "Blog post added successfully" });
+        res.status(201).json({ message: 'Blog post added successfully' });
     } catch (err) {
-        console.error('Error adding blog post:', err);
-        res.status(500).json({ error: "Error adding blog post" });
+        console.error(err);
+        res.status(500).json({ error: 'Error adding blog post' });
     }
 });
+
+// Serve post page
+app.get('/post/:slug', async (req, res) => {
+    const { slug } = req.params;
+    try {
+        const result = await pool.query('SELECT * FROM blog_posts WHERE slug = $1', [slug]);
+        if (result.rows.length === 0) return res.status(404).send('<h1>404 - Post not found</h1>');
+
+        const post = result.rows[0];
+        const description = post.content.replace(/<[^>]+>/g, '').slice(0, 160) + '...';
+        const image = post.featured_image || 'https://dirtbikefinderuk.co.uk/default-image.jpg';
+
+        res.send(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>${post.title} | Dirt Bike Finder UK</title>
+<meta name="description" content="${description}">
+<meta property="og:title" content="${post.title}" />
+<meta property="og:description" content="${description}" />
+<meta property="og:image" content="${image}" />
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+<div id="post">
+<h1>${post.title}</h1>
+<p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
+${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" />` : ''}
+<div class="content">${post.content}</div>
+</div>
+</body>
+</html>
+        `);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('<h1>Server error loading post.</h1>');
+    }
+});
+
 
 app.use(session({
     secret: 'your-secret-key',
@@ -259,6 +310,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
