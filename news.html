@@ -147,6 +147,38 @@
 			<!-- /container -->
 		</nav>
 		<!-- /NAVIGATION -->
+	<!-- HOT DEAL SECTION -->
+<div id="hot-deal" class="section" style="background-image: url('images/banner-4.png');">
+  <!-- container -->
+  <div class="container">
+    <!-- Banner Title -->
+    <div class="banner-title">
+      <h1></h1>
+    </div>
+    <!-- row -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="hot-deal">
+          <ul class="hot-deal-countdown">
+            <li><div><h3></h3><span></span></div></li>
+            <li><div><h3></h3><span></span></div></li>
+            <li><div><h3></h3><span></span></div></li>
+            <li><div><h3></h3><span></span></div></li>
+          </ul>
+          <h2 class="text-uppercase"></h2>
+          <p></p>
+          <a class="" href="#"></a>
+        </div>
+      </div>
+    </div>
+    <!-- /row -->
+  </div>
+  <!-- /container -->
+</div>
+
+<!-- /HOT DEAL SECTION -->
+
+
 <!---News ---->
 <div class="news-container">
   <div class="news-content">
@@ -156,6 +188,13 @@
     </div>
   </div>
   <div class="ads-container">
+	
+    <!-- Google Ads will go here -->
+    <p>Ad Space</p>
+  </div>
+</div>
+
+<!---news end -->
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
      crossorigin="anonymous"></script>
@@ -392,9 +431,12 @@
         <script src="js/filter.js"></script>
 
        <script>
-async function loadPosts() {
+		   async function loadPosts() {
   try {
-    const res = await fetch('https://dbfuk.onrender.com/api/posts');
+    // Relative path works on server
+    const res = await fetch('https://dbfuk.onrender.com/api/posts'); 
+    if (!res.ok) throw new Error('Failed to fetch posts');
+
     const posts = await res.json();
     const container = document.getElementById('posts');
     container.innerHTML = ''; // Clear loading text
@@ -404,23 +446,34 @@ async function loadPosts() {
       return;
     }
 
-    posts.forEach((post) => {
-      // Article HTML
-      container.insertAdjacentHTML(
-        'beforeend',
-        `
-        <div class="article-card">
+    posts.forEach(post => {
+      // Link now points to Express route /post/:slug
+      container.innerHTML += `
+       <a href="/post/${post.slug}" class="article-card">
+          <div class="article-image">
+            ${post.featured_image
+              ? `<img src="${post.featured_image}" alt="${post.title}">`
+              : '<div class="no-image">No Image Available</div>'}
+          </div>
           <div class="article-text">
             <h2>${post.title}</h2>
             <p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
-            <div class="content">${post.content}</div>
           </div>
-          <div class="article-image">
-            ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}">` : ''}
-          </div>
-        </div>
-        `
-      );
+        </a>
+      `;
+    });
+
+  } catch (err) {
+    console.error('Failed to load posts:', err);
+    document.getElementById('posts').innerHTML = '<p>Error loading posts.</p>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadPosts);
+
+		   
+
+   
 
       // Ad HTML
       const adHtml = `
@@ -458,6 +511,7 @@ loadPosts();
 
 
  
+
 
 
 
