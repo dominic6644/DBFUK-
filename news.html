@@ -431,15 +431,15 @@
         <script src="js/filter.js"></script>
 
        <script>
-		   async function loadPosts() {
+		
+async function loadPosts() {
+  const container = document.getElementById('posts');
   try {
-    // Relative path works on server
     const res = await fetch('https://dbfuk.onrender.com/api/posts'); 
     if (!res.ok) throw new Error('Failed to fetch posts');
 
     const posts = await res.json();
-    const container = document.getElementById('posts');
-    container.innerHTML = ''; // Clear loading text
+    container.innerHTML = '';
 
     if (posts.length === 0) {
       container.innerHTML = '<p>No posts yet.</p>';
@@ -447,9 +447,8 @@
     }
 
     posts.forEach(post => {
-      // Link now points to Express route /post/:slug
       container.innerHTML += `
-       <a href="/post/${post.slug}" class="article-card">
+        <a href="/post/${post.slug}" class="article-card">
           <div class="article-image">
             ${post.featured_image
               ? `<img src="${post.featured_image}" alt="${post.title}">`
@@ -463,46 +462,28 @@
       `;
     });
 
+    // Optional ad after posts
+    const adHtml = `
+      <div class="ad-block">
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-7960582198518252"
+             data-ad-slot="9489176196"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+      </div>
+    `;
+    container.insertAdjacentHTML('beforeend', adHtml);
+    (adsbygoogle = window.adsbygoogle || []).push({});
+
   } catch (err) {
     console.error('Failed to load posts:', err);
-    document.getElementById('posts').innerHTML = '<p>Error loading posts.</p>';
+    container.innerHTML = '<p>Error loading posts.</p>';
   }
 }
 
 document.addEventListener('DOMContentLoaded', loadPosts);
 
-		   
-
-   
-
-      // Ad HTML
-      const adHtml = `
-        <div class="ad-block">
-          <ins class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-7960582198518252"
-              data-ad-slot="9489176196"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-        </div>
-      `;
-      container.insertAdjacentHTML('beforeend', adHtml);
-
-      // Trigger AdSense render for THIS new ad
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    });
-
-  } catch (err) {
-    console.error('Failed to load posts:', err);
-    document.getElementById('posts').innerHTML = '<p>Error loading posts.</p>';
-  }
-}
-
-loadPosts();
-</script>
-
-</body>
-</html>
 
 
 	</body>
@@ -511,6 +492,7 @@ loadPosts();
 
 
  
+
 
 
 
