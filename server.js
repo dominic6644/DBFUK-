@@ -294,7 +294,7 @@ app.get('/post/:slug', async (req, res) => {
 						<div class="col-md-3">
 							<div class="header-logo">
 								<a href="#" class="logo">
-									<img src="./images/logo.png" alt="" height="150px" width="125px">
+									<img src="/images/logo.png" alt="" height="150px" width="125px">
 								</a>
 							</div>
 							
@@ -575,6 +575,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
