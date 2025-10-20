@@ -246,15 +246,280 @@ app.get('/post/:slug', async (req, res) => {
 <meta property="og:title" content="${post.title}" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image" content="${image}" />
+<!-- Google font -->
+		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+		<!-- Bootstrap -->
+		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
+
+		<!-- Slick -->
+		<link type="text/css" rel="stylesheet" href="/css/slick.css"/>
+		<link type="text/css" rel="stylesheet" href="/css/slick-theme.css"/>
+
+		<!-- nouislider -->
+		<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css"/>
+
+		<!-- Font Awesome Icon -->
+		<link rel="stylesheet" href="/css/font-awesome.min.css">
 <link rel="stylesheet" href="/css/style.css" />
+<link rel="icon" href="images/logo.png" type="image/png">
 </head>
 <body>
+
+<!-- HEADER -->
+		<header>
+			<!-- TOP HEADER -->
+			<div id="top-header">
+				<div class="container">
+					<ul class="header-links pull-right">
+						<li><a href="#"><i class="fa fa-instagram fa-2x"></i></a></li>
+						<li><a href="#"><i class="fa fa-facebook fa-2x"></i> </a></li>
+						
+					</ul>
+					<ul class="header-links pull-right">
+						<li><a href="#"><i class=""></i> </a></li>
+						<li><a href="#"><i class=""></i> </a></li>
+					</ul>
+				</div>
+			</div>
+			<!-- /TOP HEADER -->
+
+			<!-- MAIN HEADER -->
+			<div id="header">
+				<!-- container -->
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<!-- LOGO -->
+						<div class="col-md-3">
+							<div class="header-logo">
+								<a href="#" class="logo">
+									<img src="./images/logo.png" alt="" height="150px" width="125px">
+								</a>
+							</div>
+							
+						</div>
+						<!-- /LOGO -->
+
+						<!-- SEARCH BAR -->
+
+						<!-- /SEARCH BAR -->
+
+						<!-- ACCOUNT -->
+						<div class="col-md-3 clearfix">
+							<div class="header-ctn">
+								<!-- Wishlist -->
+								<div>
+									<a href="#">
+										<i class=""></i>
+										<span></span>
+										<div class=""></div>
+									</a>
+								</div>
+								<!-- /Wishlist -->
+
+								<!-- Cart -->
+							
+								<!-- /Cart -->
+
+								<!-- Menu Toogle -->
+								   <div class="menu-toggle ">
+      <a href="javascript:void(0);" id="nav-toggle-btn">
+        <i class="fa fa-bars" id="menu-icon"></i>
+        <span>Menu</span>
+      </a>
+    </div>
+								<!-- /Menu Toogle -->
+							</div>
+						</div>
+						<!-- /ACCOUNT -->
+					</div>
+					<!-- row -->
+				</div>
+				<!-- container -->
+			</div>
+			<!-- /MAIN HEADER -->
+		</header>
+		<!-- /HEADER -->
+
+		<!-- NAVIGATION -->
+		<nav id="navigation">
+			<!-- container -->
+			<div class="container">
+				<!-- Menu Toggle Button -->
+                 
+
+
+				<!-- responsive-nav -->
+				<div id="responsive-nav">
+					<!-- NAV -->
+					<ul class="main-nav nav navbar-nav">
+						<li><a href="index.html">Home</a></li>
+						<li><a href="trials.html">Trials Bikes</a></li>
+						<li><a href="enduro.html">Enduro Bikes</a></li>
+						<li><a href="mx.html">Motorcross Bikes</a></li>
+						<li><a href="mountain-Bikes.html">Mountain Bikes</a></li>
+						<li class="active"><a href="news.html">News</a></li>
+						<li><a href="contact.html">Get in Touch</a></li>
+					</ul>
+					<!-- /NAV -->
+				</div>
+				<!-- /responsive-nav -->
+			</div>
+			<!-- /container -->
+		</nav>
+		<!-- /NAVIGATION -->
+
+        	<!-- HOT DEAL SECTION -->
+<div id="hot-deal" class="section" style="background-image: url('images/banner-4.png');">
+  <!-- container -->
+  <div class="container">
+    <!-- Banner Title -->
+    <div class="banner-title">
+      <h1></h1>
+    </div>
+    <!-- row -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="hot-deal">
+          <ul class="hot-deal-countdown">
+            <li><div><h3></h3><span></span></div></li>
+            <li><div><h3></h3><span></span></div></li>
+            <li><div><h3></h3><span></span></div></li>
+            <li><div><h3></h3><span></span></div></li>
+          </ul>
+          <h2 class="text-uppercase"></h2>
+          <p></p>
+          <a class="" href="#"></a>
+        </div>
+      </div>
+    </div>
+    <!-- /row -->
+  </div>
+  <!-- /container -->
+</div>
+
+<!-- /HOT DEAL SECTION -->
+
 <div id="post">
 <h1>${post.title}</h1>
 <p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
 ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" />` : ''}
 <div class="content">${post.content}</div>
 </div>
+
+ <!-- Sidebar ads -->
+  <aside class="sidebar-ads">
+    <h3></h3>
+    <div class="ad"></div>
+    <div class="ad"></div>
+  </aside>
+
+</div>
+
+<!-- Bottom ad below entire layout -->
+<div class="bottom-ad">
+  <p></p>
+</div>
+
+<!-- FOOTER -->
+		<footer id="footer">
+			<!-- top footer -->
+			<div class="section">
+				<!-- container -->
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title"></h3>
+								<img src="./images/logo.png" alt="" height="150px" width="125px">
+								<ul class="footer-links">
+									
+									
+								</ul>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">Categories</h3>
+								<ul class="footer-links">
+									<li><a href="index.html">Home</a></li>
+									<li><a href="trials.html">Trials Bikes</a></li>
+									<li><a href="enduro.html">Enduro Bikes</a></li>
+									<li><a href="mx.html">Motocross Bikes</a></li>
+									<li><a href="mountain-Bikes.html">Mountain Bikes</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="clearfix visible-xs"></div>
+
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">Information</h3>
+								<ul class="footer-links">
+									<li><a href="news.html">News</a></li>
+									<li><a href="contact.html">Get in Touch</a></li>
+									<li><a href="p&p.html">Privacy Policy</a></li>
+									<li><a href="T&C.html">Terms & Conditions</a></li>
+									<li><a href="login.html">login</a></li>
+								</ul>
+							</div>
+						</div>
+
+						<div class="col-md-3 col-xs-6">
+							<div class="footer">
+								<h3 class="footer-title">Socials</h3>
+								<ul class="footer-links">
+									<li><a href="#"><i class="fa fa-instagram fa-3x" ></i></a></li>
+									<li><a href="#"><i class="fa fa-facebook fa-3x"></i></a></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /row -->
+				</div>
+				<!-- /container -->
+			</div>
+			<!-- /top footer -->
+
+			<!-- bottom footer -->
+			<div id="bottom-footer" class="section">
+				<div class="container">
+					<!-- row -->
+					<div class="row">
+						<div class="col-md-12 text-center">
+
+							<span class="copyright">
+								<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+								<p>
+  Copyright &copy; <script>document.write(new Date().getFullYear());</script>
+  All rights reserved | Dirt Bike Finder UK |
+  Designed by <a href="https://wolfgang-dev.com/" target="_blank" rel="noopener noreferrer">Wolfgang Dev</a>
+</p>
+
+							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+							</span>
+						</div>
+					</div>
+						<!-- /row -->
+				</div>
+				<!-- /container -->
+			</div>
+			<!-- /bottom footer -->
+		</footer>
+		<!-- /FOOTER -->
+
+		<!-- jQuery Plugins -->
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/slick.min.js"></script>
+		<script src="/js/nouislider.min.js"></script>
+		<script src="/js/jquery.zoom.min.js"></script>
+		<script src="/js/main.js"></script>
+        <script src="/js/filter.js"></script>
 </body>
 </html>
         `);
@@ -310,6 +575,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
