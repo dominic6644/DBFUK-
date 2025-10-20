@@ -262,7 +262,7 @@ app.get('/post/:slug', async (req, res) => {
 		<!-- Font Awesome Icon -->
 		<link rel="stylesheet" href="/css/font-awesome.min.css">
 <link rel="stylesheet" href="/css/style.css" />
-<link rel="icon" href="images/logo.png" type="image/png">
+<link rel="icon" href="images/logo.png" type="/image/png">
 </head>
 <body>
 
@@ -371,7 +371,7 @@ app.get('/post/:slug', async (req, res) => {
 		<!-- /NAVIGATION -->
 
         	<!-- HOT DEAL SECTION -->
-<div id="hot-deal" class="section" style="background-image: url('images/banner-4.png');">
+<div id="hot-deal" class="section" style="background-image: url('/images/banner-4.png');">
   <!-- container -->
   <div class="container">
     <!-- Banner Title -->
@@ -433,7 +433,7 @@ ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" /
 						<div class="col-md-3 col-xs-6">
 							<div class="footer">
 								<h3 class="footer-title"></h3>
-								<img src="./images/logo.png" alt="" height="150px" width="125px">
+								<img src="/images/logo.png" alt="" height="150px" width="125px">
 								<ul class="footer-links">
 									
 									
@@ -575,6 +575,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
