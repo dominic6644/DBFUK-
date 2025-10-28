@@ -246,6 +246,7 @@ app.get('/post/:slug', async (req, res) => {
 <meta property="og:title" content="${post.title}" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image" content="${image}" />
+	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
 <!-- Google font -->
 		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
@@ -354,13 +355,13 @@ app.get('/post/:slug', async (req, res) => {
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li><a href="index.html">Home</a></li>
-						<li><a href="trials.html">Trials Bikes</a></li>
-						<li><a href="enduro.html">Enduro Bikes</a></li>
-						<li><a href="mx.html">Motorcross Bikes</a></li>
-						<li><a href="mountain-Bikes.html">Mountain Bikes</a></li>
+						<li><a href="/index.html">Home</a></li>
+						<li><a href="/trials.html">Trials Bikes</a></li>
+						<li><a href="/enduro.html">Enduro Bikes</a></li>
+						<li><a href="/mx.html">Motorcross Bikes</a></li>
+						<li><a href="/mountain-Bikes.html">Mountain Bikes</a></li>
 						<li class="active"><a href="/news.html">News</a></li>
-						<li><a href="contact.html">Get in Touch</a></li>
+						<li><a href="/contact.html">Get in Touch</a></li>
 					</ul>
 					<!-- /NAV -->
 				</div>
@@ -411,14 +412,48 @@ ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" /
  <!-- Sidebar ads -->
   <aside class="sidebar-ads">
     <h3></h3>
-    <div class="ad"></div>
-    <div class="ad"></div>
+    <div class="ad"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
+     crossorigin="anonymous"></script>
+<!-- post-1 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7960582198518252"
+     data-ad-slot="1381761821"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
+    <div class="ad"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
+     crossorigin="anonymous"></script>
+<!-- post-2 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7960582198518252"
+     data-ad-slot="6184578087"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>
   </aside>
 
 </div>
 
 <!-- Bottom ad below entire layout -->
 <div class="bottom-ad">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
+     crossorigin="anonymous"></script>
+<!-- post-3 -->
+<ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-7960582198518252"
+     data-ad-slot="3624781783"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
   <p></p>
 </div>
 
@@ -445,11 +480,11 @@ ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" /
 							<div class="footer">
 								<h3 class="footer-title">Categories</h3>
 								<ul class="footer-links">
-									<li><a href="index.html">Home</a></li>
-									<li><a href="trials.html">Trials Bikes</a></li>
-									<li><a href="enduro.html">Enduro Bikes</a></li>
-									<li><a href="mx.html">Motocross Bikes</a></li>
-									<li><a href="mountain-Bikes.html">Mountain Bikes</a></li>
+									<li><a href="/index.html">Home</a></li>
+									<li><a href="/trials.html">Trials Bikes</a></li>
+									<li><a href="/enduro.html">Enduro Bikes</a></li>
+									<li><a href="/mx.html">Motocross Bikes</a></li>
+									<li><a href="/mountain-Bikes.html">Mountain Bikes</a></li>
 								</ul>
 							</div>
 						</div>
@@ -460,11 +495,11 @@ ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" /
 							<div class="footer">
 								<h3 class="footer-title">Information</h3>
 								<ul class="footer-links">
-									<li><a href="news.html">News</a></li>
-									<li><a href="contact.html">Get in Touch</a></li>
-									<li><a href="p&p.html">Privacy Policy</a></li>
-									<li><a href="T&C.html">Terms & Conditions</a></li>
-									<li><a href="login.html">login</a></li>
+									<li><a href="/news.html">News</a></li>
+									<li><a href="/contact.html">Get in Touch</a></li>
+									<li><a href="/p&p.html">Privacy Policy</a></li>
+									<li><a href="/T&C.html">Terms & Conditions</a></li>
+									<li><a href="/login.html">login</a></li>
 								</ul>
 							</div>
 						</div>
@@ -575,6 +610,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
