@@ -359,7 +359,7 @@ app.get('/post/:slug', async (req, res) => {
 						<li><a href="enduro.html">Enduro Bikes</a></li>
 						<li><a href="mx.html">Motorcross Bikes</a></li>
 						<li><a href="mountain-Bikes.html">Mountain Bikes</a></li>
-						<li class="active"><a href="news.html">News</a></li>
+						<li class="active"><a href="/news.html">News</a></li>
 						<li><a href="contact.html">Get in Touch</a></li>
 					</ul>
 					<!-- /NAV -->
@@ -575,6 +575,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
