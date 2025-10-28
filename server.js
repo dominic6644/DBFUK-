@@ -402,6 +402,10 @@ app.get('/post/:slug', async (req, res) => {
 
 <!-- /HOT DEAL SECTION -->
 
+<div class="post-page">
+  <!-- Left: Main post -->
+  <div class="post-container">
+
 <div id="post">
 <h1>${post.title}</h1>
 <p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
@@ -409,54 +413,47 @@ ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" /
 <div class="content">${post.content}</div>
 </div>
 
- <!-- Sidebar ads -->
+  <!-- Bottom ad below post -->
+    <div class="bottom-ad">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
+      <!-- post-3 -->
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-7960582198518252"
+        data-ad-slot="3624781783"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+  </div>
+
+  <!-- Right: Sidebar ads -->
   <aside class="sidebar-ads">
-    <h3></h3>
-    <div class="ad"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- post-1 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="1381761821"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></div>
-    <div class="ad"><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- post-2 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="6184578087"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script></div>
+    <div class="ad">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
+      <!-- post-1 -->
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-7960582198518252"
+        data-ad-slot="1381761821"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
+
+    <div class="ad">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
+      <!-- post-2 -->
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-7960582198518252"
+        data-ad-slot="6184578087"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    </div>
   </aside>
-
 </div>
-
-<!-- Bottom ad below entire layout -->
-<div class="bottom-ad">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- post-3 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="3624781783"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-  <p></p>
-</div>
-
 <!-- FOOTER -->
 		<footer id="footer">
 			<!-- top footer -->
@@ -610,6 +607,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
