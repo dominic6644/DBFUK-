@@ -209,20 +209,44 @@ app.get('/api/posts/:slug', async (req, res) => {
 
 // Add a new blog post
 app.post('/api/posts', async (req, res) => {
-    const { title, slug, content, author, featured_image } = req.body;
-    if (!title || !slug || !content || !author) return res.status(400).json({ error: 'Missing required fields' });
+  const { title, slug, content, author, featured_image } = req.body;
+  if (!title || !slug || !content || !author) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    // Insert new post into the database
+    await pool.query(
+      'INSERT INTO blog_posts (title, slug, content, author, featured_image) VALUES ($1,$2,$3,$4,$5)',
+      [title, slug, content, author, featured_image]
+    );
+
+    // --- IndexNow Integration Starts Here ---
+    const axios = require('axios'); // Make sure axios is installed: npm install axios
+    const indexNowKey = 'b9bad444c01f4d7590bb7432d7824239'; // Without ".txt"
+    const siteHost = 'www.dirtbikefinderuk.co.uk';
+    const postUrl = `https://${siteHost}/post/${slug}`;
 
     try {
-        await pool.query(
-            'INSERT INTO blog_posts (title, slug, content, author, featured_image) VALUES ($1,$2,$3,$4,$5)',
-            [title, slug, content, author, featured_image]
-        );
-        res.status(201).json({ message: 'Blog post added successfully' });
+      await axios.post('https://api.indexnow.org/indexnow', {
+        host: siteHost,
+        key: indexNowKey,
+        keyLocation: `https://${siteHost}/${indexNowKey}.txt`,
+        urlList: [postUrl],
+      });
+      console.log(`✅ IndexNow submitted for: ${postUrl}`);
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error adding blog post' });
+      console.error('⚠️ IndexNow submission failed:', err.message);
     }
+    // --- IndexNow Integration Ends Here ---
+
+    res.status(201).json({ message: 'Blog post added successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error adding blog post' });
+  }
 });
+
 
 // Serve post page
 app.get('/post/:slug', async (req, res) => {
@@ -607,6 +631,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
