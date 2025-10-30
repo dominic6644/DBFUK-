@@ -245,7 +245,41 @@ app.post('/api/posts', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Error adding blog post' });
   }
+}); 
+
+
+// TEMPORARY ROUTE: Reindex all existing blog posts with IndexNow
+app.get('/api/reindex-all', async (req, res) => {
+  try {
+    const axios = require('axios');
+    const indexNowKey = 'b9bad444c01f4d7590bb7432d7824239'; // your real key
+    const siteHost = 'www.dirtbikefinderuk.co.uk';
+
+    // Step 1: Fetch all post slugs from your PostgreSQL table
+    const { rows } = await pool.query('SELECT slug FROM blog_posts');
+
+    // Step 2: Build full URLs for each post
+    const urls = rows.map(r => `https://${siteHost}/post/${r.slug}`);
+
+    // Step 3: Submit all URLs to IndexNow in one request
+    await axios.post('https://api.indexnow.org/indexnow', {
+      host: siteHost,
+      key: indexNowKey,
+      keyLocation: `https://${siteHost}/${indexNowKey}.txt`,
+      urlList: urls,
+    });
+
+    console.log(`✅ Submitted ${urls.length} URLs to IndexNow`);
+    res.json({ message: `Submitted ${urls.length} URLs to IndexNow`, urls });
+  } catch (err) {
+    console.error('⚠️ Error during bulk IndexNow submission:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
+
+
+
+
 
 
 // Serve post page
@@ -631,6 +665,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
