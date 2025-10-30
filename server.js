@@ -8,7 +8,7 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const path = require('path');
-const axios = require('axios');
+
 
 
 const app = express();
@@ -667,6 +667,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
