@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dirtbikefinderuk.co.uk/sitemap.xml
