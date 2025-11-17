@@ -944,6 +944,17 @@ label {
     }
 }
 
+.grid-ad {
+    width: 100%;
+    margin: 20px 0;
+    min-height: 120px; /* important so Google doesn't skip it */
+}
+
+.grid-ad ins {
+    display: block !important;
+}
+
+
 
 
 /*----------------------------*\
