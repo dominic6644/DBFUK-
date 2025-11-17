@@ -918,6 +918,32 @@ label {
     top: 0;
   }
 }
+/* Center product cards on small screens */
+@media (max-width: 768px) {
+    .product-container {
+        justify-content: center !important;
+    }
+
+    /* Hide sidebar ads entirely */
+    .ads-section {
+        display: none;
+    }
+
+    /* Product cards full width or 90% */
+    .product-card {
+        width: 90% !important;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+/* Optional: slightly smaller tablets */
+@media (max-width: 1024px) {
+    .ads-section {
+        display: none;
+    }
+}
+
 
 
 /*----------------------------*\
