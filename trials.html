@@ -678,26 +678,30 @@ async function fetchProducts() {
             container.appendChild(card);
 
             // --- Inject ad after every 6th product (for mobile only) ---
-            if ((index + 1) % 6 === 0) {
-                const adWrapper = document.createElement('div');
-                adWrapper.classList.add('mobile-ad');
+if ((index + 1) % 6 === 0) {
+    const adWrapper = document.createElement("div");
+    adWrapper.classList.add("grid-ad");
 
-                adWrapper.innerHTML = `
-                    <ins class="adsbygoogle"
-                        style="display:block; margin:20px auto;"
-                        data-ad-client="ca-pub-7960582198518252"
-                        data-ad-slot="5466224604"
-                        data-ad-format="auto"
-                        data-full-width-responsive="true"></ins>
-                `;
+    adWrapper.innerHTML = `
+        <ins class="adsbygoogle"
+             style="display:block; width:100%;"
+             data-ad-client="ca-pub-7960582198518252"
+             data-ad-slot="5466224604"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    `;
 
-                container.appendChild(adWrapper);
+    container.appendChild(adWrapper);
 
-                // Load ad
-                if (typeof adsbygoogle !== "undefined") {
-                    adsbygoogle.push({});
-                }
-            }
+    setTimeout(() => {
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.log("Ad error:", e);
+        }
+    }, 100);
+}
+
         });
     } catch (error) {
         console.error("Error fetching products:", error);
@@ -719,6 +723,7 @@ fetchProducts();
 		
 	</body>
 </html>
+
 
 
 
