@@ -976,6 +976,18 @@ label {
     display: block !important;
 }
 
+@media (max-width: 1024px) {
+    .product-listings {
+        max-width: 100% !important;
+    }
+}
+@media (max-width: 768px) {
+    .product-card {
+        width: 100% !important;
+    }
+}
+
+
 
 
 
