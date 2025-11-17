@@ -1702,6 +1702,40 @@ label {
   }
 }
 
+/* Fix container layout for mobile */
+.news-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Posts left column */
+.news-content {
+  flex: 3;
+}
+
+/* Ads right column */
+.ads-container {
+  flex: 1;
+}
+
+/* On mobile or anything < 1024px: remove ads column completely */
+@media (max-width: 1024px) {
+  .ads-container {
+    display: none !important;
+  }
+
+  .news-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .news-content {
+    width: 100%;
+    max-width: 900px;
+  }
+}
+
+
 
 /*admin*/
 
