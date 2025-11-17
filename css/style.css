@@ -945,7 +945,7 @@ label {
 }
 
 .grid-ad {
-    width: 100%;
+    
     margin: 20px 0;
     min-height: 120px; /* important so Google doesn't skip it */
 }
@@ -953,6 +953,29 @@ label {
 .grid-ad ins {
     display: block !important;
 }
+.grid-ad {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* Match product card */
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+    /* Size match */
+    width: 100%;
+    min-height: 320px;    /* Same height as your product cards */
+    box-sizing: border-box;
+}
+
+.grid-ad ins {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+}
+
 
 
 
