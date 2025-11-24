@@ -2168,152 +2168,83 @@ button[type="submit"]:hover {
 /* === GLOBAL FIXES === */
 
 
+/* Fix global overflow */
+html, body {
+  overflow-x: hidden;
+}
+
+/* Force ads to scale */
 .adsbygoogle {
   max-width: 100% !important;
   height: auto !important;
 }
 
-.ad, .bottom-ad {
-  overflow-x: hidden;
-}
-
-/* === Blog Post Page Layout === */
-
-/* Main grid */
+/* MAIN GRID — stay 2 columns even on small screens */
 .post-page {
   display: grid;
-  grid-template-columns: 3fr 1fr; /* desktop layout */
-  gap: 40px;
+  grid-template-columns: 1fr 180px; /* main post | slim ads */
+  gap: 20px;
   max-width: 1200px;
-  margin: 60px auto;
-  padding: 0 20px;
+  margin: 40px auto;
+  padding: 0 10px;
 }
 
-/* Post container */
-.post-container {
-  background: #fff;
-  padding: 30px;
-}
-
-#post {
-  margin-top: 80px;
-  padding-left: 30px;
-  padding-right: 20px;
-}
-
-/* Title */
-#post h1 {
-  font-size: 2.4rem;
-  margin-bottom: 10px;
-  color: #111;
-  font-weight: 700;
-}
-
-/* Date */
-#post .date {
-  color: #777;
-  font-size: 0.95rem;
-  margin-bottom: 20px;
-}
-
-/* Featured Image */
-#post img {
-  float: left;
-  width: 40%;
-  max-width: 400px;
-  margin: 0 25px 20px 0;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-/* Blog content */
-#post .content {
-  color: #333;
-  font-size: 1.1rem;
-  line-height: 1.8;
-}
-
-#post .content p {
-  margin-bottom: 1.4em;
-}
-
-/* Links in article */
-#post .content a {
-  color: #c00;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-#post .content a:hover {
-  text-decoration: underline;
-}
-
-/* Clear float */
-#post::after {
-  content: "";
-  display: block;
-  clear: both;
-}
-
-/* Sidebar ads */
+/* SIDEBAR — make it thin */
 .sidebar-ads {
-  border: 1px solid #eee;
-  padding: 20px;
-  height: fit-content;
+  width: 100%;
+  max-width: 180px;
+  padding: 10px;
+  border: none;
 }
 
 .sidebar-ads .ad {
-  padding: 15px;
-  text-align: center;
   margin-bottom: 20px;
+  padding: 0;
 }
 
-/* Bottom ad */
-.bottom-ad {
-  border-radius: 8px;
-  padding: 20px;
-  text-align: center;
-  margin-top: 40px;
+/* Featured image responsive */
+#post img {
+  float: left;
+  width: 40%;
+  max-width: 350px;
+  margin: 0 20px 20px 0;
 }
 
+/* === RESPONSIVE === */
 
-/* ===========================================================
-   === RESPONSIVE FIXES (MOBILE ONLY) ===
-   =========================================================== */
-@media (max-width: 900px) {
+/* Tablets & smaller phones: keep sidebar but make it thinner */
+@media (max-width: 700px) {
 
-  /* Stack layout */
   .post-page {
-    grid-template-columns: 1fr;
-    padding: 0 10px;
+    grid-template-columns: 1fr 120px; /* slim ads stay visible */
+    gap: 10px;
   }
 
-  /* Move sidebar ads ABOVE the post for more clicks */
   .sidebar-ads {
-    order: -1;
-    width: 100%;
-    margin-bottom: 25px;
-  }
-
-  /* Featured image responsive */
-  #post img {
-    float: none;
-    width: 100%;
-    margin: 0 0 20px 0;
-    max-width: 100%;
-  }
-
-  /* Remove excessive padding */
-  #post {
-    padding-left: 0;
-    padding-right: 0;
-  }
-
-  .post-container {
-    padding: 20px;
+    max-width: 120px;
+    padding: 5px;
   }
 
   .sidebar-ads .ad {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+  }
+
+  #post img {
+    float: none;
+    width: 100%;
+    margin: 0 0 15px 0;
+  }
+}
+
+/* Very tiny screens: finally move ads below */
+@media (max-width: 480px) {
+  .post-page {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-ads {
+    max-width: 100%;
+    order: 2;
+    margin-top: 20px;
   }
 }
