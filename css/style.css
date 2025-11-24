@@ -2165,12 +2165,24 @@ button[type="submit"]:hover {
 /*-- post */
 
 
+/* === GLOBAL FIXES === */
+
+
+.adsbygoogle {
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.ad, .bottom-ad {
+  overflow-x: hidden;
+}
+
 /* === Blog Post Page Layout === */
 
-/* Main container */
+/* Main grid */
 .post-page {
   display: grid;
-  grid-template-columns: 3fr 1fr; /* post | sidebar */
+  grid-template-columns: 3fr 1fr; /* desktop layout */
   gap: 40px;
   max-width: 1200px;
   margin: 60px auto;
@@ -2184,28 +2196,27 @@ button[type="submit"]:hover {
 }
 
 #post {
-  margin-top: 80px; /* pushes it down below the banner */
-  padding-left: 30px; /* adds space from the left edge */
-  padding-right: 20px; /* keeps symmetry on both sides */
+  margin-top: 80px;
+  padding-left: 30px;
+  padding-right: 20px;
 }
 
-
-/* Title and date */
+/* Title */
 #post h1 {
   font-size: 2.4rem;
   margin-bottom: 10px;
   color: #111;
-  text-align: left;
   font-weight: 700;
 }
 
+/* Date */
 #post .date {
   color: #777;
   font-size: 0.95rem;
   margin-bottom: 20px;
 }
 
-/* Featured image floated left */
+/* Featured Image */
 #post img {
   float: left;
   width: 40%;
@@ -2215,7 +2226,7 @@ button[type="submit"]:hover {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* Blog content text */
+/* Blog content */
 #post .content {
   color: #333;
   font-size: 1.1rem;
@@ -2237,56 +2248,72 @@ button[type="submit"]:hover {
   text-decoration: underline;
 }
 
-/* Clear float (important for wrapping) */
+/* Clear float */
 #post::after {
   content: "";
   display: block;
   clear: both;
 }
 
-/* Sidebar ads on the right */
+/* Sidebar ads */
 .sidebar-ads {
   border: 1px solid #eee;
   padding: 20px;
   height: fit-content;
 }
 
-.sidebar-ads h3 {
-  text-align: center;
-  font-size: 1.1rem;
-  margin-bottom: 15px;
-}
-
 .sidebar-ads .ad {
   padding: 15px;
   text-align: center;
   margin-bottom: 20px;
-  font-size: 0.9rem;
-  color: #666;
 }
 
-/* Bottom ad block below the post */
+/* Bottom ad */
 .bottom-ad {
   border-radius: 8px;
   padding: 20px;
   text-align: center;
-  font-size: 0.9rem;
   margin-top: 40px;
 }
 
-/* Responsive */
+
+/* ===========================================================
+   === RESPONSIVE FIXES (MOBILE ONLY) ===
+   =========================================================== */
 @media (max-width: 900px) {
+
+  /* Stack layout */
   .post-page {
     grid-template-columns: 1fr;
+    padding: 0 10px;
   }
 
+  /* Move sidebar ads ABOVE the post for more clicks */
+  .sidebar-ads {
+    order: -1;
+    width: 100%;
+    margin-bottom: 25px;
+  }
+
+  /* Featured image responsive */
   #post img {
     float: none;
     width: 100%;
     margin: 0 0 20px 0;
+    max-width: 100%;
   }
 
-  .sidebar-ads {
-    margin-top: 20px;
+  /* Remove excessive padding */
+  #post {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .post-container {
+    padding: 20px;
+  }
+
+  .sidebar-ads .ad {
+    margin-bottom: 15px;
   }
 }
