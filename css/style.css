@@ -2166,77 +2166,114 @@ button[type="submit"]:hover {
 
 
 /* === GLOBAL FIXES === */
-
-
-/* Fix global overflow */
 html, body {
   overflow-x: hidden;
+  line-height: 1.6;
 }
 
-/* Force ads to scale */
+/* Force ads to scale safely */
 .adsbygoogle {
   max-width: 100% !important;
   height: auto !important;
+  display: block;
 }
 
-/* MAIN GRID — stay 2 columns even on small screens */
+/* === MAIN GRID === */
 .post-page {
   display: grid;
-  grid-template-columns: 1fr 180px; /* main post | slim ads */
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) 200px; /* content | ads */
+  gap: 30px;
   max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 10px;
+  margin: 50px auto;
+  padding: 0 16px;
 }
 
-/* SIDEBAR — make it thin */
+/* === CONTENT AREA === */
+#post {
+  font-size: 16px;
+}
+
+#post p {
+  margin-bottom: 1.2em;
+}
+
+/* Featured image */
+#post img {
+  float: left;
+  width: 38%;
+  max-width: 360px;
+  margin: 0 24px 20px 0;
+  border-radius: 6px;
+}
+
+/* === SIDEBAR ADS === */
 .sidebar-ads {
   width: 100%;
-  max-width: 180px;
-  padding: 10px;
-  border: none;
+  max-width: 200px;
+  padding: 12px;
 }
 
 .sidebar-ads .ad {
-  margin-bottom: 20px;
-  padding: 0;
+  margin-bottom: 24px;
 }
 
-/* Featured image responsive */
-#post img {
-  float: left;
-  width: 40%;
-  max-width: 350px;
-  margin: 0 20px 20px 0;
+/* === TABLE / GRID STYLE === */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 30px 0;
+  font-size: 15px;
+  background: #fff;
+}
+
+caption {
+  caption-side: top;
+  text-align: left;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+th {
+  background: #f4f4f4;
+  font-weight: 600;
+}
+
+tr:nth-child(even) td {
+  background: #fafafa;
 }
 
 /* === RESPONSIVE === */
 
-/* Tablets & smaller phones: keep sidebar but make it thinner */
-@media (max-width: 700px) {
-
+/* Tablets & small screens */
+@media (max-width: 768px) {
   .post-page {
-    grid-template-columns: 1fr 120px; /* slim ads stay visible */
-    gap: 10px;
+    grid-template-columns: minmax(0, 1fr) 140px;
+    gap: 20px;
   }
 
   .sidebar-ads {
-    max-width: 120px;
-    padding: 5px;
-  }
-
-  .sidebar-ads .ad {
-    margin-bottom: 10px;
+    max-width: 140px;
+    padding: 8px;
   }
 
   #post img {
     float: none;
     width: 100%;
-    margin: 0 0 15px 0;
+    margin: 0 0 20px 0;
+  }
+
+  table {
+    font-size: 14px;
   }
 }
 
-/* Very tiny screens: finally move ads below */
+/* Very small phones */
 @media (max-width: 480px) {
   .post-page {
     grid-template-columns: 1fr;
@@ -2244,7 +2281,10 @@ html, body {
 
   .sidebar-ads {
     max-width: 100%;
-    order: 2;
-    margin-top: 20px;
+    margin-top: 30px;
+  }
+
+  table, th, td {
+    font-size: 13px;
   }
 }
