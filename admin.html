@@ -146,6 +146,7 @@
     <textarea id="content" placeholder="Content" required></textarea>
     <input type="text" id="author" placeholder="Author" required>
     <input type="text" id="featured_image" placeholder="Featured Image URL">
+	<input type="text" id="youtube_url" placeholder="YouTube Video URL (optional)">
     <button type="submit">Publish Post</button>
 </form>
 
@@ -258,6 +259,7 @@
         content: document.getElementById('content').value.trim(),
         author: document.getElementById('author').value.trim(),
         featured_image: document.getElementById('featured_image').value.trim()
+		 youtube_url: document.getElementById('youtube_url').value.trim()
     };
 
  try {
@@ -291,3 +293,4 @@
 
 
  
+
