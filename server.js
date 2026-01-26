@@ -35,16 +35,6 @@ app.listen(port, () => {
 });
 
 
-
-
-
-
-
-
-
-
-
-
 // Log environment variables to verify they are loaded correctly
 console.log('DB User:', process.env.DB_USER);
 console.log('DB Host:', process.env.DB_HOST);
@@ -72,6 +62,26 @@ pool.query('SELECT NOW()', (err, res) => {
 
 // Other routes and configurations...
 
+const axios = require('axios');
+
+async function submitIndexNow(slug) {
+  const indexNowKey = 'b9bad444c01f4d7590bb7432d7824239';
+  const siteHost = 'www.dirtbikefinderuk.co.uk';
+  const postUrl = `https://${siteHost}/post/${slug}`;
+
+  try {
+    await axios.post('https://api.indexnow.org/indexnow', {
+      host: siteHost,
+      key: indexNowKey,
+      keyLocation: `https://${siteHost}/${indexNowKey}.txt`,
+      urlList: [postUrl],
+    });
+
+    console.log(`✅ IndexNow submitted for: ${postUrl}`);
+  } catch (err) {
+    console.error('⚠️ IndexNow submission failed:', err.message);
+  }
+}
 
 // Other routes and configurations...
 
@@ -212,32 +222,35 @@ app.get('/api/posts/:slug', async (req, res) => {
 // Add a new blog post
 
 app.post('/api/posts', async (req, res) => {
-    const { title, slug, content, author, featured_image, youtube_url } = req.body;
+  const { title, slug, content, author, featured_image, youtube_url } = req.body;
 
-    if (!title || !slug || !content || !author) {
-        return res.status(400).json({ error: 'Missing required fields' });
-    }
+  if (!title || !slug || !content || !author) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
-    try {
-        await pool.query(
-            `INSERT INTO blog_posts 
-            (title, slug, content, author, featured_image, youtube_url)
-            VALUES ($1, $2, $3, $4, $5, $6)`,
-            [title, slug, content, author, featured_image, youtube_url || null]
-        );
+  try {
+    await pool.query(
+      `INSERT INTO blog_posts 
+       (title, slug, content, author, featured_image, youtube_url)
+       VALUES ($1, $2, $3, $4, $5, $6)`,
+      [title, slug, content, author, featured_image, youtube_url || null]
+    );
 
-        res.status(201).json({ message: 'Blog post added successfully' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error adding blog post' });
-    }
+    // 🔥 Submit to IndexNow AFTER successful insert
+    submitIndexNow(slug);
+
+    res.status(201).json({ message: 'Blog post added successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error adding blog post' });
+  }
 });
 
 //helper
 function getYouTubeEmbedUrl(url) {
     if (!url) return null;
 
-    url = url.trim(); // 🔥 THIS IS THE FIX
+    url = url.trim(); // 
 
     try {
         const parsed = new URL(url);
@@ -260,27 +273,7 @@ function getYouTubeEmbedUrl(url) {
 }
 
     
-
-    // --- IndexNow Integration Starts Here ---
-    const axios = require('axios'); // Make sure axios is installed: npm install axios
-    const indexNowKey = 'b9bad444c01f4d7590bb7432d7824239'; // Without ".txt"
-    const siteHost = 'www.dirtbikefinderuk.co.uk';
-    const postUrl = `https://${siteHost}/post/${slug}`;
-
-    try {
-      await axios.post('https://api.indexnow.org/indexnow', {
-        host: siteHost,
-        key: indexNowKey,
-        keyLocation: `https://${siteHost}/${indexNowKey}.txt`,
-        urlList: [postUrl],
-      });
-      console.log(`✅ IndexNow submitted for: ${postUrl}`);
-    } catch (err) {
-      console.error('⚠️ IndexNow submission failed:', err.message);
-    }
-    // --- IndexNow Integration Ends Here ---
-
-    res.status(201).json({ message: 'Blog post added successfully' });
+   res.status(201).json({ message: 'Blog post added successfully' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Error adding blog post' });
@@ -697,6 +690,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
