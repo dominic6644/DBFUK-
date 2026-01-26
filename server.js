@@ -273,21 +273,6 @@ function getYouTubeEmbedUrl(url) {
 }
 
     
-   res.status(201).json({ message: 'Blog post added successfully' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error adding blog post' });
-  }
-}); 
-
-
-
-   
-
-
-
-
-
 
 // Serve post page
 app.get('/post/:slug', async (req, res) => {
@@ -690,6 +675,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
