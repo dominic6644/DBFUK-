@@ -210,18 +210,56 @@ app.get('/api/posts/:slug', async (req, res) => {
 });
 
 // Add a new blog post
-app.post('/api/posts', async (req, res) => {
-  const { title, slug, content, author, featured_image } = req.body;
-  if (!title || !slug || !content || !author) {
-    return res.status(400).json({ error: 'Missing required fields' });
-  }
 
-  try {
-    // Insert new post into the database
-    await pool.query(
-      'INSERT INTO blog_posts (title, slug, content, author, featured_image) VALUES ($1,$2,$3,$4,$5)',
-      [title, slug, content, author, featured_image]
-    );
+app.post('/api/posts', async (req, res) => {
+    const { title, slug, content, author, featured_image, youtube_url } = req.body;
+
+    if (!title || !slug || !content || !author) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try {
+        await pool.query(
+            `INSERT INTO blog_posts 
+            (title, slug, content, author, featured_image, youtube_url)
+            VALUES ($1, $2, $3, $4, $5, $6)`,
+            [title, slug, content, author, featured_image, youtube_url || null]
+        );
+
+        res.status(201).json({ message: 'Blog post added successfully' });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error adding blog post' });
+    }
+});
+
+//helper
+function getYouTubeEmbedUrl(url) {
+    if (!url) return null;
+
+    url = url.trim(); // 🔥 THIS IS THE FIX
+
+    try {
+        const parsed = new URL(url);
+
+        if (parsed.hostname.includes('youtu.be')) {
+            return `https://www.youtube.com/embed/${parsed.pathname.slice(1)}`;
+        }
+
+        if (parsed.hostname.includes('youtube.com')) {
+            const id = parsed.searchParams.get('v');
+            if (id) return `https://www.youtube.com/embed/${id}`;
+        }
+    } catch (e) {
+        console.error('Invalid YouTube URL:', url);
+        return null;
+    }
+
+    return null;
+	
+}
+
+    
 
     // --- IndexNow Integration Starts Here ---
     const axios = require('axios'); // Make sure axios is installed: npm install axios
@@ -250,34 +288,8 @@ app.post('/api/posts', async (req, res) => {
 }); 
 
 
-// TEMPORARY ROUTE: Reindex all existing blog posts with IndexNow
-app.get('/api/reindex-all', async (req, res) => {
-  try {
-    const axios = require('axios');
-    const indexNowKey = 'b9bad444c01f4d7590bb7432d7824239'; // your real key
-    const siteHost = 'www.dirtbikefinderuk.co.uk';
 
-    // Step 1: Fetch all post slugs from your PostgreSQL table
-    const { rows } = await pool.query('SELECT slug FROM blog_posts');
-
-    // Step 2: Build full URLs for each post
-    const urls = rows.map(r => `https://${siteHost}/post/${r.slug}`);
-
-    // Step 3: Submit all URLs to IndexNow in one request
-    await axios.post('https://api.indexnow.org/indexnow', {
-      host: siteHost,
-      key: indexNowKey,
-      keyLocation: `https://${siteHost}/${indexNowKey}.txt`,
-      urlList: urls,
-    });
-
-    console.log(`✅ Submitted ${urls.length} URLs to IndexNow`);
-    res.json({ message: `Submitted ${urls.length} URLs to IndexNow`, urls });
-  } catch (err) {
-    console.error('⚠️ Error during bulk IndexNow submission:', err.message);
-    res.status(500).json({ error: err.message });
-  }
-});
+   
 
 
 
@@ -293,7 +305,8 @@ app.get('/post/:slug', async (req, res) => {
 
         const post = result.rows[0];
         const description = post.content.replace(/<[^>]+>/g, '').slice(0, 160) + '...';
-        const image = post.featured_image || 'https://dirtbikefinderuk.co.uk/default-image.jpg';
+        const image = post.featured_image || '/images/default-image.jpg';
+        const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
 
         res.send(`
 <!DOCTYPE html>
@@ -306,6 +319,14 @@ app.get('/post/:slug', async (req, res) => {
 <meta property="og:title" content="${post.title}" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image" content="${image}" />
+${youtubeEmbed ? `
+<meta property="og:type" content="video.other" />
+<meta property="og:video" content="${youtubeEmbed}" />
+<meta property="og:video:secure_url" content="${youtubeEmbed}" />
+<meta property="og:video:type" content="text/html" />
+<meta property="og:video:width" content="1280" />
+<meta property="og:video:height" content="720" />
+` : ''}
 	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
 <!-- Google font -->
 		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
@@ -471,6 +492,15 @@ app.get('/post/:slug', async (req, res) => {
 <p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
 ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" />` : ''}
 <div class="content">${post.content}</div>
+<div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;">
+  <iframe
+      src="${youtubeEmbed}"
+      frameborder="0"
+      style="position:absolute; top:0; left:0; width:100%; height:100%;"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+  </iframe>
+</div>
 </div>
 
   <!-- Bottom ad below post -->
@@ -667,6 +697,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
