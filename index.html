@@ -17,6 +17,14 @@
     ad_user_data: 'denied',
     ad_personalization: 'denied'
   });
+
+gtag('consent', 'update', {
+  ad_storage: 'granted',
+  analytics_storage: 'granted',
+  ad_user_data: 'granted',
+  ad_personalization: 'granted'
+});
+
 </script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 
@@ -421,6 +429,29 @@
 		<script src="js/main.js"></script>
         <script src="js/filter.js"></script>
 <script>
+document.getElementById('accept-consent')?.addEventListener('click', function () {
+  gtag('consent', 'update', {
+    ad_storage: 'granted',
+    analytics_storage: 'granted',
+    ad_user_data: 'granted',
+    ad_personalization: 'granted'
+  });
+
+  localStorage.setItem('cookieConsent', 'granted');
+});
+
+document.getElementById('reject-consent')?.addEventListener('click', function () {
+  gtag('consent', 'update', {
+    ad_storage: 'denied',
+    analytics_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
+
+  localStorage.setItem('cookieConsent', 'denied');
+});
+
+	
   let currentIndex = 0;
   const slides = document.getElementById("slides");
   const totalSlides = slides.children.length;
@@ -545,6 +576,7 @@ loadPosts();
 
 	</body>
 </html>
+
 
 
 
