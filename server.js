@@ -296,7 +296,8 @@ app.get('/post/:slug', async (req, res) => {
             post.content.replace(/<[^>]+>/g, '').slice(0, 160) + '...';
         const image = post.featured_image || '/images/default-image.jpg';
         const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
-
+		
+res.send(`
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -685,6 +686,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
