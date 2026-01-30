@@ -275,23 +275,28 @@ function getYouTubeEmbedUrl(url) {
     
 
 // Serve post page
+
 app.get('/post/:slug', async (req, res) => {
     const slug = decodeURIComponent(req.params.slug);
-try {
-    console.log('Requested slug:', slug);
+
     try {
-      const result = await pool.query(
-  'SELECT * FROM blog_posts WHERE slug ILIKE $1',
-  [slug]
-);
-  if (result.rows.length === 0) return res.status(404).send('<h1>404 - Post not found</h1>');
+        console.log('Requested slug:', slug);
+
+        const result = await pool.query(
+            'SELECT * FROM blog_posts WHERE slug ILIKE $1',
+            [slug]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).send('<h1>404 - Post not found</h1>');
+        }
 
         const post = result.rows[0];
-        const description = post.content.replace(/<[^>]+>/g, '').slice(0, 160) + '...';
+        const description =
+            post.content.replace(/<[^>]+>/g, '').slice(0, 160) + '...';
         const image = post.featured_image || '/images/default-image.jpg';
         const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
 
-        res.send(`
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -680,6 +685,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
