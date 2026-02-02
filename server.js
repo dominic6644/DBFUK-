@@ -481,15 +481,18 @@ ${youtubeEmbed ? `
 <p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
 ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" />` : ''}
 <div class="content">${post.content}</div>
+${youtubeEmbed ? `
 <div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;">
   <iframe
-      src="${youtubeEmbed}"
-      frameborder="0"
-      style="position:absolute; top:0; left:0; width:100%; height:100%;"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen>
+    src="${youtubeEmbed}"
+    frameborder="0"
+    style="position:absolute; top:0; left:0; width:100%; height:100%;"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
   </iframe>
 </div>
+` : ''}
+
 </div>
 
   <!-- Bottom ad below post -->
@@ -686,6 +689,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
