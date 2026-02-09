@@ -84,66 +84,90 @@ async function submitIndexNow(slug) {
 }
 
 // Other routes and configurations...
+app.post('/products', async (req, res) => {
+    const { maxPrice, bikeTypes } = req.body;
+    const tableName = req.query.table || 'product';
+    const limit = Number(req.query.limit) || 30;
+    const page = Number(req.query.page) || 1;
+    const offset = (page - 1) * limit;
 
-
-// GET all products (no filters)
-app.get('/products', async (req, res) => {
-    const tableName = req.query.table || 'product'; // Default to 'product'
     try {
-        const result = await pool.query(`SELECT * FROM ${tableName} ORDER BY RANDOM()`); // Randomize rows
-        const products = result.rows.map(product => ({
-            ...product,
-            image_urls: product.image_urls
-        }));
-        res.json(products);
+        let baseQuery = `
+            FROM (
+                SELECT *,
+                CAST((REGEXP_MATCHES(price, '([0-9]+(?:\\.[0-9]+)?)'))[1] AS FLOAT) AS numeric_price
+                FROM ${tableName}
+            ) AS cleaned
+            WHERE numeric_price <= $1
+        `;
+
+        const values = [maxPrice];
+
+        if (bikeTypes && bikeTypes.length > 0) {
+            baseQuery += ' AND bike_type = ANY($2)';
+            values.push(bikeTypes);
+        }
+
+        // ✅ total count
+        const countResult = await pool.query(
+            `SELECT COUNT(*) ${baseQuery}`,
+            values
+        );
+
+        const total = Number(countResult.rows[0].count);
+
+        // ✅ paginated data
+        const productsResult = await pool.query(
+            `SELECT * ${baseQuery}
+             ORDER BY id
+             LIMIT $${values.length + 1}
+             OFFSET $${values.length + 2}`,
+            [...values, limit, offset]
+        );
+
+        res.json({
+            products: productsResult.rows,
+            total
+        });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error fetching products");
+    }
+});
+ 
+// GET unfiltered products
+app.get('/products', async (req, res) => {
+    const tableName = req.query.table || 'product';
+    const limit = Number(req.query.limit) || 30;
+    const page = Number(req.query.page) || 1;
+    const offset = (page - 1) * limit;
+
+    try {
+        const countResult = await pool.query(
+            `SELECT COUNT(*) FROM ${tableName}`
+        );
+
+        const total = Number(countResult.rows[0].count);
+
+        const result = await pool.query(
+            `SELECT * FROM ${tableName}
+             ORDER BY id
+             LIMIT $1 OFFSET $2`,
+            [limit, offset]
+        );
+
+        res.json({
+            products: result.rows,
+            total
+        });
+
     } catch (err) {
         console.error(err);
         res.status(500).send("Error fetching products");
     }
 });
 
-
-// POST filtered products
-app.post('/products', async (req, res) => {
-    const { maxPrice, bikeTypes } = req.body;
-    const tableName = req.query.table || 'product'; // Default to 'product' if no query parameter is provided
-    console.log('Received maxPrice:', maxPrice);
-    console.log('Received bikeTypes:', bikeTypes);
-
-    try {
-        // Base query: extract numeric part of price, cast it to float
-        let query = `
-            SELECT * FROM (
-                SELECT *,
-                    CAST((REGEXP_MATCHES(price, '([0-9]+(?:\\.[0-9]+)?)'))[1] AS FLOAT) AS numeric_price
-                FROM ${tableName}
-            ) AS cleaned
-            WHERE numeric_price <= $1
-        `;
-        const values = [maxPrice];
-
-        // Optional filter for bike types
-        if (bikeTypes && bikeTypes.length > 0) {
-            query += ' AND bike_type = ANY($2)';
-            values.push(bikeTypes);
-        }
-
-        console.log('Executing query:', query);
-        console.log('With values:', values);
-
-        const result = await pool.query(query, values);
-        const products = result.rows.map(product => ({
-            ...product,
-            image_urls: product.image_urls
-        }));
-
-        console.log('Filtered Products:', products);
-        res.json(products);
-    } catch (err) {
-        console.error('Error executing query:', err);
-        res.status(500).send("Error fetching products");
-    }
-});
 
 //node mailer
 
@@ -689,6 +713,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
