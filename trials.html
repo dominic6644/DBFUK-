@@ -208,6 +208,10 @@
   <!-- Product Listings -->
   <div class="product-listings">
     <div id="product-container" class="product-container"></div>
+	   <div class="load-more-wrapper">
+  <button id="load-more" class="btn btn-custom">Load More</button>
+  <p id="product-count" class="product-count-text"></p>
+</div>
   </div>
 
   <!-- Ad Sidebar -->
@@ -638,7 +642,6 @@
 		<script src="js/nouislider.min.js"></script>
 		<script src="js/jquery.zoom.min.js"></script>
 		<script src="js/main.js"></script>
-        <script src="js/filter.js"></script>
         <script>
             // Toggle the menu visibility on mobile
             function toggleMenu() {
@@ -646,93 +649,172 @@
                 navbarLinks.classList.toggle('active');
             }
 
-			
-        
-        
+			/* ========= GLOBAL STATE ========= */
+let currentPage = 1;
+const limit = 30;
+let isLoading = false;
+let currentFilter = null;
+let totalProducts = 0;
+let loadedProducts = 0;
 
-async function fetchProducts() {
+
+/* ========= FUNCTIONS ========= */
+async function fetchProducts(page = 1, reset = false) {
+    if (isLoading) return;
+    isLoading = true;
+
     try {
-        const response = await fetch('https://dbfuk.onrender.com/products');
-        const products = await response.json();
         const container = document.getElementById('product-container');
 
-        container.innerHTML = ''; 
+        if (reset) {
+            container.innerHTML = '';
+            loadedProducts = 0;
+        }
 
-        products.forEach((product, index) => {
+		let url = `https://dbfuk.onrender.com/products?page=${page}&limit=${limit}`;
 
-            // --- Build product card ---
+       
+let options = { method: 'GET' };
+
+if (currentFilter) {
+    options = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(currentFilter)
+    };
+}
+
+
+        const response = await fetch(url, options);
+        const data = await response.json();
+
+        const products = data.products;
+        totalProducts = data.total;
+
+        products.forEach(product => {
             const card = document.createElement('div');
-            card.classList.add('product-card');
+            card.className = 'product-card';
 
-            const productLink = product.product_link || "#";
-            const imageUrl = Array.isArray(product.image_urls) ? product.image_urls[0] : "";
+            const img = Array.isArray(product.image_urls)
+                ? product.image_urls[0]
+                : '';
 
             card.innerHTML = `
-                <a href="${productLink}" target="_blank" class="product-link">
-                    <img src="${imageUrl}" alt="Product Image">
+                <a href="${product.product_link}" target="_blank">
+                    <img src="${img}">
                     <h2>${product.title}</h2>
-                    <p>Price: ${product.price}</p>
+                    <p>${product.price}</p>
                 </a>
             `;
 
             container.appendChild(card);
-
-            // --- Inject ad after every 6th product (for mobile only) ---
-if ((index + 1) % 6 === 0) {
-    const adWrapper = document.createElement("div");
-    adWrapper.classList.add("grid-ad");
-
-    adWrapper.innerHTML = `
-        <ins class="adsbygoogle"
-             style="display:block; width:100%;"
-             data-ad-client="ca-pub-7960582198518252"
-             data-ad-slot="5466224604"
-             data-ad-format="auto"
-             data-full-width-responsive="true"></ins>
-    `;
-
-    container.appendChild(adWrapper);
-
-    setTimeout(() => {
-        try {
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        } catch (e) {
-            console.log("Ad error:", e);
-        }
-    }, 100);
-}
-
         });
-    } catch (error) {
-        console.error("Error fetching products:", error);
+
+		 /* ===== Inject ad after every 6th product (mobile only) ===== */
+    if (window.innerWidth <= 768 && (loadedProducts + index + 1) % 6 === 0) {
+        const adWrapper = document.createElement("div");
+        adWrapper.classList.add("grid-ad");
+
+        adWrapper.innerHTML = `
+            <ins class="adsbygoogle"
+                 style="display:block; width:100%;"
+                 data-ad-client="ca-pub-7960582198518252"
+                 data-ad-slot="5466224604"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+        `;
+
+        container.appendChild(adWrapper);
+
+        setTimeout(() => {
+            try {
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            } catch (e) {
+                console.log("Ad error:", e);
+            }
+        }, 100);
+    }
+});
+
+        loadedProducts += products.length;
+
+        const countEl = document.getElementById('product-count');
+
+        if (loadedProducts >= totalProducts) {
+            countEl.textContent = `All ${totalProducts} products loaded`;
+            document.getElementById('load-more').style.display = 'none';
+        } else {
+            countEl.textContent =
+                `Showing ${loadedProducts} of ${totalProducts} products`;
+            document.getElementById('load-more').style.display = 'block';
+        }
+
+        currentPage = page + 1;
+
+    } catch (err) {
+        console.error(err);
+    } finally {
+        isLoading = false;
     }
 }
 
-fetchProducts();
+
+/* ========= INIT ========= */
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Initial load
+    fetchProducts(currentPage, true);
+
+    // Load more
+    const loadMoreBtn = document.getElementById('load-more');
+    if (loadMoreBtn) {
+        loadMoreBtn.addEventListener('click', () => {
+    fetchProducts(currentPage, false);
+});
+
+    }
+
+	
 
 
 
-            
+    // Filter
+    const filterBtn = document.getElementById('filter-button');
+    if (filterBtn) {
+        filterBtn.addEventListener('click', () => {
+            const maxPrice = document.getElementById('price-slider').value;
+            const bikeType = document.getElementById('bike-type').value;
 
-            
+            currentFilter = {
+                maxPrice,
+                bikeTypes: [bikeType]
+            };
 
+            currentPage = 1;
+            fetchProducts(currentPage, true, currentFilter);
+        });
+    }
 
+    // Reset
+    const resetBtn = document.getElementById('reset-button');
+    if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+            currentFilter = null;
+            currentPage = 1;
+            fetchProducts(currentPage, true);
+        });
+    }
+	
+
+});
+
+        
         </script>
 
 		
 		
 	</body>
 </html>
-
-
-
-
-
-
-
-
-
-
 
 
 
