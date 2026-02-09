@@ -691,29 +691,31 @@ if (currentFilter) {
         const products = data.products;
         totalProducts = data.total;
 
-        products.forEach(product => {
-            const card = document.createElement('div');
-            card.className = 'product-card';
+products.forEach((product, index) => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
 
-            const img = Array.isArray(product.image_urls)
-                ? product.image_urls[0]
-                : '';
+    const img = Array.isArray(product.image_urls)
+        ? product.image_urls[0]
+        : '';
 
-            card.innerHTML = `
-                <a href="${product.product_link}" target="_blank">
-                    <img src="${img}">
-                    <h2>${product.title}</h2>
-                    <p>${product.price}</p>
-                </a>
-            `;
+    card.innerHTML = `
+        <a href="${product.product_link}" target="_blank">
+            <img src="${img}">
+            <h2>${product.title}</h2>
+            <p>${product.price}</p>
+        </a>
+    `;
 
-            container.appendChild(card);
-        });
+    container.appendChild(card);
 
-		 /* ===== Inject ad after every 6th product (mobile only) ===== */
-    if (window.innerWidth <= 768 && (loadedProducts + index + 1) % 6 === 0) {
+    /* ===== Inject ad after every 6th product (mobile only) ===== */
+    if (
+        window.innerWidth <= 768 &&
+        (loadedProducts + index + 1) % 6 === 0
+    ) {
         const adWrapper = document.createElement("div");
-        adWrapper.classList.add("grid-ad");
+        adWrapper.className = "grid-ad";
 
         adWrapper.innerHTML = `
             <ins class="adsbygoogle"
@@ -726,15 +728,14 @@ if (currentFilter) {
 
         container.appendChild(adWrapper);
 
-        setTimeout(() => {
-            try {
-                (adsbygoogle = window.adsbygoogle || []).push({});
-            } catch (e) {
-                console.log("Ad error:", e);
-            }
-        }, 100);
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.warn("Adsense error:", e);
+        }
     }
-});
+
+
 
         loadedProducts += products.length;
 
@@ -815,6 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 	</body>
 </html>
+
 
 
 
