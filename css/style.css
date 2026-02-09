@@ -891,6 +891,40 @@ label {
   object-fit: cover;
 }
 
+.load-more-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;   /* ⬇️ stack vertically */
+  align-items: center;      /* ⬅️ center horizontally */
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+#load-more {
+  padding: 14px 36px;
+  font-size: 16px;
+}
+
+.product-count-text {
+  margin-top: 8px;          /* subtle spacing under button */
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+}
+
+.product-container,
+.load-more-wrapper {
+  width: 100%;
+}
+
+.product-count-text {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+}
+
+
 @media (max-width: 1024px) {
   .product-card {
     width: calc(50% - 10px);
