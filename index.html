@@ -484,7 +484,7 @@ document.addEventListener('DOMContentLoaded', function () {
        async function fetchProducts(category, containerId) {
         try {
             const response = await fetch(`https://dbfuk.onrender.com/products?table=${category}`);
-            const products = await response.json();
+             const products = data.products; // ✅ FIX
             const container = document.getElementById(containerId);
 
             container.innerHTML = ''; // Clear existing content
@@ -587,6 +587,7 @@ loadPosts();
 
 	</body>
 </html>
+
 
 
 
