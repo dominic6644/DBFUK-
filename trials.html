@@ -709,7 +709,7 @@ products.forEach((product, index) => {
 
     container.appendChild(card);
 
-    /* ===== Inject ad after every 6th product (mobile only) ===== */
+    // Inject ad every 6 products (mobile only)
     if (
         window.innerWidth <= 768 &&
         (loadedProducts + index + 1) % 6 === 0
@@ -734,10 +734,10 @@ products.forEach((product, index) => {
             console.warn("Adsense error:", e);
         }
     }
+});
 
-
-
-        loadedProducts += products.length;
+// ✅ AFTER loop
+loadedProducts += products.length;
 
         const countEl = document.getElementById('product-count');
 
@@ -816,6 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		
 	</body>
 </html>
+
 
 
 
