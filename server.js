@@ -246,21 +246,40 @@ app.get('/api/posts/:slug', async (req, res) => {
 // Add a new blog post
 
 app.post('/api/posts', async (req, res) => {
-  const { title, slug, content, author, featured_image, youtube_url } = req.body;
+  const {
+    title,
+    slug,
+    content,
+    author,
+    featured_image,
+    youtube_url,
+    published_date,
+    meta_description,
+    article_type
+  } = req.body;
 
-  if (!title || !slug || !content || !author) {
+  if (!title || !slug || !content || !author || !published_date) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
     await pool.query(
-      `INSERT INTO blog_posts 
-       (title, slug, content, author, featured_image, youtube_url)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [title, slug, content, author, featured_image, youtube_url || null]
+      `INSERT INTO blog_posts
+      (title, slug, content, author, featured_image, youtube_url, published_date, meta_description, article_type)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+      [
+        title,
+        slug,
+        content,
+        author,
+        featured_image || null,
+        youtube_url || null,
+        published_date,
+        meta_description || null,
+        article_type || 'breaking'
+      ]
     );
 
-    // 🔥 Submit to IndexNow AFTER successful insert
     submitIndexNow(slug);
 
     res.status(201).json({ message: 'Blog post added successfully' });
@@ -301,25 +320,62 @@ function getYouTubeEmbedUrl(url) {
 // Serve post page
 
 app.get('/post/:slug', async (req, res) => {
-    const slug = decodeURIComponent(req.params.slug);
+  const slug = decodeURIComponent(req.params.slug);
 
-    try {
-        console.log('Requested slug:', slug);
+  try {
+    const result = await pool.query(
+      'SELECT * FROM blog_posts WHERE slug ILIKE $1',
+      [slug]
+    );
 
-        const result = await pool.query(
-            'SELECT * FROM blog_posts WHERE slug ILIKE $1',
-            [slug]
-        );
+    if (result.rows.length === 0) {
+      return res.status(404).send('<h1>404 - Post not found</h1>');
+    }
 
-        if (result.rows.length === 0) {
-            return res.status(404).send('<h1>404 - Post not found</h1>');
+    const post = result.rows[0];
+
+    const description =
+      post.meta_description ||
+      post.content.replace(/<[^>]+>/g, '').slice(0, 160);
+
+    const image =
+      post.featured_image ||
+      'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
+
+    const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
+
+    const publishedISO = new Date(post.published_date).toISOString();
+
+    // ✅ JSON-LD Structured Data
+    const jsonLd = `
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NewsArticle",
+      "headline": ${JSON.stringify(post.title)},
+      "image": ["${image}"],
+      "datePublished": "${publishedISO}",
+      "dateModified": "${publishedISO}",
+      "author": {
+        "@type": "Person",
+        "name": ${JSON.stringify(post.author)}
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Dirt Bike Finder UK",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
         }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://dirtbikefinderuk.co.uk/post/${post.slug}"
+      }
+    }
+    </script>
+    `;
 
-        const post = result.rows[0];
-        const description =
-            post.content.replace(/<[^>]+>/g, '').slice(0, 160) + '...';
-        const image = post.featured_image || '/images/default-image.jpg';
-        const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
 		
 res.send(`
 <!DOCTYPE html>
@@ -328,18 +384,24 @@ res.send(`
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${post.title} | Dirt Bike Finder UK</title>
+<link rel="canonical" href="https://dirtbikefinderuk.co.uk/post/${post.slug}" />
+
 <meta name="description" content="${description}">
 <meta property="og:title" content="${post.title}" />
 <meta property="og:description" content="${description}" />
 <meta property="og:image" content="${image}" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="${publishedISO}" />
+
 ${youtubeEmbed ? `
-<meta property="og:type" content="video.other" />
 <meta property="og:video" content="${youtubeEmbed}" />
 <meta property="og:video:secure_url" content="${youtubeEmbed}" />
 <meta property="og:video:type" content="text/html" />
 <meta property="og:video:width" content="1280" />
 <meta property="og:video:height" content="720" />
 ` : ''}
+
+${jsonLd}
 	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
 <!-- Google font -->
 		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
@@ -502,7 +564,7 @@ ${youtubeEmbed ? `
 
 <div id="post">
 <h1>${post.title}</h1>
-<p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
+<p>${new Date(post.published_date).toLocaleString()}</p>
 ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" />` : ''}
 <div class="content">${post.content}</div>
 ${youtubeEmbed ? `
@@ -713,6 +775,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
