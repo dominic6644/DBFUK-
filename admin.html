@@ -147,6 +147,15 @@
     <input type="text" id="author" placeholder="Author" required>
     <input type="text" id="featured_image" placeholder="Featured Image URL">
 	<input type="text" id="youtube_url" placeholder="YouTube Video URL (optional)">
+			<input type="datetime-local" id="published_date" required>
+<textarea id="meta_description" placeholder="Meta description (max 160 chars)" maxlength="160"></textarea>
+<select id="article_type">
+  <option value="breaking">Breaking News</option>
+  <option value="results">Results</option>
+  <option value="preview">Preview</option>
+  <option value="update">Live Update</option>
+</select>
+
     <button type="submit">Publish Post</button>
 </form>
 
@@ -253,14 +262,20 @@
    document.getElementById('postForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-    const post = {
-        title: document.getElementById('title').value.trim(),
-        slug: document.getElementById('slug').value.trim(),
-        content: document.getElementById('content').value.trim(),
-        author: document.getElementById('author').value.trim(),
-        featured_image: document.getElementById('featured_image').value.trim(),
-		 youtube_url: document.getElementById('youtube_url').value.trim()
-    };
+   const post = {
+    title: document.getElementById('title').value.trim(),
+    slug: document.getElementById('slug').value.trim(),
+    content: document.getElementById('content').value.trim(),
+    author: document.getElementById('author').value.trim(),
+    featured_image: document.getElementById('featured_image').value.trim(),
+    youtube_url: document.getElementById('youtube_url').value.trim(),
+
+    // NEW FIELDS
+    published_date: document.getElementById('published_date').value,
+    meta_description: document.getElementById('meta_description').value.trim(),
+    article_type: document.getElementById('article_type').value
+};
+
 
  try {
     const res = await fetch('https://dbfuk.onrender.com/api/posts', {
@@ -293,5 +308,6 @@
 
 
  
+
 
 
