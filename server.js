@@ -60,28 +60,9 @@ pool.query('SELECT NOW()', (err, res) => {
     }
 });
 
-// Other routes and configurations...
 
-const axios = require('axios');
+  
 
-async function submitIndexNow(slug) {
-  const indexNowKey = 'b9bad444c01f4d7590bb7432d7824239';
-  const siteHost = 'www.dirtbikefinderuk.co.uk';
-  const postUrl = `https://${siteHost}/post/${slug}`;
-
-  try {
-    await axios.post('https://api.indexnow.org/indexnow', {
-      host: siteHost,
-      key: indexNowKey,
-      keyLocation: `https://${siteHost}/${indexNowKey}.txt`,
-      urlList: [postUrl],
-    });
-
-    console.log(`✅ IndexNow submitted for: ${postUrl}`);
-  } catch (err) {
-    console.error('⚠️ IndexNow submission failed:', err.message);
-  }
-}
 
 // Other routes and configurations...
 app.post('/products', async (req, res) => {
@@ -280,7 +261,7 @@ app.post('/api/posts', async (req, res) => {
       ]
     );
 
-    submitIndexNow(slug);
+    
 
     res.status(201).json({ message: 'Blog post added successfully' });
   } catch (err) {
@@ -775,6 +756,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
