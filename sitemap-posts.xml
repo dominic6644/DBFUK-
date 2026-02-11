@@ -1,104 +1,177 @@
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2025-roof-of-africa-final-results</loc>
     <lastmod>2025-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2025-endurocross-jonny-walker-championship-finale</loc>
     <lastmod>2025-11-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/dougie-lampkin-vertigo-global-ambassador</loc>
     <lastmod>2025-12-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-    <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/fim-awards-2025-complete-champions-details</loc>
     <lastmod>2025-12-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/x-trial-ponte-di-legno-2025-results</loc>
     <lastmod>2025-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2025-superenduro-round-1-poland-results</loc>
     <lastmod>2025-12-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
-   <url>
-    <loc>https://dirtbikefinderuk.co.uk/post/2025-superenduro-round-2-riesa-results</loc>
-    <lastmod>2026-01-04</lastmod>
-  </url>
-   <url>
+
+  <!-- DAKAR 2026 ARTICLES -->
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-day-1-results</loc>
     <lastmod>2026-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-day-2-results</loc>
     <lastmod>2026-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-day-3-results</loc>
     <lastmod>2026-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-4-results</loc>
     <lastmod>2026-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-    <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-5-results</loc>
     <lastmod>2026-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-    <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-6-results</loc>
     <lastmod>2026-01-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-      <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-7-results</loc>
     <lastmod>2026-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-    <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-8-results</loc>
     <lastmod>2026-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-9-results</loc>
     <lastmod>2026-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-10-results</loc>
     <lastmod>2026-01-10</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-    <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-11-results</loc>
     <lastmod>2026-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-stage-12-results</loc>
     <lastmod>2026-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-dakar-rally-bikes-final-results</loc>
     <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-superenduro-round-3-bilbao-results</loc>
     <lastmod>2026-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-san-diego-supercross-results</loc>
     <lastmod>2026-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
-   <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-x-trial-leeds-results</loc>
     <lastmod>2026-01-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
-     <url>
+
+  <url>
     <loc>https://dirtbikefinderuk.co.uk/post/superenduro-round-4-budapest-results-2026</loc>
     <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
+
   <url>
     <loc>https://dirtbikefinderuk.co.uk/post/2026-x-trial-barcelona-results</loc>
     <lastmod>2026-02-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>
-  
+
 </urlset>
+
 
