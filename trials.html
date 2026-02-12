@@ -426,9 +426,10 @@ products.forEach((product, index) => {
     const card = document.createElement('div');
     card.className = 'product-card';
 
-    const img = Array.isArray(product.image_urls)
-        ? product.image_urls[0]
-        : '';
+ const img = Array.isArray(product.image_urls)
+    ? product.image_urls[0] + "?format=600w"
+    : '';
+
 
     card.innerHTML = `
         <a href="${product.product_link}" target="_blank">
@@ -564,6 +565,7 @@ loadSidebarAds();
 		
 	</body>
 </html>
+
 
 
 
