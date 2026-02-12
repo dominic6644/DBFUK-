@@ -70,9 +70,23 @@
 			<div id="top-header">
 				<div class="container">
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-instagram fa-2x"></i></a></li>
-						<li><a href="#"><i class="fa fa-facebook fa-2x"></i> </a></li>
-						
+						 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 					</ul>
 					<ul class="header-links pull-right">
 						<li><a href="#"><i class=""></i> </a></li>
@@ -91,9 +105,14 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
-									<img src="./images/logo.png" alt="" height="150px" width="125px">
-								</a>
+								<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 							</div>
 							
 						</div>
@@ -433,7 +452,13 @@ products.forEach((product, index) => {
 
     card.innerHTML = `
         <a href="${product.product_link}" target="_blank">
-            <img src="${img}">
+            <img src="${img}"
+     alt="${product.title} for sale in UK"
+     loading="lazy"
+     width="400"
+     height="300"
+     style="object-fit:cover;">
+
             <h2>${product.title}</h2>
             <p>${product.price}</p>
         </a>
@@ -565,6 +590,7 @@ loadSidebarAds();
 		
 	</body>
 </html>
+
 
 
 
