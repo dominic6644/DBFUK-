@@ -140,12 +140,14 @@
 								<!-- /Cart -->
 
 								<!-- Menu Toogle -->
-								   <div class="menu-toggle ">
-      <a href="javascript:void(0);" id="nav-toggle-btn">
-        <i class="fa fa-bars" id="menu-icon"></i>
-        <span>Menu</span>
-      </a>
-    </div>
+								<!-- Menu Toggle -->
+<div class="menu-toggle">
+  <button id="nav-toggle-btn" aria-label="Toggle navigation menu">
+    <i class="fa fa-bars" id="menu-icon"></i>
+    <span>Menu</span>
+  </button>
+</div>
+
 								<!-- /Menu Toogle -->
 							</div>
 						</div>
@@ -274,7 +276,14 @@
 						<div class="col-md-3 col-xs-6">
 							<div class="footer">
 								<h3 class="footer-title"></h3>
-								<img src="./images/logo.png" alt="" height="150px" width="125px">
+									<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 								<ul class="footer-links">
 									
 									
@@ -314,8 +323,23 @@
 							<div class="footer">
 								<h3 class="footer-title">Socials</h3>
 								<ul class="footer-links">
-									<li><a href="#"><i class="fa fa-instagram fa-3x" ></i></a></li>
-									<li><a href="#"><i class="fa fa-facebook fa-3x"></i></a></li>
+									 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 								</ul>
 							</div>
 						</div>
@@ -362,10 +386,14 @@
 		<script src="js/main.js"></script>
         <script>
             // Toggle the menu visibility on mobile
-            function toggleMenu() {
-                const navbarLinks = document.getElementById('navbar-links');
-                navbarLinks.classList.toggle('active');
-            }
+         
+document.getElementById('nav-toggle-btn').addEventListener('click', () => {
+    const navbarLinks = document.getElementById('navbar-links');
+    if (navbarLinks) {
+        navbarLinks.classList.toggle('active');
+    }
+});
+
 
 			/* ========= GLOBAL STATE ========= */
 let currentPage = 1;
@@ -590,6 +618,7 @@ loadSidebarAds();
 		
 	</body>
 </html>
+
 
 
 
