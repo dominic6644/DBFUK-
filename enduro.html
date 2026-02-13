@@ -9,27 +9,50 @@
                 <meta name="description" content="Explore a wide range of Enduro bikes from KTM, Husqvarna, Beta, and GasGas. Compare new and used enduro bikes for sale across the UK, with the latest news and expert insights.">
                 <meta name="keywords" content="enduro bikes, KTM enduro, Husqvarna enduro, Beta enduro bike, GasGas enduro, enduro bikes for sale UK, used enduro bikes, off-road motorcycles, enduro news UK">
 <meta name="google-adsense-account" content="ca-pub-7960582198518252">
+		<script async 
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
+  crossorigin="anonymous">
+</script>
 		
 		<title>Enduro Bikes</title>
 
-		<!-- Google font -->
-		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-                <link rel="icon" href="images/logo.png" type="image/png">
-		<!-- Bootstrap -->
-		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+			<!-- Preconnect for Google Fonts (improves speed) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-		<!-- Slick -->
-		<link type="text/css" rel="stylesheet" href="css/slick.css"/>
-		<link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+<!-- Load Google Font non-blocking -->
+<link rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+</noscript>
 
-		<!-- nouislider -->
-		<link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+<!-- Favicon -->
+<link rel="icon" href="images/logo.png" type="image/png">
 
-		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="css/font-awesome.min.css">
+<!-- CRITICAL CSS (keep blocking) -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
 
-		<!-- Custom stlylesheet -->
-		<link type="text/css" rel="stylesheet" href="css/style.css"/>
+<!-- NON-CRITICAL CSS (load after render) -->
+
+<link rel="preload" href="css/slick.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/slick.css"></noscript>
+
+<link rel="preload" href="css/slick-theme.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/slick-theme.css"></noscript>
+
+<link rel="preload" href="css/nouislider.min.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/nouislider.min.css"></noscript>
+
+<link rel="preload" href="css/font-awesome.min.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/font-awesome.min.css"></noscript>
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -46,13 +69,27 @@
 			<div id="top-header">
 				<div class="container">
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-instagram fa-2x"></i></a></li>
-						<li><a href="#"><i class="fa fa-facebook fa-2x"></i> </a></li>
-						
+						 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 					</ul>
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class=""></i> </a></li>
-						<li><a href="#"><i class=""></i> </a></li>
+						<li><a href="#"><i class="">nn</i> </a></li>
+						<li><a href="#"><i class="">nn</i> </a></li>
 					</ul>
 				</div>
 			</div>
@@ -67,9 +104,14 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
-									<img src="./images/logo.png" alt="" height="150px" width="125px">
-								</a>
+									<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 							</div>
 							
 						</div>
@@ -97,12 +139,12 @@
 								<!-- /Cart -->
 
 								<!-- Menu Toogle -->
-								   <div class="menu-toggle ">
-      <a href="javascript:void(0);" id="nav-toggle-btn">
-        <i class="fa fa-bars" id="menu-icon"></i>
-        <span>Menu</span>
-      </a>
-    </div>
+								   <div class="menu-toggle">
+  <button id="nav-toggle-btn" aria-label="Toggle navigation menu">
+    <i class="fa fa-bars" id="menu-icon"></i>
+    <span>Menu</span>
+  </button>
+</div>
 								<!-- /Menu Toogle -->
 							</div>
 						</div>
@@ -235,335 +277,13 @@
   </div>
 
   <!-- Ad Sidebar -->
-  <div class="ads-section">
+   <div class="ads-section" id="ads-container"></div>
 
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-1 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="8830754542"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-2 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="7246156233"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-3 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="6727335385"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-4 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="6204591205"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-5 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="5414253712"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-6 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="3902679737"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-7 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="5626006703"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-8 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="4891509532"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-9 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="3578427860"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-10 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="7291260403"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-11 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="1224313999"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-12 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="2838995607"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-13 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="7245144478"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-14 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="5932062804"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-15 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="1525913930"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-16 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="3658905649"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-17 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="3681303989"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-18 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="2188258917"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-19 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="7083145333"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-20 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="5273587252"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-21 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="3649460494"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-22 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="1055140646"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-23 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="2336378829"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-24 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="4916146991"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- enduro-25 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="1032742307"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
+	
 	  
   </div>
-</div>
+
 
 
 		<!-- FOOTER -->
@@ -577,7 +297,14 @@
 						<div class="col-md-3 col-xs-6">
 							<div class="footer">
 								<h3 class="footer-title"></h3>
-								<img src="./images/logo.png" alt="" height="150px" width="125px">
+								<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 								<ul class="footer-links">
 									
 									
@@ -617,8 +344,23 @@
 							<div class="footer">
 								<h3 class="footer-title">Socials</h3>
 								<ul class="footer-links">
-									<li><a href="#"><i class="fa fa-instagram fa-3x" ></i></a></li>
-									<li><a href="#"><i class="fa fa-facebook fa-3x"></i></a></li>
+										 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 								</ul>
 							</div>
 						</div>
@@ -666,11 +408,15 @@
         
 		
        <script>
-    // Toggle the menu visibility on mobile
-    function toggleMenu() {
-        const navbarLinks = document.getElementById('navbar-links');
+   document.getElementById('nav-toggle-btn').addEventListener('click', () => {
+    const navbarLinks = document.getElementById('navbar-links');
+    if (navbarLinks) {
         navbarLinks.classList.toggle('active');
     }
+});
+		   		
+		   		
+		   		
 		   		/* ========= GLOBAL STATE ========= */
 let currentPage = 1;
 const limit = 30;
@@ -678,6 +424,38 @@ let isLoading = false;
 let currentFilter = null;
 let totalProducts = 0;
 let loadedProducts = 0;
+
+			/* ========= ADS CONTROL ========= */
+let adsLoaded = 0;
+const adsPerBatch = 5;
+
+function loadSidebarAds() {
+    const adsContainer = document.getElementById("ads-container");
+
+    for (let i = 0; i < adsPerBatch; i++) {
+        const adWrapper = document.createElement("div");
+        adWrapper.className = "sidebar-ad";
+
+        adWrapper.innerHTML = `
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-7960582198518252"
+                data-ad-slot="5466224604"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+        `;
+
+        adsContainer.appendChild(adWrapper);
+
+        try {
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+            console.warn("Adsense error:", e);
+        }
+    }
+
+    adsLoaded += adsPerBatch;
+}
 
 
 /* ========= FUNCTIONS ========= */
@@ -694,6 +472,7 @@ async function fetchProducts(page = 1, reset = false) {
         }
 
 		let url = `https://dbfuk.onrender.com/products?table=enduro&page=${page}&limit=${limit}`;
+
 
        
 let options = { method: 'GET' };
@@ -717,13 +496,20 @@ products.forEach((product, index) => {
     const card = document.createElement('div');
     card.className = 'product-card';
 
-    const img = Array.isArray(product.image_urls)
-        ? product.image_urls[0]
-        : '';
+ const img = Array.isArray(product.image_urls)
+    ? product.image_urls[0] + "?format=600w"
+    : '';
+
 
     card.innerHTML = `
         <a href="${product.product_link}" target="_blank">
-            <img src="${img}">
+            <img src="${img}"
+     alt="${product.title} for sale in UK"
+     loading="lazy"
+     width="400"
+     height="300"
+     style="object-fit:cover;">
+
             <h2>${product.title}</h2>
             <p>${product.price}</p>
         </a>
@@ -787,12 +573,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial load
     fetchProducts(currentPage, true);
+	loadSidebarAds();
+
 
     // Load more
     const loadMoreBtn = document.getElementById('load-more');
     if (loadMoreBtn) {
         loadMoreBtn.addEventListener('click', () => {
     fetchProducts(currentPage, false);
+			 loadSidebarAds();
 });
 
     }
@@ -814,7 +603,14 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             currentPage = 1;
-            fetchProducts(currentPage, true, currentFilter);
+loadedProducts = 0;
+
+document.getElementById("ads-container").innerHTML = "";
+adsLoaded = 0;
+
+fetchProducts(currentPage, true);
+loadSidebarAds();
+
         });
     }
 
@@ -823,8 +619,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (resetBtn) {
         resetBtn.addEventListener('click', () => {
             currentFilter = null;
-            currentPage = 1;
-            fetchProducts(currentPage, true);
+currentPage = 1;
+loadedProducts = 0;
+
+document.getElementById("ads-container").innerHTML = "";
+adsLoaded = 0;
+
+fetchProducts(currentPage, true);
+loadSidebarAds();
+
         });
     }
 	
@@ -835,7 +638,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	</body>
 </html>
-
 
 
 
