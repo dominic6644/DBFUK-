@@ -224,6 +224,65 @@ app.get('/api/posts/:slug', async (req, res) => {
     }
 });
 
+app.get('/rss.xml', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT title, slug, meta_description, published_date
+      FROM blog_posts
+      WHERE published_date >= NOW() - INTERVAL '7 days'
+      ORDER BY published_date DESC
+      LIMIT 50
+    `);
+
+    const siteUrl = 'https://www.dirtbikefinderuk.co.uk';
+
+    const items = result.rows.map(post => {
+      return `
+        <item>
+          <title><![CDATA[${post.title}]]></title>
+          <link>${siteUrl}/post/${post.slug}</link>
+          <guid>${siteUrl}/post/${post.slug}</guid>
+          <pubDate>${new Date(post.published_date).toUTCString()}</pubDate>
+
+          <news:news>
+            <news:publication>
+              <news:name>Dirt Bike Finder UK</news:name>
+              <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>${new Date(post.published_date).toISOString()}</news:publication_date>
+            <news:title><![CDATA[${post.title}]]></news:title>
+          </news:news>
+
+          <description><![CDATA[${
+            post.meta_description || 'Latest motocross, supercross and enduro results.'
+          }]]></description>
+        </item>
+      `;
+    }).join('');
+
+    const rss = `<?xml version="1.0" encoding="UTF-8"?>
+      <rss version="2.0"
+           xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+        <channel>
+          <title>Dirt Bike Finder UK</title>
+          <link>${siteUrl}</link>
+          <description>Latest motocross, supercross, enduro and trials news and results.</description>
+          <language>en-gb</language>
+          ${items}
+        </channel>
+      </rss>
+    `;
+
+    res.set('Content-Type', 'application/rss+xml');
+    res.send(rss);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error generating RSS feed');
+  }
+});
+
+
 // Add a new blog post
 
 app.post('/api/posts', async (req, res) => {
@@ -373,6 +432,7 @@ res.send(`
 <meta property="og:image" content="${image}" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="${publishedISO}" />
+<meta name="robots" content="index, follow" />
 
 ${youtubeEmbed ? `
 <meta property="og:video" content="${youtubeEmbed}" />
@@ -756,6 +816,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
