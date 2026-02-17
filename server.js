@@ -444,23 +444,45 @@ ${youtubeEmbed ? `
 
 ${jsonLd}
 	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
-<!-- Google font -->
-		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
-		<!-- Bootstrap -->
-		<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css"/>
+		<!-- Preconnect for Google Fonts (improves speed) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-		<!-- Slick -->
-		<link type="text/css" rel="stylesheet" href="/css/slick.css"/>
-		<link type="text/css" rel="stylesheet" href="/css/slick-theme.css"/>
+<!-- Load Google Font non-blocking -->
+<link rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+</noscript>
 
-		<!-- nouislider -->
-		<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css"/>
+<!-- Favicon -->
+<link rel="icon" href="images/logo.png" type="image/png">
 
-		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="/css/font-awesome.min.css">
-<link rel="stylesheet" href="/css/style.css" />
-<link rel="icon" href="images/logo.png" type="/image/png">
+<!-- CRITICAL CSS (keep blocking) -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+
+<!-- NON-CRITICAL CSS (load after render) -->
+
+<link rel="preload" href="css/slick.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/slick.css"></noscript>
+
+<link rel="preload" href="css/slick-theme.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/slick-theme.css"></noscript>
+
+<link rel="preload" href="css/nouislider.min.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/nouislider.min.css"></noscript>
+
+<link rel="preload" href="css/font-awesome.min.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/font-awesome.min.css"></noscript>
+
 </head>
 <body>
 
@@ -470,13 +492,28 @@ ${jsonLd}
 			<div id="top-header">
 				<div class="container">
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-instagram fa-2x"></i></a></li>
-						<li><a href="#"><i class="fa fa-facebook fa-2x"></i> </a></li>
+						 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 						
 					</ul>
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class=""></i> </a></li>
-						<li><a href="#"><i class=""></i> </a></li>
+						<li><a href="#"><i class="nn"></i> </a></li>
+						<li><a href="#"><i class="nn"></i> </a></li>
 					</ul>
 				</div>
 			</div>
@@ -491,9 +528,14 @@ ${jsonLd}
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
-									<img src="/images/logo.png" alt="" height="150px" width="125px">
-								</a>
+								<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 							</div>
 							
 						</div>
@@ -521,12 +563,12 @@ ${jsonLd}
 								<!-- /Cart -->
 
 								<!-- Menu Toogle -->
-								   <div class="menu-toggle ">
-      <a href="javascript:void(0);" id="nav-toggle-btn">
-        <i class="fa fa-bars" id="menu-icon"></i>
-        <span>Menu</span>
-      </a>
-    </div>
+		<div class="menu-toggle">
+  <button id="nav-toggle-btn" aria-label="Toggle navigation menu">
+    <i class="fa fa-bars" id="menu-icon"></i>
+    <span>Menu</span>
+  </button>
+</div>
 								<!-- /Menu Toogle -->
 							</div>
 						</div>
@@ -606,7 +648,17 @@ ${jsonLd}
 <div id="post">
 <h1>${post.title}</h1>
 <p>${new Date(post.published_date).toLocaleString()}</p>
-${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}" />` : ''}
+${post.featured_image ? `
+<img 
+  src="${post.featured_image}" 
+  alt="${post.title}"
+  width="800"
+  height="450"
+  loading="lazy"
+  decoding="async"
+  style="max-width:100%;height:auto;"
+>
+` : ''}
 <div class="content">${post.content}</div>
 ${youtubeEmbed ? `
 <div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;">
@@ -674,8 +726,14 @@ ${youtubeEmbed ? `
 						<div class="col-md-3 col-xs-6">
 							<div class="footer">
 								<h3 class="footer-title"></h3>
-								<img src="/images/logo.png" alt="" height="150px" width="125px">
-								<ul class="footer-links">
+								<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 									
 									
 								</ul>
@@ -714,8 +772,23 @@ ${youtubeEmbed ? `
 							<div class="footer">
 								<h3 class="footer-title">Socials</h3>
 								<ul class="footer-links">
-									<li><a href="#"><i class="fa fa-instagram fa-3x" ></i></a></li>
-									<li><a href="#"><i class="fa fa-facebook fa-3x"></i></a></li>
+										 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 								</ul>
 							</div>
 						</div>
@@ -760,7 +833,7 @@ ${youtubeEmbed ? `
 		<script src="/js/nouislider.min.js"></script>
 		<script src="/js/jquery.zoom.min.js"></script>
 		<script src="/js/main.js"></script>
-        <script src="/js/filter.js"></script>
+        
 </body>
 </html>
         `);
@@ -816,6 +889,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
