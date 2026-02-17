@@ -530,7 +530,7 @@ ${jsonLd}
 								<a href="https://dirtbikefinderuk.co.uk/index.html"
                            class="logo"
                            aria-label="Go to homepage">
-                            <img src="./images/logo.png"
+                            <img src="/images/logo.png"
                                  alt="Dirt Bike Finder UK logo"
                                  height="150"
                                  width="125">
@@ -728,7 +728,7 @@ ${youtubeEmbed ? `
 								<a href="https://dirtbikefinderuk.co.uk/index.html"
                            class="logo"
                            aria-label="Go to homepage">
-                            <img src="./images/logo.png"
+                            <img src="/images/logo.png"
                                  alt="Dirt Bike Finder UK logo"
                                  height="150"
                                  width="125">
@@ -888,6 +888,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
