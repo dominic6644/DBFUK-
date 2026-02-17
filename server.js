@@ -445,11 +445,11 @@ ${youtubeEmbed ? `
 ${jsonLd}
 	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
 
-		<!-- Preconnect for Google Fonts (improves speed) -->
+	<!-- Preconnect -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<!-- Load Google Font non-blocking -->
+<!-- Google Font -->
 <link rel="preload"
       href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
       as="style"
@@ -459,29 +459,28 @@ ${jsonLd}
 </noscript>
 
 <!-- Favicon -->
-<link rel="icon" href="images/logo.png" type="image/png">
+<link rel="icon" href="/images/logo.webp" type="image/webp">
 
-<!-- CRITICAL CSS (keep blocking) -->
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/style.css">
+<!-- Critical CSS -->
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/style.css">
 
-<!-- NON-CRITICAL CSS (load after render) -->
-
-<link rel="preload" href="css/slick.css" as="style"
+<!-- Deferred CSS -->
+<link rel="preload" href="/css/slick.css" as="style"
       onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="css/slick.css"></noscript>
+<noscript><link rel="stylesheet" href="/css/slick.css"></noscript>
 
-<link rel="preload" href="css/slick-theme.css" as="style"
+<link rel="preload" href="/css/slick-theme.css" as="style"
       onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="css/slick-theme.css"></noscript>
+<noscript><link rel="stylesheet" href="/css/slick-theme.css"></noscript>
 
-<link rel="preload" href="css/nouislider.min.css" as="style"
+<link rel="preload" href="/css/nouislider.min.css" as="style"
       onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="css/nouislider.min.css"></noscript>
+<noscript><link rel="stylesheet" href="/css/nouislider.min.css"></noscript>
 
-<link rel="preload" href="css/font-awesome.min.css" as="style"
+<link rel="preload" href="/css/font-awesome.min.css" as="style"
       onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="css/font-awesome.min.css"></noscript>
+<noscript><link rel="stylesheet" href="/css/font-awesome.min.css"></noscript>
 
 </head>
 <body>
@@ -889,6 +888,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
