@@ -311,90 +311,70 @@
        
 		
 <script>
-let currentPage = 1;
-const limit = 15;
-let loading = false;
+(() => {
 
-async function loadPosts() {
-  if (loading) return;
-  loading = true;
+  /* ==============================
+     CONFIG
+  ============================== */
+  const POSTS_PER_PAGE = 15;
+  const MAX_SIDEBAR_ADS = 6; // safety cap (change if needed)
 
-  const container = document.getElementById('posts');
+  let currentPage = 1;
+  let isLoading = false;
+  let sidebarAdCount = 0;
 
-  if (currentPage === 1) {
-    container.innerHTML = '';
-  }
+  const postsContainer = document.getElementById('posts');
+  const loadMoreBtn = document.getElementById('load-more');
+  const sidebarContainer = document.getElementById('sidebar-ads');
 
-  try {
-    const res = await fetch(`/api/posts?page=${currentPage}&limit=${limit}`);
-    const posts = await res.json();
 
-    if (posts.length === 0) {
-      document.getElementById('load-more').style.display = 'none';
-      loading = false;
-      return;
+  /* ==============================
+     ADS INITIALISER (SAFE)
+  ============================== */
+  function initAd() {
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.warn("AdSense not ready yet");
     }
-
-    posts.forEach((post, index) => {
-
-      // Add post
-      container.insertAdjacentHTML('beforeend', `
-        <a href="/post/${post.slug}" class="article-card">
-          <div class="article-image">
-            ${post.featured_image
-              ? `<img src="${post.featured_image}" alt="${post.title}" loading="lazy">`
-              : '<div class="no-image">No Image</div>'}
-          </div>
-          <div class="article-text">
-            <h2>${post.title}</h2>
-          </div>
-        </a>
-      `);
-
-      // Insert grid ad every 3 posts
-      if ((index + 1) % 3 === 0) {
-
-        const adCard = document.createElement('div');
-        adCard.className = 'article-card ad-card';
-
-        adCard.innerHTML = `
-          <ins class="adsbygoogle"
-            style="display:block"
-            data-ad-client="ca-pub-7960582198518252"
-            data-ad-slot="9489176196"
-            data-ad-format="auto"
-            data-full-width-responsive="true"></ins>
-        `;
-
-        container.appendChild(adCard);
-
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      }
-
-    });
-
-    currentPage++;
-
-  } catch (err) {
-    console.error(err);
   }
 
-  loading = false;
-}
+
+  /* ==============================
+     CREATE GRID AD
+  ============================== */
+  function createGridAd() {
+
+    const adCard = document.createElement('div');
+    adCard.className = 'article-card ad-card';
+
+    adCard.innerHTML = `
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-7960582198518252"
+        data-ad-slot="9489176196"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    `;
+
+    postsContainer.appendChild(adCard);
+    initAd();
+  }
 
 
-// Sidebar ads (separate function)
-function loadSidebarAds() {
-  if (window.innerWidth < 1024) return;
+  /* ==============================
+     CREATE SIDEBAR AD
+  ============================== */
+  function createSidebarAd() {
 
-  const sidebar = document.getElementById('sidebar-ads');
-  if (!sidebar) return;
+    if (!sidebarContainer) return;
+    if (window.innerWidth < 1024) return;
+    if (sidebarAdCount >= MAX_SIDEBAR_ADS) return;
 
-  for (let i = 0; i < 3; i++) {
-    const adWrapper = document.createElement('div');
-    adWrapper.style.marginBottom = '30px';
+    const wrapper = document.createElement('div');
+    wrapper.style.marginBottom = '30px';
 
-    adWrapper.innerHTML = `
+    wrapper.innerHTML = `
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-7960582198518252"
@@ -403,21 +383,105 @@ function loadSidebarAds() {
         data-full-width-responsive="true"></ins>
     `;
 
-    sidebar.appendChild(adWrapper);
-
-    (adsbygoogle = window.adsbygoogle || []).push({});
+    sidebarContainer.appendChild(wrapper);
+    sidebarAdCount++;
+    initAd();
   }
-}
 
 
-document.addEventListener('DOMContentLoaded', function() {
-  loadPosts();
-  loadSidebarAds();
+  /* ==============================
+     LOAD POSTS
+  ============================== */
+  async function loadPosts() {
 
-  document
-    .getElementById('load-more')
-    .addEventListener('click', loadPosts);
-});
+    if (isLoading) return;
+    isLoading = true;
+
+    if (currentPage === 1) {
+      postsContainer.innerHTML = '';
+    }
+
+    try {
+
+      const response = await fetch(
+        `/api/posts?page=${currentPage}&limit=${POSTS_PER_PAGE}`
+      );
+
+      if (!response.ok) throw new Error("Failed to fetch posts");
+
+      const posts = await response.json();
+
+      if (!posts || posts.length === 0) {
+        loadMoreBtn.style.display = 'none';
+        isLoading = false;
+        return;
+      }
+
+      posts.forEach((post, index) => {
+
+        const articleHTML = `
+          <a href="/post/${post.slug}" class="article-card">
+            <div class="article-image">
+              ${
+                post.featured_image
+                ? `<img src="${post.featured_image}" alt="${post.title}" loading="lazy">`
+                : `<div class="no-image">No Image</div>`
+              }
+            </div>
+            <div class="article-text">
+              <h2>${post.title}</h2>
+            </div>
+          </a>
+        `;
+
+        postsContainer.insertAdjacentHTML('beforeend', articleHTML);
+
+        // Add grid ad every 3 posts
+        if ((index + 1) % 3 === 0) {
+          createGridAd();
+        }
+
+      });
+
+      currentPage++;
+
+      // Add one sidebar ad each time more posts load
+      createSidebarAd();
+
+    } catch (error) {
+      console.error("Post loading error:", error);
+    }
+
+    isLoading = false;
+  }
+
+
+  /* ==============================
+     INITIAL LOAD
+  ============================== */
+  function init() {
+
+    // Initial posts
+    loadPosts();
+
+    // Load 3 sidebar ads initially
+    for (let i = 0; i < 3; i++) {
+      createSidebarAd();
+    }
+
+    // Load More button
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', loadPosts);
+    }
+  }
+
+
+  /* ==============================
+     DOM READY
+  ============================== */
+  document.addEventListener('DOMContentLoaded', init);
+
+})();
 </script>
 
 
@@ -431,6 +495,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
  
+
 
 
 
