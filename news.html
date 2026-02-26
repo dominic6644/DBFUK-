@@ -14,26 +14,43 @@
 		
 		<title>News</title>
 
-		<link rel="icon" href="images/logo.png" type="image/png">
+		<!-- Preconnect for Google Fonts (improves speed) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-		<!-- Google font -->
-		<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<!-- Load Google Font non-blocking -->
+<link rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+</noscript>
 
-		<!-- Bootstrap -->
-		<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+<!-- Favicon -->
+<link rel="icon" href="images/logo.png" type="image/png">
 
-		<!-- Slick -->
-		<link type="text/css" rel="stylesheet" href="css/slick.css"/>
-		<link type="text/css" rel="stylesheet" href="css/slick-theme.css"/>
+<!-- CRITICAL CSS (keep blocking) -->
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
 
-		<!-- nouislider -->
-		<link type="text/css" rel="stylesheet" href="css/nouislider.min.css"/>
+<!-- NON-CRITICAL CSS (load after render) -->
 
-		<!-- Font Awesome Icon -->
-		<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="preload" href="css/slick.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/slick.css"></noscript>
 
-		<!-- Custom stlylesheet -->
-		<link type="text/css" rel="stylesheet" href="css/style.css"/>
+<link rel="preload" href="css/slick-theme.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/slick-theme.css"></noscript>
+
+<link rel="preload" href="css/nouislider.min.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/nouislider.min.css"></noscript>
+
+<link rel="preload" href="css/font-awesome.min.css" as="style"
+      onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="css/font-awesome.min.css"></noscript>
 
 		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,8 +67,23 @@
 			<div id="top-header">
 				<div class="container">
 					<ul class="header-links pull-right">
-						<li><a href="#"><i class="fa fa-instagram fa-2x"></i></a></li>
-						<li><a href="#"><i class="fa fa-facebook fa-2x"></i> </a></li>
+					 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 						
 					</ul>
 					<ul class="header-links pull-right">
@@ -71,9 +103,14 @@
 						<!-- LOGO -->
 						<div class="col-md-3">
 							<div class="header-logo">
-								<a href="#" class="logo">
-									<img src="./images/logo.png" alt="" height="150px" width="125px">
-								</a>
+									<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 							</div>
 							
 						</div>
@@ -101,12 +138,12 @@
 								<!-- /Cart -->
 
 								<!-- Menu Toogle -->
-								   <div class="menu-toggle ">
-      <a href="javascript:void(0);" id="nav-toggle-btn">
-        <i class="fa fa-bars" id="menu-icon"></i>
-        <span>Menu</span>
-      </a>
-    </div>
+								   <div class="menu-toggle">
+  <button id="nav-toggle-btn" aria-label="Toggle navigation menu">
+    <i class="fa fa-bars" id="menu-icon"></i>
+    <span>Menu</span>
+  </button>
+</div>
 								<!-- /Menu Toogle -->
 							</div>
 						</div>
@@ -220,7 +257,14 @@
 						<div class="col-md-3 col-xs-6">
 							<div class="footer">
 								<h3 class="footer-title"></h3>
-								<img src="./images/logo.png" alt="" height="150px" width="125px">
+							<a href="https://dirtbikefinderuk.co.uk/index.html"
+                           class="logo"
+                           aria-label="Go to homepage">
+                            <img src="./images/logo.png"
+                                 alt="Dirt Bike Finder UK logo"
+                                 height="150"
+                                 width="125">
+                        </a>
 								<ul class="footer-links">
 									
 									
@@ -260,8 +304,23 @@
 							<div class="footer">
 								<h3 class="footer-title">Socials</h3>
 								<ul class="footer-links">
-									<li><a href="#"><i class="fa fa-instagram fa-3x" ></i></a></li>
-									<li><a href="#"><i class="fa fa-facebook fa-3x"></i></a></li>
+									 <li>
+                    <a href="https://www.instagram.com/dirtbikefinder_uk/"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Instagram page">
+                        <i class="fa fa-instagram fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener"
+                       aria-label="Visit our Facebook page">
+                        <i class="fa fa-facebook fa-2x" aria-hidden="true"></i>
+                    </a>
+                </li>
 								</ul>
 							</div>
 						</div>
@@ -311,6 +370,14 @@
        
 		
 <script>
+
+	document.getElementById('nav-toggle-btn').addEventListener('click', () => {
+    const navbarLinks = document.getElementById('navbar-links');
+    if (navbarLinks) {
+        navbarLinks.classList.toggle('active');
+    }
+});
+	
 (() => {
 
   /* ==============================
@@ -495,6 +562,7 @@
 
 
  
+
 
 
 
