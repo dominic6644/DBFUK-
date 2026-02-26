@@ -187,143 +187,18 @@
     <div class="news-title">
       <h1>Latest News Posts</h1>
       <div id="posts">Loading...</div>
+		<div style="text-align:center; margin:40px 0;">
+  <button id="load-more" class="read-more">Load More</button>
+</div>
     </div>
   </div>
 
   <!-- Right: Ads column -->
-  <div class="ads-container">
+ <div class="ads-container" id="sidebar-ads"></div>
 
 <!---news end -->
 
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- new-1 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="8717706920"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-2 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="9249842350"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-3 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="9815166170"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-4 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="5875921169"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-5 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="9511913840"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-6 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="4244927685"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-7 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="1110679642"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-8 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="6575577557"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-9 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="5310597344"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-
-	  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252"
-     crossorigin="anonymous"></script>
-<!-- news-10 -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-7960582198518252"
-     data-ad-slot="1114495175"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
 	  
   </div>
 </div>
@@ -434,65 +309,109 @@
         <script src="js/filter.js"></script>
 
        
-		<script>
-async function loadPosts() {
-  const container = document.getElementById('posts');
-  try {
-    const res = await fetch('https://dbfuk.onrender.com/api/posts'); 
-    if (!res.ok) throw new Error('Failed to fetch posts');
+		
+<script>
+let currentPage = 1;
+const limit = 15;
+let loading = false;
 
-    const posts = await res.json();
+async function loadPosts() {
+  if (loading) return;
+  loading = true;
+
+  const container = document.getElementById('posts');
+
+  // Remove "Loading..." on first load
+  if (currentPage === 1) {
     container.innerHTML = '';
+  }
+
+  try {
+    const res = await fetch(`/api/posts?page=${currentPage}&limit=${limit}`);
+    const posts = await res.json();
 
     if (posts.length === 0) {
-      container.innerHTML = '<p>No posts yet.</p>';
+      document.getElementById('load-more').style.display = 'none';
       return;
     }
 
-    let count = 0;
+    posts.forEach((post, index) => {
 
-    posts.forEach(post => {
-      count++;
-
-      // Insert post card
       container.insertAdjacentHTML('beforeend', `
         <a href="/post/${post.slug}" class="article-card">
           <div class="article-image">
             ${post.featured_image
-              ? `<img src="${post.featured_image}" alt="${post.title}">`
-              : '<div class="no-image">No Image Available</div>'}
+              ? `<img src="${post.featured_image}" alt="${post.title}" loading="lazy">`
+              : '<div class="no-image">No Image</div>'}
           </div>
           <div class="article-text">
             <h2>${post.title}</h2>
-            <p class="date">${new Date(post.published_date).toLocaleDateString()}</p>
           </div>
         </a>
       `);
 
-      // Insert ad every 3 posts (but not on mobile)
-      if (count % 3 === 0 && window.innerWidth > 1024) {
+      // Insert ad every 3 posts
+      if ((index + 1) % 3 === 0) {
         container.insertAdjacentHTML('beforeend', `
           <div class="article-card ad-card">
             <ins class="adsbygoogle"
-                style="display:block; width:100%; height:100%;"
-                data-ad-client="ca-pub-7960582198518252"
-                data-ad-slot="9489176196"
-                data-ad-format="auto"
-                data-full-width-responsive="true"></ins>
+              style="display:block"
+              data-ad-client="ca-pub-7960582198518252"
+              data-ad-slot="9489176196"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
           </div>
         `);
-        (adsbygoogle = window.adsbygoogle || []).push({});
       }
 
     });
 
+    (adsbygoogle = window.adsbygoogle || []).push({});
+
+    currentPage++;
+
   } catch (err) {
-    console.error('Failed to load posts:', err);
-    container.innerHTML = '<p>Error loading posts.</p>';
+    console.error(err);
   }
+
+  loading = false;
 }
 
-document.addEventListener('DOMContentLoaded', loadPosts);
+function loadSidebarAds() {
+  if (window.innerWidth < 1024) return;
+
+  const sidebar = document.getElementById('sidebar-ads');
+  if (!sidebar) return;
+
+  for (let i = 0; i < 3; i++) {
+    sidebar.insertAdjacentHTML('beforeend', `
+      <div style="margin-bottom:30px;">
+        <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7960582198518252"
+          data-ad-slot="1381761821"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+      </div>
+    `);
+  }
+
+  (adsbygoogle = window.adsbygoogle || []).push({});
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  loadPosts();
+  loadSidebarAds();
+
+  document.getElementById('load-more')
+    .addEventListener('click', loadPosts);
+});
+
+
+ 
+
+			
+
 </script>
 
 
@@ -506,6 +425,7 @@ document.addEventListener('DOMContentLoaded', loadPosts);
 
 
  
+
 
 
 
