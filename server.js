@@ -202,13 +202,23 @@ app.post('/submit-form', (req, res) => {
 // --- BLOG ROUTES ---
 // Get all posts
 app.get('/api/posts', async (req, res) => {
-    try {
-        const result = await pool.query('SELECT * FROM blog_posts ORDER BY published_date DESC');
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error fetching blog posts' });
-    }
+  const limit = Number(req.query.limit) || 15;
+  const page = Number(req.query.page) || 1;
+  const offset = (page - 1) * limit;
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM blog_posts
+       ORDER BY published_date DESC
+       LIMIT $1 OFFSET $2`,
+      [limit, offset]
+    );
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error fetching posts' });
+  }
 });
 
 // Get single post by slug (API)
@@ -888,6 +898,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
