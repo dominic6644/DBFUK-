@@ -321,7 +321,6 @@ async function loadPosts() {
 
   const container = document.getElementById('posts');
 
-  // Remove "Loading..." on first load
   if (currentPage === 1) {
     container.innerHTML = '';
   }
@@ -332,11 +331,13 @@ async function loadPosts() {
 
     if (posts.length === 0) {
       document.getElementById('load-more').style.display = 'none';
+      loading = false;
       return;
     }
 
     posts.forEach((post, index) => {
 
+      // Add post
       container.insertAdjacentHTML('beforeend', `
         <a href="/post/${post.slug}" class="article-card">
           <div class="article-image">
@@ -350,23 +351,27 @@ async function loadPosts() {
         </a>
       `);
 
-      // Insert ad every 3 posts
+      // Insert grid ad every 3 posts
       if ((index + 1) % 3 === 0) {
-        container.insertAdjacentHTML('beforeend', `
-          <div class="article-card ad-card">
-            <ins class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-pub-7960582198518252"
-              data-ad-slot="9489176196"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-          </div>
-        `);
+
+        const adCard = document.createElement('div');
+        adCard.className = 'article-card ad-card';
+
+        adCard.innerHTML = `
+          <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-7960582198518252"
+            data-ad-slot="9489176196"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+        `;
+
+        container.appendChild(adCard);
+
+        (adsbygoogle = window.adsbygoogle || []).push({});
       }
 
     });
-
-    (adsbygoogle = window.adsbygoogle || []).push({});
 
     currentPage++;
 
@@ -377,6 +382,8 @@ async function loadPosts() {
   loading = false;
 }
 
+
+// Sidebar ads (separate function)
 function loadSidebarAds() {
   if (window.innerWidth < 1024) return;
 
@@ -384,34 +391,33 @@ function loadSidebarAds() {
   if (!sidebar) return;
 
   for (let i = 0; i < 3; i++) {
-    sidebar.insertAdjacentHTML('beforeend', `
-      <div style="margin-bottom:30px;">
-        <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-pub-7960582198518252"
-          data-ad-slot="1381761821"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-      </div>
-    `);
-  }
+    const adWrapper = document.createElement('div');
+    adWrapper.style.marginBottom = '30px';
 
-  (adsbygoogle = window.adsbygoogle || []).push({});
+    adWrapper.innerHTML = `
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-7960582198518252"
+        data-ad-slot="1381761821"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+    `;
+
+    sidebar.appendChild(adWrapper);
+
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  }
 }
+
 
 document.addEventListener('DOMContentLoaded', function() {
   loadPosts();
   loadSidebarAds();
 
-  document.getElementById('load-more')
+  document
+    .getElementById('load-more')
     .addEventListener('click', loadPosts);
 });
-
-
- 
-
-			
-
 </script>
 
 
@@ -425,6 +431,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
  
+
 
 
 
