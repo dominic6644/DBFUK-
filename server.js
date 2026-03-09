@@ -292,6 +292,81 @@ app.get('/rss.xml', async (req, res) => {
   }
 });
 
+app.get('/sitemap-posts.xml', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT slug, published_date
+      FROM blog_posts
+      ORDER BY published_date DESC
+      LIMIT 5000
+    `);
+
+    const baseUrl = 'https://dirtbikefinderuk.co.uk';
+
+    const urls = result.rows.map(post => `
+      <url>
+        <loc>${baseUrl}/post/${post.slug}</loc>
+        <lastmod>${new Date(post.published_date).toISOString()}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+      </url>
+    `).join('');
+
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls}
+</urlset>`;
+
+    res.header('Content-Type', 'application/xml');
+    res.send(sitemap);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error generating sitemap');
+  }
+});
+
+app.get('/news-sitemap.xml', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT slug, title, published_date
+      FROM blog_posts
+      WHERE published_date >= NOW() - INTERVAL '2 days'
+      ORDER BY published_date DESC
+      LIMIT 100
+    `);
+
+    const baseUrl = 'https://dirtbikefinderuk.co.uk';
+
+    const urls = result.rows.map(post => `
+      <url>
+        <loc>${baseUrl}/post/${post.slug}</loc>
+        <news:news>
+          <news:publication>
+            <news:name>Dirt Bike Finder UK</news:name>
+            <news:language>en</news:language>
+          </news:publication>
+          <news:publication_date>${new Date(post.published_date).toISOString()}</news:publication_date>
+          <news:title><![CDATA[${post.title}]]></news:title>
+        </news:news>
+      </url>
+    `).join('');
+
+    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+${urls}
+</urlset>`;
+
+    res.set('Content-Type', 'application/xml');
+    res.send(sitemap);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error generating news sitemap');
+  }
+});
+
 
 // Add a new blog post
 
@@ -384,6 +459,16 @@ app.get('/post/:slug', async (req, res) => {
 
     const post = result.rows[0];
 
+	  // RELATED POSTS
+const related = await pool.query(
+  `SELECT title, slug
+   FROM blog_posts
+   WHERE slug != $1
+   ORDER BY published_date DESC
+   LIMIT 5`,
+  [slug]
+);
+
     const description =
       post.meta_description ||
       post.content.replace(/<[^>]+>/g, '').slice(0, 160);
@@ -397,35 +482,38 @@ app.get('/post/:slug', async (req, res) => {
     const publishedISO = new Date(post.published_date).toISOString();
 
     // ✅ JSON-LD Structured Data
-    const jsonLd = `
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "NewsArticle",
-      "headline": ${JSON.stringify(post.title)},
-      "image": ["${image}"],
-      "datePublished": "${publishedISO}",
-      "dateModified": "${publishedISO}",
-      "author": {
-        "@type": "Person",
-        "name": ${JSON.stringify(post.author)}
-      },
-      "publisher": {
-        "@type": "Organization",
-        "name": "Dirt Bike Finder UK",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
-        }
-      },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://dirtbikefinderuk.co.uk/post/${post.slug}"
-      }
+   
+  const jsonLd = `
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": ${JSON.stringify(post.title)},
+  "image": ["${image}"],
+  "datePublished": "${publishedISO}",
+  "dateModified": "${publishedISO}",
+  "author": {
+    "@type": "Person",
+    "name": ${JSON.stringify(post.author)}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Dirt Bike Finder UK",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
     }
-    </script>
-    `;
-
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://dirtbikefinderuk.co.uk/post/${post.slug}"
+  },
+  "articleSection": ${JSON.stringify(post.article_type || "Motocross")},
+  "keywords": ["motocross","supercross","enduro","trials","mx results","x-trials","hard enduro"],
+  "isAccessibleForFree": true
+}
+</script>
+`;
 		
 res.send(`
 <!DOCTYPE html>
@@ -681,6 +769,19 @@ ${youtubeEmbed ? `
 </div>
 ` : ''}
 
+<div class="related-posts">
+<h3>Related Articles</h3>
+
+<ul>
+${related.rows.map(p => `
+<li>
+<a href="/post/${p.slug}">${p.title}</a>
+</li>
+`).join('')}
+</ul>
+
+</div>
+
 </div>
 
   <!-- Bottom ad below post -->
@@ -836,12 +937,12 @@ ${youtubeEmbed ? `
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->
-		<script src="/js/jquery.min.js"></script>
-		<script src="/js/bootstrap.min.js"></script>
-		<script src="/js/slick.min.js"></script>
-		<script src="/js/nouislider.min.js"></script>
-		<script src="/js/jquery.zoom.min.js"></script>
-		<script src="/js/main.js"></script>
+<script src="/js/jquery.min.js" defer></script>
+<script src="/js/bootstrap.min.js" defer></script>
+<script src="/js/slick.min.js" defer></script>
+<script src="/js/nouislider.min.js" defer></script>
+<script src="/js/jquery.zoom.min.js" defer></script>
+<script src="/js/main.js" defer></script>
         
 </body>
 </html>
@@ -898,6 +999,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
