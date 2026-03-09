@@ -369,7 +369,6 @@ ${urls}
 
 
 // Add a new blog post
-
 app.post('/api/posts', async (req, res) => {
   const {
     title,
@@ -388,6 +387,7 @@ app.post('/api/posts', async (req, res) => {
   }
 
   try {
+    // 1️⃣ Insert the blog post
     await pool.query(
       `INSERT INTO blog_posts
       (title, slug, content, author, featured_image, youtube_url, published_date, meta_description, article_type)
@@ -405,9 +405,28 @@ app.post('/api/posts', async (req, res) => {
       ]
     );
 
-    
+    // 2️⃣ Prepare all URLs to ping
+    const baseUrl = 'https://dirtbikefinderuk.co.uk';
+    const urlsToPing = [
+      `${baseUrl}/sitemap-posts.xml`,
+      `${baseUrl}/news-sitemap.xml`,
+      `${baseUrl}/rss.xml`
+    ];
 
-    res.status(201).json({ message: 'Blog post added successfully' });
+    // 3️⃣ Ping Google & Bing for each URL
+    const pingPromises = urlsToPing.flatMap(url => [
+      fetch(`https://www.google.com/ping?sitemap=${url}`).then(() => console.log(`✅ Google pinged: ${url}`)).catch(err => console.error(`❌ Google ping error: ${url}`, err)),
+      fetch(`https://www.bing.com/webmaster/ping.aspx?siteMap=${url}`).then(() => console.log(`✅ Bing pinged: ${url}`)).catch(err => console.error(`❌ Bing ping error: ${url}`, err))
+    ]);
+
+    // Run all pings asynchronously without blocking response
+    Promise.all(pingPromises).then(() => {
+      console.log('All sitemap & RSS pings completed.');
+    });
+
+    // 4️⃣ Return success response immediately
+    res.status(201).json({ message: 'Blog post added successfully and search engines notified.' });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Error adding blog post' });
@@ -999,6 +1018,7 @@ function isAuthenticated(req, res, next) {
 app.get('/api/protected', isAuthenticated, (req, res) => {
     res.json({ message: 'This is a protected route' });
 });
+
 
 
 
