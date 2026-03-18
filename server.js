@@ -811,83 +811,72 @@ ${breadcrumbLd}
 </div>
 
 <!-- /HOT DEAL SECTION -->
+<div class="post-page" style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
 
-<div class="post-page">
   <!-- Left: Main post -->
-  <div class="post-container">
+  <div class="post-container" style="flex:1; min-width:300px;">
 
-<div id="post">
+    <div id="post">
+      <h1>${post.title}</h1>
+      <p>${new Date(post.published_date).toLocaleString()}</p>
 
-${post.featured_image ? `
-<img 
-  src="${post.featured_image}" 
-  alt="${post.title}"
-  width="1200"
-  height="675"
-  loading="eager"
-  decoding="async"
-  style="width:100%;height:auto;margin-bottom:15px;border-radius:8px;"
->
-` : ''}
+      ${post.featured_image ? `
+      <img 
+        src="${post.featured_image}" 
+        alt="${post.title}"
+        width="800"
+        height="450"
+        loading="lazy"
+        decoding="async"
+        style="max-width:100%;height:auto;margin-bottom:15px;"
+      >
+      ` : ''}
 
-<h1>${post.title}</h1>
+      <div class="content">${post.content}</div>
 
-<p style="color:#777;font-size:14px;">
-  ${new Date(post.published_date).toLocaleDateString('en-GB')} • ${readTime} min read
-  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleDateString('en-GB')}` : ''}
-</p>
+      ${youtubeEmbed ? `
+      <div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;">
+        <iframe
+          src="${youtubeEmbed}"
+          frameborder="0"
+          style="position:absolute; top:0; left:0; width:100%; height:100%;"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen>
+        </iframe>
+      </div>
+      ` : ''}
 
-<div class="content">${post.content}</div>
+      <div class="related-posts">
+        <h3>Related Articles</h3>
+        <ul>
+          ${related.rows.map(p => `
+            <li>
+              <a href="/post/${p.slug}">${p.title}</a>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
 
-${youtubeEmbed ? `
-<div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;">
-  <iframe
-    src="${youtubeEmbed}"
-    frameborder="0"
-    style="position:absolute; top:0; left:0; width:100%; height:100%;"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowfullscreen>
-  </iframe>
-</div>
-` : ''}
+      <!-- Bottom ad below post -->
+      <div class="bottom-ad" style="margin-top:20px;">
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
+        <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-pub-7960582198518252"
+          data-ad-slot="3624781783"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
 
-<div class="related-posts">
-<h3>Related Articles</h3>
-
-<ul>
-${related.rows.map(p => `
-<li>
-<a href="/news/${p.slug}">${p.title}</a>
-</li>
-`).join('')}
-</ul>
-
-</div>
-
-</div>
-</div>
-
-</div>
-
-  <!-- Bottom ad below post -->
-    <div class="bottom-ad">
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
-      <!-- post-3 -->
-      <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-7960582198518252"
-        data-ad-slot="3624781783"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
   </div>
 
   <!-- Right: Sidebar ads -->
-  <aside class="sidebar-ads">
-    <div class="ad">
+  <aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
+
+    <div class="ad" style="margin-bottom:20px;">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
-      <!-- post-1 -->
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-7960582198518252"
@@ -897,9 +886,8 @@ ${related.rows.map(p => `
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
 
-    <div class="ad">
+    <div class="ad" style="margin-bottom:20px;">
       <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
-      <!-- post-2 -->
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-7960582198518252"
@@ -908,8 +896,11 @@ ${related.rows.map(p => `
         data-full-width-responsive="true"></ins>
       <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
     </div>
+
   </aside>
+
 </div>
+
 <!-- FOOTER -->
 		<footer id="footer">
 			<!-- top footer -->
