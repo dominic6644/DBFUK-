@@ -818,7 +818,10 @@ ${breadcrumbLd}
 
     <div id="post">
       <h1>${post.title}</h1>
-      <p>${new Date(post.published_date).toLocaleString()}</p>
+     <p style="color:#777;font-size:14px;">
+  ${new Date(post.published_date).toLocaleDateString('en-GB')} • ${readTime} min read
+  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleDateString('en-GB')}` : ''}
+</p>
 
       ${post.featured_image ? `
       <img 
