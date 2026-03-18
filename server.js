@@ -500,6 +500,9 @@ const related = await pool.query(
 
     const publishedISO = new Date(post.published_date).toISOString();
 
+	  const wordCount = post.content.replace(/<[^>]+>/g, '').split(' ').length;
+const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
     // ✅ JSON-LD Structured Data
    
   const jsonLd = `
@@ -507,29 +510,79 @@ const related = await pool.query(
 {
   "@context": "https://schema.org",
   "@type": "NewsArticle",
+
   "headline": ${JSON.stringify(post.title)},
+  "description": ${JSON.stringify(description)},
   "image": ["${image}"],
+
   "datePublished": "${publishedISO}",
   "dateModified": "${publishedISO}",
+
   "author": {
     "@type": "Person",
-    "name": ${JSON.stringify(post.author)}
+    "name": ${JSON.stringify(post.author)},
+    "url": "https://dirtbikefinderuk.co.uk/author/${post.author.toLowerCase().replace(/\s+/g, '-')}"
   },
+
   "publisher": {
     "@type": "Organization",
     "name": "Dirt Bike Finder UK",
     "logo": {
       "@type": "ImageObject",
       "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
-    }
+    },
+    "sameAs": [
+      "https://www.instagram.com/dirtbikefinder_uk/"
+    ]
   },
+
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "https://dirtbikefinderuk.co.uk/post/${post.slug}"
   },
+
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Dirt Bike Finder UK",
+    "url": "https://dirtbikefinderuk.co.uk"
+  },
+
+  "inLanguage": "en-GB",
   "articleSection": ${JSON.stringify(post.article_type || "Motocross")},
-  "keywords": ["motocross","supercross","enduro","trials","mx results","x-trials","hard enduro"],
+  "keywords": ["motocross","supercross","enduro","trials"],
+
+  "wordCount": ${post.content.replace(/<[^>]+>/g, '').split(' ').length},
+
+  "articleBody": ${JSON.stringify(
+    post.content.replace(/<[^>]+>/g, '').slice(0, 5000)
+  )},
+
   "isAccessibleForFree": true
+}
+</script>
+`;
+
+	  const breadcrumbLd = `
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "BreadcrumbList",
+ "itemListElement": [{
+   "@type": "ListItem",
+   "position": 1,
+   "name": "Home",
+   "item": "https://dirtbikefinderuk.co.uk"
+ },{
+   "@type": "ListItem",
+   "position": 2,
+   "name": "News",
+   "item": "https://dirtbikefinderuk.co.uk/news"
+ },{
+   "@type": "ListItem",
+   "position": 3,
+   "name": ${JSON.stringify(post.title)},
+   "item": "https://dirtbikefinderuk.co.uk/news/${post.slug}"
+ }]
 }
 </script>
 `;
@@ -550,6 +603,7 @@ res.send(`
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="${publishedISO}" />
 <meta name="robots" content="index, follow" />
+<meta name="robots" content="max-image-preview:large">
 
 ${youtubeEmbed ? `
 <meta property="og:video" content="${youtubeEmbed}" />
@@ -560,6 +614,7 @@ ${youtubeEmbed ? `
 ` : ''}
 
 ${jsonLd}
+${breadcrumbLd}
 	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
 
 	<!-- Preconnect -->
@@ -762,20 +817,28 @@ ${jsonLd}
   <div class="post-container">
 
 <div id="post">
-<h1>${post.title}</h1>
-<p>${new Date(post.published_date).toLocaleString()}</p>
+
 ${post.featured_image ? `
 <img 
   src="${post.featured_image}" 
   alt="${post.title}"
-  width="800"
-  height="450"
-  loading="lazy"
+  width="1200"
+  height="675"
+  loading="eager"
   decoding="async"
-  style="max-width:100%;height:auto;"
+  style="width:100%;height:auto;margin-bottom:15px;border-radius:8px;"
 >
 ` : ''}
+
+<h1>${post.title}</h1>
+
+<p style="color:#777;font-size:14px;">
+  ${new Date(post.published_date).toLocaleDateString('en-GB')} • ${readTime} min read
+  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleDateString('en-GB')}` : ''}
+</p>
+
 <div class="content">${post.content}</div>
+
 ${youtubeEmbed ? `
 <div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;">
   <iframe
@@ -794,11 +857,14 @@ ${youtubeEmbed ? `
 <ul>
 ${related.rows.map(p => `
 <li>
-<a href="/post/${p.slug}">${p.title}</a>
+<a href="/news/${p.slug}">${p.title}</a>
 </li>
 `).join('')}
 </ul>
 
+</div>
+
+</div>
 </div>
 
 </div>
