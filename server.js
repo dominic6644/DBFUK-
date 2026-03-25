@@ -331,7 +331,8 @@ app.get('/news-sitemap.xml', async (req, res) => {
     const result = await pool.query(`
       SELECT slug, title, published_date
       FROM blog_posts
-      WHERE published_date >= NOW() - INTERVAL '2 days'
+      WHERE article_type = 'news'
+      AND published_date >= NOW() - INTERVAL '2 days'
       ORDER BY published_date DESC
       LIMIT 100
     `);
@@ -401,7 +402,7 @@ app.post('/api/posts', async (req, res) => {
         youtube_url || null,
         published_date,
         meta_description || null,
-        article_type || 'breaking'
+        article_type || 'article'
       ]
     );
 
@@ -509,14 +510,23 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "NewsArticle",
+  "@type": "${post.article_type === 'news' ? 'NewsArticle' : 'Article'}",
 
   "headline": ${JSON.stringify(post.title)},
   "description": ${JSON.stringify(description)},
-  "image": ["${image}"],
+  "image": [{
+  "@type": "ImageObject",
+  "url": "${image}",
+  "width": 800,
+  "height": 450
+}],
 
   "datePublished": "${publishedISO}",
-  "dateModified": "${publishedISO}",
+  "dateModified": "${
+  post.updated_at
+    ? new Date(post.updated_at).toISOString()
+    : publishedISO
+}",
 
   "author": {
     "@type": "Person",
@@ -527,10 +537,12 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
   "publisher": {
     "@type": "Organization",
     "name": "Dirt Bike Finder UK",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
-    },
+   "logo": {
+  "@type": "ImageObject",
+  "url": "https://dirtbikefinderuk.co.uk/images/logo.png",
+  "width": 600,
+  "height": 60
+},
     "sameAs": [
       "https://www.instagram.com/dirtbikefinder_uk/"
     ]
@@ -548,7 +560,15 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
   },
 
   "inLanguage": "en-GB",
-  "articleSection": ${JSON.stringify(post.article_type || "Motocross")},
+ "articleSection": ${
+  JSON.stringify(
+    post.article_type === "mx" ? "Motocross" :
+    post.article_type === "enduro" ? "Enduro" :
+    post.article_type === "trials" ? "Trials" :
+    post.article_type === "news" ? "News" :
+    "Motorsport"
+  )
+},
   "keywords": ["motocross","supercross","enduro","trials"],
 
   "wordCount": ${post.content.replace(/<[^>]+>/g, '').split(' ').length},
@@ -581,7 +601,7 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
    "@type": "ListItem",
    "position": 3,
    "name": ${JSON.stringify(post.title)},
-   "item": "https://dirtbikefinderuk.co.uk/news/${post.slug}"
+   "item": "https://dirtbikefinderuk.co.uk/post/${post.slug}"
  }]
 }
 </script>
@@ -604,6 +624,18 @@ res.send(`
 <meta property="article:published_time" content="${publishedISO}" />
 <meta name="robots" content="index, follow" />
 <meta name="robots" content="max-image-preview:large">
+<meta name="news_keywords" content="motocross, enduro, trials, dirt bike, supercross">
+<meta property="article:author" content="${post.author}">
+<meta property="article:section" content="${
+  post.article_type === "mx" ? "Motocross" :
+  post.article_type === "enduro" ? "Enduro" :
+  post.article_type === "trials" ? "Trials" :
+  post.article_type === "news" ? "News" :
+  "Motorsport"
+}">
+<meta property="article:publisher" content="https://dirtbikefinderuk.co.uk">
+<meta property="og:site_name" content="Dirt Bike Finder UK">
+<meta name="author" content="${post.author}">
 
 ${youtubeEmbed ? `
 <meta property="og:video" content="${youtubeEmbed}" />
