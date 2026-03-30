@@ -1,19 +1,50 @@
 require('dotenv').config();
-
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const path = require('path');
-
-
+const fetch = require('node-fetch');
+const { GoogleAuth } = require('google-auth-library');
 
 const app = express();
-
 const port = process.env.PORT || 3000;
+
+// PostgreSQL
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+});
+
+// Google Indexing API
+const auth = new GoogleAuth({
+  keyFile: 'gothic-sequence-491819-b2-0ee4bd1129a0.json', // replace with env/secret in production
+  scopes: ['https://www.googleapis.com/auth/indexing']
+});
+
+async function notifyGoogle(url) {
+  try {
+    const client = await auth.getClient();
+    const accessToken = await client.getAccessToken();
+    const response = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken.token}`
+      },
+      body: JSON.stringify({ url, type: "URL_UPDATED" })
+    });
+    const data = await response.json();
+    console.log("✅ Google response:", data);
+  } catch (err) {
+    console.error("❌ Indexing API error:", err);
+  }
+}
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -406,8 +437,11 @@ app.post('/api/posts', async (req, res) => {
       ]
     );
 
+	 
+
     // 2️⃣ Prepare all URLs to ping
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
+const postUrl = `${baseUrl}/post/${slug}`;
     const urlsToPing = [
       `${baseUrl}/sitemap-posts.xml`,
       `${baseUrl}/news-sitemap.xml`,
@@ -459,6 +493,8 @@ function getYouTubeEmbedUrl(url) {
     return null;
 	
 }
+
+
 
     
 
