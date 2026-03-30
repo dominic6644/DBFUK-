@@ -6,7 +6,6 @@ const session = require('express-session');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const path = require('path');
-const fetch = require('node-fetch');
 const { GoogleAuth } = require('google-auth-library');
 
 
