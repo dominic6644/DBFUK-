@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const path = require('path');
 const { GoogleAuth } = require('google-auth-library');
+const bodyParser = require('body-parser');
 
 
 const app = express();
