@@ -9,6 +9,7 @@ const path = require('path');
 const fetch = require('node-fetch');
 const { GoogleAuth } = require('google-auth-library');
 
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -52,6 +53,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 
+
 // Other configurations and routes...
 
 app.use(express.static(path.join(__dirname)));
@@ -73,14 +75,7 @@ console.log('DB Name:', process.env.DB_NAME);
 console.log('DB Password:', process.env.DB_PASSWORD);
 console.log('DB Port:', process.env.DB_PORT);
 
-// PostgreSQL connection
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-});
+
 
 // Test the database connection
 pool.query('SELECT NOW()', (err, res) => {
