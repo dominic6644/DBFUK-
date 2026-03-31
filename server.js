@@ -647,15 +647,23 @@ res.send(`
 <title>${post.title} | Dirt Bike Finder UK</title>
 <link rel="canonical" href="https://dirtbikefinderuk.co.uk/post/${post.slug}" />
 
+<!-- Primary SEO -->
 <meta name="description" content="${description}">
-<meta property="og:title" content="${post.title}" />
-<meta property="og:description" content="${description}" />
-<meta property="og:image" content="${image}" />
-<meta property="og:type" content="article" />
-<meta property="article:published_time" content="${publishedISO}" />
-<meta name="robots" content="index, follow" />
-<meta name="robots" content="max-image-preview:large">
-<meta name="news_keywords" content="motocross, enduro, trials, dirt bike, supercross">
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<!-- Open Graph (Facebook / Google / Discover) -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="${post.title}">
+<meta property="og:description" content="${description}">
+<meta property="og:url" content="https://dirtbikefinderuk.co.uk/post/${post.slug}">
+<meta property="og:image" content="${image}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="Dirt Bike Finder UK">
+
+<!-- Article meta -->
+<meta property="article:published_time" content="${publishedISO}">
+<meta property="article:modified_time" content="${publishedISO}">
 <meta property="article:author" content="${post.author}">
 <meta property="article:section" content="${
   post.article_type === "mx" ? "Motocross" :
@@ -664,10 +672,25 @@ res.send(`
   post.article_type === "news" ? "News" :
   "Motorsport"
 }">
-<meta property="article:publisher" content="https://dirtbikefinderuk.co.uk">
-<meta property="og:site_name" content="Dirt Bike Finder UK">
+<meta property="article:tag" content="motocross">
+<meta property="article:tag" content="supercross">
+<meta property="article:tag" content="enduro">
+<meta property="article:tag" content="trials">
+
+<!-- Twitter (helps Discover previews too) -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${post.title}">
+<meta name="twitter:description" content="${description}">
+<meta name="twitter:image" content="${image}">
+
+<!-- Author -->
 <meta name="author" content="${post.author}">
 
+<!-- Adsense -->
+<meta name="google-adsense-account" content="ca-pub-7960582198518252">
+
+<!-- Optional but useful -->
+<meta name="theme-color" content="#000000">
 ${youtubeEmbed ? `
 <meta property="og:video" content="${youtubeEmbed}" />
 <meta property="og:video:secure_url" content="${youtubeEmbed}" />
