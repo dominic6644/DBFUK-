@@ -562,7 +562,7 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
   "author": {
     "@type": "Person",
     "name": ${JSON.stringify(post.author)},
-    "url": "https://dirtbikefinderuk.co.uk/author/${post.author.toLowerCase().replace(/\s+/g, '-')}"
+    "url": "https://dirtbikefinderuk.co.uk/author.html"
   },
 
   "publisher": {
