@@ -868,7 +868,17 @@ ${breadcrumbLd}
 		<!-- /NAVIGATION -->
 
         	<!-- HOT DEAL SECTION -->
-<div id="hot-deal" class="section" style="background-image: url('/images/banner-4.png');">
+<!-- ARTICLE HERO IMAGE (replaces banner) -->
+${post.featured_image ? `
+<div id="article-hero" style="
+  background-image: url('${post.featured_image}');
+  background-size: cover;
+  background-position: center;
+  height: 300px;
+  width: 100%;
+">
+</div>
+` : ''}
   <!-- container -->
   <div class="container">
     <!-- Banner Title -->
@@ -904,22 +914,18 @@ ${breadcrumbLd}
 
     <div id="post">
       <h1>${post.title}</h1>
-     <p style="color:#777;font-size:14px;">
-  ${new Date(post.published_date).toLocaleDateString('en-GB')} • ${readTime} min read
-  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleDateString('en-GB')}` : ''}
+    <p style="color:#777;font-size:14px;">
+  ${new Date(post.published_date).toLocaleString('en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  })} • ${readTime} min read
+  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleString('en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  })}` : ''}
 </p>
 
-      ${post.featured_image ? `
-      <img 
-        src="${post.featured_image}" 
-        alt="${post.title}"
-        width="800"
-        height="450"
-        loading="lazy"
-        decoding="async"
-        style="max-width:100%;height:auto;margin-bottom:15px;"
-      >
-      ` : ''}
+     
 
       <div class="content">${post.content}</div>
 
