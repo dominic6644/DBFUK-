@@ -576,6 +576,8 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
 },
     "sameAs": [
       "https://www.instagram.com/dirtbikefinder_uk/"
+	  "https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#"
+	  "https://www.youtube.com/@DirtbikefinderUK"
     ]
   },
 
@@ -874,7 +876,7 @@ ${post.featured_image ? `
   background-image: url('${post.featured_image}');
   background-size: cover;
   background-position: center;
-  height: 300px;
+  height: 500px;
   width: 100%;
 ">
 </div>
@@ -911,6 +913,26 @@ ${post.featured_image ? `
 
   <!-- Left: Main post -->
   <div class="post-container" style="flex:1; min-width:300px;">
+
+  <div class="post-social" style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
+  <span style="font-size:13px;color:#777;">Follow:</span>
+
+  <a href="https://www.instagram.com/dirtbikefinder_uk/" target="_blank">
+    <i class="fa fa-instagram"></i>
+  </a>
+
+  <a href="https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#" target="_blank">
+    <i class="fa fa-facebook"></i>
+  </a>
+
+  <a href="https://www.youtube.com/@DirtbikefinderUK" target="_blank">
+    <i class="fa fa-youtube"></i>
+  </a>
+
+  <a href="https://twitter.com/YOUR_HANDLE" target="_blank">
+    <i class="fa fa-twitter"></i>
+  </a>
+</div>
 
     <div id="post">
       <h1>${post.title}</h1>
