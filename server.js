@@ -575,8 +575,8 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
   "height": 60
 },
     "sameAs": [
-      "https://www.instagram.com/dirtbikefinder_uk/"
-	  "https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#"
+      "https://www.instagram.com/dirtbikefinder_uk/",
+	  "https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#",
 	  "https://www.youtube.com/@DirtbikefinderUK"
     ]
   },
