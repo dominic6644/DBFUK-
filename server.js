@@ -662,7 +662,7 @@ res.send(`
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Dirt Bike Finder UK">
-<meta property="article:modified_time" content="${updatedISO}">
+
 
 <!-- Article meta -->
 <meta property="article:published_time" content="${publishedISO}">
