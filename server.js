@@ -667,7 +667,6 @@ res.send(`
 <!-- Article meta -->
 <meta property="article:published_time" content="${publishedISO}">
 <meta property="article:modified_time" content="${publishedISO}">
-<meta property="article:modified_time" content="${updatedISO}">
 <meta property="article:author" content="${post.author}">
 <meta property="article:section" content="${
   post.article_type === "mx" ? "Motocross" :
