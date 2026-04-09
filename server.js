@@ -662,10 +662,12 @@ res.send(`
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Dirt Bike Finder UK">
+<meta property="article:modified_time" content="${updatedISO}">
 
 <!-- Article meta -->
 <meta property="article:published_time" content="${publishedISO}">
 <meta property="article:modified_time" content="${publishedISO}">
+<meta property="article:modified_time" content="${updatedISO}">
 <meta property="article:author" content="${post.author}">
 <meta property="article:section" content="${
   post.article_type === "mx" ? "Motocross" :
@@ -703,6 +705,16 @@ ${youtubeEmbed ? `
 
 ${jsonLd}
 ${breadcrumbLd}
+
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "WebSite",
+ "name": "Dirt Bike Finder UK",
+ "url": "https://dirtbikefinderuk.co.uk"
+}
+</script>
+
 	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
 
 	<!-- Preconnect -->
@@ -719,7 +731,10 @@ ${breadcrumbLd}
 </noscript>
 
 <!-- Favicon -->
-<link rel="icon" href="/images/logo.webp" type="image/webp">
+<link rel="icon" href="/images/logo.png" sizes="any">
+<link rel="icon" type="image/png" href="/images/logo.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/logo.png" sizes="16x16">
+<link rel="apple-touch-icon" href="/images/logo.png">
 
 <!-- Critical CSS -->
 <link rel="stylesheet" href="/css/bootstrap.min.css">
