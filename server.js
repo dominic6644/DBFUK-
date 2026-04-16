@@ -577,7 +577,8 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
     "sameAs": [
       "https://www.instagram.com/dirtbikefinder_uk/",
 	  "https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#",
-	  "https://www.youtube.com/@DirtbikefinderUK"
+	  "https://www.youtube.com/@DirtbikefinderUK",
+	  "https://x.com/dirtbikefinder?s=21 "
     ]
   },
 
@@ -943,7 +944,7 @@ ${post.featured_image ? `
     <i class="fa fa-youtube"></i>
   </a>
 
-  <a href="https://twitter.com/YOUR_HANDLE" target="_blank">
+  <a href="https://x.com/dirtbikefinder?s=21 " target="_blank">
     <i class="fa fa-twitter"></i>
   </a>
 </div>
