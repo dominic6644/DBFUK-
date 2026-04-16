@@ -2240,6 +2240,28 @@ html, body {
   border-radius: 6px;
 }
 
+.post-social i {
+    font-size: 26px; /* bigger icons */
+    color: #333;
+    transition: all 0.25s ease;
+}
+
+.post-social a {
+    padding: 6px; /* slightly larger click area */
+    display: inline-block;
+}
+
+.post-social a:hover i {
+    color: #d10024; /* your theme red */
+    transform: scale(1.2); /* subtle grow effect */
+}
+
+/* Optional: platform colours on hover */
+.post-social a:nth-child(2):hover i { color: #E1306C; } /* Instagram */
+.post-social a:nth-child(3):hover i { color: #1877F2; } /* Facebook */
+.post-social a:nth-child(4):hover i { color: #FF0000; } /* YouTube */
+.post-social a:nth-child(5):hover i { color: #000000; } /* X */
+
 /* === SIDEBAR ADS === */
 .sidebar-ads {
   width: 100%;
