@@ -887,14 +887,20 @@ ${breadcrumbLd}
         	<!-- HOT DEAL SECTION -->
 <!-- ARTICLE HERO IMAGE (replaces banner) -->
 ${post.featured_image ? `
-<div id="article-hero" style="
-  background-image: url('${post.featured_image}');
-  background-size: cover;
-  background-position: center;
-  height: 500px;
-  width: 100%;
-">
-</div>
+<figure id="article-hero" style="margin:0;">
+  
+  <img 
+    src="${post.featured_image}" 
+    alt="${post.title}" 
+    style="width:100%; height:500px; object-fit:cover;"
+    loading="eager"
+  />
+
+  <figcaption style="font-size:12px; color:#777; padding:5px 10px;">
+    ${post.title}
+  </figcaption>
+
+</figure>
 ` : ''}
   <!-- container -->
   <div class="container">
