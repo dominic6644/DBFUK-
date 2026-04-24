@@ -548,8 +548,8 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
   "image": [{
   "@type": "ImageObject",
   "url": "${image}",
-  "width": 800,
-  "height": 450
+  "width": 1200,
+  "height": 630
 }],
 
   "datePublished": "${publishedISO}",
@@ -563,6 +563,11 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
     "@type": "Person",
     "name": ${JSON.stringify(post.author)},
     "url": "https://dirtbikefinderuk.co.uk/author.html"
+  },
+
+  "speakable": {
+    "@type": "SpeakableSpecification",
+    "cssSelector": ["h1", ".content p"]
   },
 
   "publisher": {
@@ -667,7 +672,11 @@ res.send(`
 
 <!-- Article meta -->
 <meta property="article:published_time" content="${publishedISO}">
-<meta property="article:modified_time" content="${publishedISO}">
+<meta property="article:modified_time" content="${
+  post.updated_at
+    ? new Date(post.updated_at).toISOString()
+    : publishedISO
+}">
 <meta property="article:author" content="${post.author}">
 <meta property="article:section" content="${
   post.article_type === "mx" ? "Motocross" :
@@ -889,12 +898,15 @@ ${breadcrumbLd}
 ${post.featured_image ? `
 <figure id="article-hero" style="margin:0;">
   
-  <img 
-    src="${post.featured_image}" 
-    alt="${post.title}" 
-    style="width:100%; height:500px; object-fit:cover;"
-    loading="eager"
-  />
+<img 
+  src="${post.featured_image}" 
+  alt="${post.title}" 
+  width="1200"
+  height="630"
+  style="width:100%; height:auto; max-height:500px; object-fit:cover;"
+  loading="eager"
+  fetchpriority="high"
+/>
 
   <figcaption style="font-size:12px; color:#777; padding:5px 10px;">
     ${post.title}
@@ -958,6 +970,7 @@ ${post.featured_image ? `
     <div id="post">
       <h1>${post.title}</h1>
     <p style="color:#777;font-size:14px;">
+	  By <strong>${post.author}</strong>
   ${new Date(post.published_date).toLocaleString('en-GB', {
     dateStyle: 'medium',
     timeStyle: 'short'
