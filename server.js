@@ -617,10 +617,31 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
   )},
 
   "isAccessibleForFree": true
+
+
+ ${youtubeEmbed ? `,
+  "video": {
+    "@type": "VideoObject",
+    "name": ${JSON.stringify(post.title)},
+    "description": ${JSON.stringify(description)},
+    "thumbnailUrl": [
+      "https://img.youtube.com/vi/${youtubeEmbed.split('/embed/')[1]}/maxresdefault.jpg"
+    ],
+    "uploadDate": "${publishedISO}",
+    "duration": "PT5M32S",
+    "embedUrl": "${youtubeEmbed}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Dirt Bike Finder UK",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
+      }
+    }
+  }` : ''}
 }
 </script>
 `;
-
 	  const breadcrumbLd = `
 <script type="application/ld+json">
 {
@@ -658,6 +679,7 @@ res.send(`
 <!-- Primary SEO -->
 <meta name="description" content="${description}">
 <meta name="robots" content="index, follow, max-image-preview:large">
+
 
 <!-- Open Graph (Facebook / Google / Discover) -->
 <meta property="og:type" content="article">
