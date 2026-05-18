@@ -976,12 +976,12 @@ ${post.featured_image ? `
 <!-- =========================
      POST PAGE LAYOUT
      ========================= -->
-<div class="post-page" style="display:flex; gap:20px; align-items:flex-start;">
+<div class="post-page">
 
   <!-- =========================
        LEFT COLUMN (POST)
        ========================= -->
-  <div class="post-container" style="flex:1; min-width:300px;">
+  <div class="post-container">
 
     <div class="post-social" style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
       <span style="font-size:13px;color:#777;">Follow:</span>
@@ -1051,7 +1051,7 @@ ${post.featured_image ? `
   <!-- =========================
        RIGHT COLUMN (SIDEBAR ADS)
        ========================= -->
-  <aside class="sidebar-ads" style="width:300px; flex-shrink:0; display:flex; flex-direction:column;">
+  <aside class="sidebar-ads">
 
     <div class="ad lazy-ad" data-slot="1381761821" style="margin-bottom:20px; min-height:250px;"></div>
 
@@ -1064,7 +1064,7 @@ ${post.featured_image ? `
 <!-- =========================
      BOTTOM AD (FULL WIDTH)
      ========================= -->
-<div class="bottom-ad" style="margin-top:20px; text-align:center;">
+<div class="bottom-ad">
   <div class="lazy-ad" data-slot="3624781783" style="min-height:250px;"></div>
 </div>
 
