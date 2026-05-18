@@ -955,70 +955,69 @@ ${post.featured_image ? `
 
 </figure>
 ` : ''}
-    
-    <!-- row -->
-    <div class="row">
-      <div class="col-md-12">
-        <div class="hot-deal">
-          <ul class="hot-deal-countdown">
-            <li><div><h3></h3><span></span></div></li>
-            <li><div><h3></h3><span></span></div></li>
-            <li><div><h3></h3><span></span></div></li>
-            <li><div><h3></h3><span></span></div></li>
-          </ul>
-          <h2 class="text-uppercase"></h2>
-          <p></p>
-          <a class="" href="#"></a>
-        </div>
-      </div>
+
+<!-- HOT DEAL SECTION -->
+<div class="row">
+  <div class="col-md-12">
+    <div class="hot-deal">
+      <ul class="hot-deal-countdown">
+        <li><div><h3></h3><span></span></div></li>
+        <li><div><h3></h3><span></span></div></li>
+        <li><div><h3></h3><span></span></div></li>
+        <li><div><h3></h3><span></span></div></li>
+      </ul>
+      <h2 class="text-uppercase"></h2>
+      <p></p>
+      <a class="" href="#"></a>
     </div>
-    <!-- /row -->
   </div>
-  <!-- /container -->
 </div>
 
-<!-- /HOT DEAL SECTION -->
+<!-- =========================
+     POST PAGE LAYOUT
+     ========================= -->
 <div class="post-page" style="display:flex; gap:20px; align-items:flex-start;">
 
-
-  <!-- Left: Main post -->
+  <!-- =========================
+       LEFT COLUMN (POST)
+       ========================= -->
   <div class="post-container" style="flex:1; min-width:300px;">
 
-  <div class="post-social" style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
-  <span style="font-size:13px;color:#777;">Follow:</span>
+    <div class="post-social" style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
+      <span style="font-size:13px;color:#777;">Follow:</span>
 
-  <a href="https://www.instagram.com/dirtbikefinder_uk/" target="_blank">
-    <i class="fa fa-instagram"></i>
-  </a>
+      <a href="https://www.instagram.com/dirtbikefinder_uk/" target="_blank">
+        <i class="fa fa-instagram"></i>
+      </a>
 
-  <a href="https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#" target="_blank">
-    <i class="fa fa-facebook"></i>
-  </a>
+      <a href="https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#" target="_blank">
+        <i class="fa fa-facebook"></i>
+      </a>
 
-  <a href="https://www.youtube.com/@DirtbikefinderUK" target="_blank">
-    <i class="fa fa-youtube"></i>
-  </a>
+      <a href="https://www.youtube.com/@DirtbikefinderUK" target="_blank">
+        <i class="fa fa-youtube"></i>
+      </a>
 
-  <a href="https://x.com/dirtbikefinder?s=21 " target="_blank">
-    <i class="fa fa-twitter"></i>
-  </a>
-</div>
+      <a href="https://x.com/dirtbikefinder?s=21" target="_blank">
+        <i class="fa fa-twitter"></i>
+      </a>
+    </div>
 
     <div id="post">
-      <h1>${post.title}</h1>
-    <p style="color:#777;font-size:14px;">
-	  By <strong>${post.author}</strong>
-  ${new Date(post.published_date).toLocaleString('en-GB', {
-    dateStyle: 'medium',
-    timeStyle: 'short'
-  })} • ${readTime} min read
-  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleString('en-GB', {
-    dateStyle: 'medium',
-    timeStyle: 'short'
-  })}` : ''}
-</p>
 
-     
+      <h1>${post.title}</h1>
+
+      <p style="color:#777;font-size:14px;">
+        By <strong>${post.author}</strong>
+        ${new Date(post.published_date).toLocaleString('en-GB', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        })} • ${readTime} min read
+        ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleString('en-GB', {
+          dateStyle: 'medium',
+          timeStyle: 'short'
+        })}` : ''}
+      </p>
 
       <div class="content">${post.content}</div>
 
@@ -1044,31 +1043,30 @@ ${post.featured_image ? `
           `).join('')}
         </ul>
       </div>
-	  </div>
 
-	  <!-- =========================
-     SIDEBAR ADS (LAZY)
-     ========================= -->
+    </div>
+
+  </div>
+
+  <!-- =========================
+       RIGHT COLUMN (SIDEBAR ADS)
+       ========================= -->
   <aside class="sidebar-ads" style="width:300px; flex-shrink:0; display:flex; flex-direction:column;">
 
-  <div class="ad lazy-ad" data-slot="1381761821" style="margin-bottom:20px;"></div>
+    <div class="ad lazy-ad" data-slot="1381761821" style="margin-bottom:20px; min-height:250px;"></div>
 
-  <div class="ad lazy-ad" data-slot="6184578087" style="margin-bottom:20px;"></div>
+    <div class="ad lazy-ad" data-slot="6184578087" style="margin-bottom:20px; min-height:250px;"></div>
 
-</aside>
+  </aside>
+
+</div>
 
 <!-- =========================
-     BOTTOM AD (LAZY)
+     BOTTOM AD (FULL WIDTH)
      ========================= -->
-<div class="bottom-ad" style="margin-top:20px;">
-  <div class="lazy-ad" data-slot="3624781783"></div>
+<div class="bottom-ad" style="margin-top:20px; text-align:center;">
+  <div class="lazy-ad" data-slot="3624781783" style="min-height:250px;"></div>
 </div>
-
-
-
-
-</div>
-
 
 
   
