@@ -1184,6 +1184,7 @@ ${post.featured_image ? `
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js" defer></script>
 
+<script>
 const adObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
@@ -1221,6 +1222,8 @@ const adObserver = new IntersectionObserver((entries, observer) => {
 document.querySelectorAll(".lazy-ad").forEach(ad => {
   adObserver.observe(ad);
 });
+
+</script>
         
 </body>
 </html>
