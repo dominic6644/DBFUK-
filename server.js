@@ -1045,27 +1045,42 @@ ${post.featured_image ? `
       </div>
 
     <!-- Bottom ad below post -->
-<div class="bottom-ad" style="margin-top:20px;">
-  <div class="lazy-ad" data-ad-slot="3624781783"></div>
-</div>
+const ads = document.querySelectorAll('.lazy-ad');
 
-</div>
-</div>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
 
-<!-- Right: Sidebar ads -->
-<aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
+    const slot = entry.target.dataset.adSlot;
 
-  <div class="ad" style="margin-bottom:20px;">
-    <div class="lazy-ad" data-ad-slot="1381761821"></div>
-  </div>
+    // prevent double init
+    if (entry.target.dataset.loaded) return;
+    entry.target.dataset.loaded = "true";
 
-  <div class="ad" style="margin-bottom:20px;">
-    <div class="lazy-ad" data-ad-slot="6184578087"></div>
-  </div>
+    const ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.display = 'block';
+    ins.setAttribute('data-ad-client', 'ca-pub-7960582198518252');
+    ins.setAttribute('data-ad-slot', slot);
+    ins.setAttribute('data-ad-format', 'auto');
+    ins.setAttribute('data-full-width-responsive', 'true');
 
-</aside>
-</div>
+    entry.target.appendChild(ins);
 
+    // wait a tick before push (IMPORTANT FIX)
+    setTimeout(() => {
+      try {
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {
+        console.error("AdSense error:", e);
+      }
+    }, 50);
+
+    observer.unobserve(entry.target);
+  });
+});
+
+ads.forEach(ad => observer.observe(ad));
 <!-- FOOTER -->
 		<footer id="footer">
 			<!-- top footer -->
