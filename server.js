@@ -924,10 +924,15 @@ ${post.featured_image ? `
 <figure id="article-hero" style="margin:0;">
   
 <picture>
-  <source 
-    srcset="${post.featured_image_webp}" 
-    type="image/webp"
-  >
+<source
+  type="image/webp"
+  srcset="
+    ${post.featured_image_small_webp} 480w,
+    ${post.featured_image_medium_webp} 768w,
+    ${post.featured_image_webp} 1200w
+  "
+  sizes="(max-width: 768px) 100vw, 1200px"
+>
 
   <img
     src="${post.featured_image}"
@@ -1041,45 +1046,26 @@ ${post.featured_image ? `
         </ul>
       </div>
 
-      <!-- Bottom ad below post -->
-      <div class="bottom-ad" style="margin-top:20px;">
-        <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-pub-7960582198518252"
-          data-ad-slot="3624781783"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-      </div>
+    <!-- Bottom ad below post -->
+<div class="bottom-ad" style="margin-top:20px;">
+  <div class="lazy-ad" data-ad-slot="3624781783"></div>
+</div>
 
-    </div>
+</div>
+</div>
+
+<!-- Right: Sidebar ads -->
+<aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
+
+  <div class="ad" style="margin-bottom:20px;">
+    <div class="lazy-ad" data-ad-slot="1381761821"></div>
   </div>
 
-  <!-- Right: Sidebar ads -->
-  <aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
+  <div class="ad" style="margin-bottom:20px;">
+    <div class="lazy-ad" data-ad-slot="6184578087"></div>
+  </div>
 
-    <div class="ad" style="margin-bottom:20px;">
-      <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-7960582198518252"
-        data-ad-slot="1381761821"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <div class="ad" style="margin-bottom:20px;">
-      <ins class="adsbygoogle"
-        style="display:block"
-        data-ad-client="ca-pub-7960582198518252"
-        data-ad-slot="6184578087"
-        data-ad-format="auto"
-        data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-  </aside>
-
+</aside>
 </div>
 
 <!-- FOOTER -->
@@ -1196,8 +1182,8 @@ ${post.featured_image ? `
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->
-<script src="/js/jquery.min.js" defer></script>
-<script src="/js/bootstrap.min.js" defer></script>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js" defer></script>
         
 </body>
