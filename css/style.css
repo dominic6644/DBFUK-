@@ -2200,29 +2200,40 @@ button[type="submit"]:hover {
 
 
 /* === GLOBAL FIXES === */
+/* =========================
+   GLOBAL FIXES
+========================= */
 html, body {
   overflow-x: hidden;
   line-height: 1.6;
 }
 
-/* Force ads to scale safely */
+/* Prevent AdSense breaking layout */
 .adsbygoogle {
   max-width: 100% !important;
-  height: auto !important;
   display: block;
 }
 
-/* === MAIN GRID === */
+/* =========================
+   MAIN LAYOUT (DESKTOP FIRST)
+========================= */
 .post-page {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 200px; /* content | ads */
+  grid-template-columns: minmax(0, 1fr) 220px; /* content | sidebar */
   gap: 30px;
   max-width: 1200px;
-  margin: 50px auto;
+  margin: 40px auto;
   padding: 0 16px;
+  align-items: start;
 }
 
-/* === CONTENT AREA === */
+/* =========================
+   MAIN CONTENT
+========================= */
+.post-container {
+  min-width: 0; /* prevents overflow bug */
+}
+
 #post {
   font-size: 16px;
 }
@@ -2231,62 +2242,71 @@ html, body {
   margin-bottom: 1.2em;
 }
 
-/* Featured image */
+/* Featured image fix (IMPORTANT: remove float issues) */
 #post img {
-  float: left;
-  width: 38%;
-  max-width: 360px;
-  margin: 0 24px 20px 0;
+  width: 100%;
+  height: auto;
   border-radius: 6px;
+  margin: 0 0 20px 0;
+  float: none;
 }
 
+/* =========================
+   SOCIAL ICONS
+========================= */
 .post-social i {
-    font-size: 26px; /* bigger icons */
-    color: #333;
-    transition: all 0.25s ease;
+  font-size: 26px;
+  color: #333;
+  transition: all 0.25s ease;
 }
 
 .post-social a {
-    padding: 6px; /* slightly larger click area */
-    display: inline-block;
+  padding: 6px;
+  display: inline-block;
 }
 
 .post-social a:hover i {
-    color: #d10024; /* your theme red */
-    transform: scale(1.2); /* subtle grow effect */
+  color: #d10024;
+  transform: scale(1.2);
 }
 
-/* Optional: platform colours on hover */
-.post-social a:nth-child(2):hover i { color: #E1306C; } /* Instagram */
-.post-social a:nth-child(3):hover i { color: #1877F2; } /* Facebook */
-.post-social a:nth-child(4):hover i { color: #FF0000; } /* YouTube */
-.post-social a:nth-child(5):hover i { color: #000000; } /* X */
+/* platform colours */
+.post-social a:nth-child(2):hover i { color: #E1306C; }
+.post-social a:nth-child(3):hover i { color: #1877F2; }
+.post-social a:nth-child(4):hover i { color: #FF0000; }
+.post-social a:nth-child(5):hover i { color: #000000; }
 
-/* === SIDEBAR ADS === */
+/* =========================
+   SIDEBAR ADS (DESKTOP)
+========================= */
 .sidebar-ads {
-  width: 100%;
-  max-width: 200px;
-  padding: 12px;
+  width: 220px;
+  position: sticky;
+  top: 20px;
+  align-self: start;
 }
 
 .sidebar-ads .ad {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
-/* === TABLE / GRID STYLE === */
+/* =========================
+   BOTTOM AD
+========================= */
+.bottom-ad {
+  margin-top: 40px;
+  width: 100%;
+}
+
+/* =========================
+   TABLES
+========================= */
 table {
   width: 100%;
   border-collapse: collapse;
   margin: 30px 0;
   font-size: 15px;
   background: #fff;
-}
-
-caption {
-  caption-side: top;
-  text-align: left;
-  font-size: 18px;
-  margin-bottom: 10px;
 }
 
 th, td {
@@ -2304,24 +2324,37 @@ tr:nth-child(even) td {
   background: #fafafa;
 }
 
-/* === RESPONSIVE === */
+/* =========================
+   RESPONSIVE (THIS FIXES YOUR PROBLEM)
+========================= */
 
-/* Tablets & small screens */
-@media (max-width: 768px) {
+/* TABLET */
+@media (max-width: 900px) {
   .post-page {
-    grid-template-columns: minmax(0, 1fr) 140px;
+    grid-template-columns: 1fr 180px;
     gap: 20px;
   }
 
   .sidebar-ads {
-    max-width: 140px;
-    padding: 8px;
+    width: 180px;
+  }
+}
+
+/* MOBILE (CRITICAL FIX) */
+@media (max-width: 768px) {
+  .post-page {
+    grid-template-columns: 1fr; /* STACK EVERYTHING */
+  }
+
+  .sidebar-ads {
+    width: 100%;
+    position: relative;
+    top: auto;
+    margin-top: 30px;
   }
 
   #post img {
-    float: none;
     width: 100%;
-    margin: 0 0 20px 0;
   }
 
   table {
@@ -2329,17 +2362,8 @@ tr:nth-child(even) td {
   }
 }
 
-/* Very small phones */
+/* SMALL PHONES */
 @media (max-width: 480px) {
-  .post-page {
-    grid-template-columns: 1fr;
-  }
-
-  .sidebar-ads {
-    max-width: 100%;
-    margin-top: 30px;
-  }
-
   table, th, td {
     font-size: 13px;
   }
