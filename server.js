@@ -1044,66 +1044,28 @@ ${post.featured_image ? `
         </ul>
       </div>
 
-  <!-- =========================
-     ADS SECTION (CLEAN)
+<!-- =========================
+     BOTTOM AD (LAZY)
      ========================= -->
-
-<!-- Bottom ad below post -->
 <div class="bottom-ad" style="margin-top:20px;">
-
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-7960582198518252"
-       data-ad-slot="3624781783"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-
-  <script>
-    (adsbygoogle = window.adsbygoogle || []).push({});
-  </script>
-
+  <div class="lazy-ad" data-slot="3624781783"></div>
 </div>
 
 
 <!-- =========================
-     SIDEBAR ADS
+     SIDEBAR ADS (LAZY)
      ========================= -->
-
 <aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
 
-  <!-- Sidebar Ad 1 -->
-  <div class="ad" style="margin-bottom:20px;">
+  <div class="ad lazy-ad" data-slot="1381761821" style="margin-bottom:20px;"></div>
 
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-7960582198518252"
-         data-ad-slot="1381761821"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
-  </div>
-
-  <!-- Sidebar Ad 2 -->
-  <div class="ad" style="margin-bottom:20px;">
-
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-7960582198518252"
-         data-ad-slot="6184578087"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-
-  </div>
+  <div class="ad lazy-ad" data-slot="6184578087" style="margin-bottom:20px;"></div>
 
 </aside>
+
+
+
+  
 <!-- FOOTER -->
 		<footer id="footer">
 			<!-- top footer -->
@@ -1221,6 +1183,44 @@ ${post.featured_image ? `
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js" defer></script>
+
+const adObserver = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+
+    const el = entry.target;
+    const slot = el.dataset.slot;
+
+    // prevent double load
+    if (el.dataset.loaded === "true") return;
+    el.dataset.loaded = "true";
+
+    const ins = document.createElement("ins");
+    ins.className = "adsbygoogle";
+    ins.style.display = "block";
+    ins.setAttribute("data-ad-client", "ca-pub-7960582198518252");
+    ins.setAttribute("data-ad-slot", slot);
+    ins.setAttribute("data-ad-format", "auto");
+    ins.setAttribute("data-full-width-responsive", "true");
+
+    el.appendChild(ins);
+
+    try {
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.error("AdSense error:", e);
+    }
+
+    observer.unobserve(el);
+  });
+}, {
+  rootMargin: "200px 0px"
+});
+
+// observe all lazy ads
+document.querySelectorAll(".lazy-ad").forEach(ad => {
+  adObserver.observe(ad);
+});
         
 </body>
 </html>
