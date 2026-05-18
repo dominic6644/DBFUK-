@@ -760,6 +760,7 @@ ${breadcrumbLd}
 <noscript>
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 </noscript>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
 
 <!-- Favicon -->
 <link rel="icon" href="/images/logo.png" sizes="any">
@@ -839,7 +840,9 @@ ${breadcrumbLd}
                             <img src="/images/logo.png"
                                  alt="Dirt Bike Finder UK logo"
                                  height="150"
-                                 width="125">
+                                 width="125"
+								 loading="eager"
+                                  decoding="async">
                         </a>
 							</div>
 							
@@ -920,15 +923,23 @@ ${breadcrumbLd}
 ${post.featured_image ? `
 <figure id="article-hero" style="margin:0;">
   
-<img 
-  src="${post.featured_image}" 
-  alt="${post.title}" 
-  width="1200"
-  height="630"
-  style="width:100%; height:auto; max-height:500px; object-fit:cover;"
-  loading="eager"
-  fetchpriority="high"
-/>
+<picture>
+  <source 
+    srcset="${post.featured_image_webp}" 
+    type="image/webp"
+  >
+
+  <img
+    src="${post.featured_image}"
+    alt="${post.title}"
+    width="1200"
+    height="630"
+    style="width:100%; height:auto; max-height:500px; object-fit:cover;"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+  >
+</picture>
 
   <figcaption style="font-size:12px; color:#777; padding:5px 10px;">
     ${post.title}
@@ -1032,7 +1043,6 @@ ${post.featured_image ? `
 
       <!-- Bottom ad below post -->
       <div class="bottom-ad" style="margin-top:20px;">
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
         <ins class="adsbygoogle"
           style="display:block"
           data-ad-client="ca-pub-7960582198518252"
@@ -1049,7 +1059,6 @@ ${post.featured_image ? `
   <aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
 
     <div class="ad" style="margin-bottom:20px;">
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-7960582198518252"
@@ -1060,7 +1069,6 @@ ${post.featured_image ? `
     </div>
 
     <div class="ad" style="margin-bottom:20px;">
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7960582198518252" crossorigin="anonymous"></script>
       <ins class="adsbygoogle"
         style="display:block"
         data-ad-client="ca-pub-7960582198518252"
@@ -1091,7 +1099,9 @@ ${post.featured_image ? `
                             <img src="/images/logo.png"
                                  alt="Dirt Bike Finder UK logo"
                                  height="150"
-                                 width="125">
+                                 width="125"
+								 loading="eager"
+                                 decoding="async">
                         </a>
 									
 									
@@ -1188,9 +1198,6 @@ ${post.featured_image ? `
 		<!-- jQuery Plugins -->
 <script src="/js/jquery.min.js" defer></script>
 <script src="/js/bootstrap.min.js" defer></script>
-<script src="/js/slick.min.js" defer></script>
-<script src="/js/nouislider.min.js" defer></script>
-<script src="/js/jquery.zoom.min.js" defer></script>
 <script src="/js/main.js" defer></script>
         
 </body>
