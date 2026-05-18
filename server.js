@@ -1044,43 +1044,66 @@ ${post.featured_image ? `
         </ul>
       </div>
 
-    <!-- Bottom ad below post -->
-const ads = document.querySelectorAll('.lazy-ad');
+  <!-- =========================
+     ADS SECTION (CLEAN)
+     ========================= -->
 
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
+<!-- Bottom ad below post -->
+<div class="bottom-ad" style="margin-top:20px;">
 
-    const slot = entry.target.dataset.adSlot;
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="ca-pub-7960582198518252"
+       data-ad-slot="3624781783"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
 
-    // prevent double init
-    if (entry.target.dataset.loaded) return;
-    entry.target.dataset.loaded = "true";
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 
-    const ins = document.createElement('ins');
-    ins.className = 'adsbygoogle';
-    ins.style.display = 'block';
-    ins.setAttribute('data-ad-client', 'ca-pub-7960582198518252');
-    ins.setAttribute('data-ad-slot', slot);
-    ins.setAttribute('data-ad-format', 'auto');
-    ins.setAttribute('data-full-width-responsive', 'true');
+</div>
 
-    entry.target.appendChild(ins);
 
-    // wait a tick before push (IMPORTANT FIX)
-    setTimeout(() => {
-      try {
-        (adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {
-        console.error("AdSense error:", e);
-      }
-    }, 50);
+<!-- =========================
+     SIDEBAR ADS
+     ========================= -->
 
-    observer.unobserve(entry.target);
-  });
-});
+<aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
 
-ads.forEach(ad => observer.observe(ad));
+  <!-- Sidebar Ad 1 -->
+  <div class="ad" style="margin-bottom:20px;">
+
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-7960582198518252"
+         data-ad-slot="1381761821"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+  </div>
+
+  <!-- Sidebar Ad 2 -->
+  <div class="ad" style="margin-bottom:20px;">
+
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-7960582198518252"
+         data-ad-slot="6184578087"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+
+    <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
+  </div>
+
+</aside>
 <!-- FOOTER -->
 		<footer id="footer">
 			<!-- top footer -->
