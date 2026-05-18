@@ -918,33 +918,36 @@ ${breadcrumbLd}
 		</nav>
 		<!-- /NAVIGATION -->
 
-        	<!-- HOT DEAL SECTION -->
-<!-- ARTICLE HERO IMAGE (replaces banner) -->
+        <!-- ARTICLE HERO IMAGE -->
 ${post.featured_image ? `
 <figure id="article-hero" style="margin:0;">
-  
-<picture>
-<source
-  type="image/webp"
-  srcset="
-    ${post.featured_image_small_webp} 480w,
-    ${post.featured_image_medium_webp} 768w,
-    ${post.featured_image_webp} 1200w
-  "
-  sizes="(max-width: 768px) 100vw, 1200px"
->
 
-  <img
-    src="${post.featured_image}"
-    alt="${post.title}"
-    width="1200"
-    height="630"
-    style="width:100%; height:auto; max-height:500px; object-fit:cover;"
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-  >
-</picture>
+  <picture>
+
+    ${post.featured_image_small_webp && post.featured_image_medium_webp && post.featured_image_webp ? `
+    <source
+      type="image/webp"
+      srcset="
+        ${post.featured_image_small_webp} 480w,
+        ${post.featured_image_medium_webp} 768w,
+        ${post.featured_image_webp} 1200w
+      "
+      sizes="(max-width: 768px) 100vw, 1200px"
+    >
+    ` : ''}
+
+    <img
+      src="${post.featured_image}"
+      alt="${post.title}"
+      width="1200"
+      height="630"
+      style="width:100%; height:auto; max-height:500px; object-fit:cover;"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+    >
+
+  </picture>
 
   <figcaption style="font-size:12px; color:#777; padding:5px 10px;">
     ${post.title}
@@ -952,12 +955,7 @@ ${post.featured_image ? `
 
 </figure>
 ` : ''}
-  <!-- container -->
-  <div class="container">
-    <!-- Banner Title -->
-    <div class="banner-title">
-      <h1></h1>
-    </div>
+    
     <!-- row -->
     <div class="row">
       <div class="col-md-12">
