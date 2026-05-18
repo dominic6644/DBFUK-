@@ -978,7 +978,8 @@ ${post.featured_image ? `
 </div>
 
 <!-- /HOT DEAL SECTION -->
-<div class="post-page" style="display:flex; gap:20px; align-items:flex-start; flex-wrap:wrap;">
+<div class="post-page" style="display:flex; gap:20px; align-items:flex-start;">
+
 
   <!-- Left: Main post -->
   <div class="post-container" style="flex:1; min-width:300px;">
@@ -1043,6 +1044,18 @@ ${post.featured_image ? `
           `).join('')}
         </ul>
       </div>
+	  </div>
+
+	  <!-- =========================
+     SIDEBAR ADS (LAZY)
+     ========================= -->
+  <aside class="sidebar-ads" style="width:300px; flex-shrink:0; display:flex; flex-direction:column;">
+
+  <div class="ad lazy-ad" data-slot="1381761821" style="margin-bottom:20px;"></div>
+
+  <div class="ad lazy-ad" data-slot="6184578087" style="margin-bottom:20px;"></div>
+
+</aside>
 
 <!-- =========================
      BOTTOM AD (LAZY)
@@ -1052,16 +1065,9 @@ ${post.featured_image ? `
 </div>
 
 
-<!-- =========================
-     SIDEBAR ADS (LAZY)
-     ========================= -->
-<aside class="sidebar-ads" style="width:300px; min-width:250px; flex-shrink:0;">
 
-  <div class="ad lazy-ad" data-slot="1381761821" style="margin-bottom:20px;"></div>
 
-  <div class="ad lazy-ad" data-slot="6184578087" style="margin-bottom:20px;"></div>
-
-</aside>
+</div>
 
 
 
