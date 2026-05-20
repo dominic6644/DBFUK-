@@ -59,7 +59,19 @@ app.use(compression());
 
 // Other configurations and routes...
 
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname), {
+  maxAge: '30d', // cache static files for 30 days
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, path) => {
+    if (path.endsWith('.html')) {
+      // never aggressively cache HTML
+      res.setHeader('Cache-Control', 'no-cache');
+    }
+  }
+}));
+
+
 
 // Example route (optional, just loads index.html at root)
 app.get('/', (req, res) => {
