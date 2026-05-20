@@ -767,6 +767,11 @@ ${breadcrumbLd}
 <link rel="icon" type="image/png" href="/images/logo.png" sizes="32x32">
 <link rel="icon" type="image/png" href="/images/logo.png" sizes="16x16">
 <link rel="apple-touch-icon" href="/images/logo.png">
+<link
+  rel="preload"
+  as="image"
+  href="${post.featured_image}"
+  fetchpriority="high">
 
 <!-- Critical CSS -->
 <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -956,22 +961,7 @@ ${post.featured_image ? `
 </figure>
 ` : ''}
 
-<!-- HOT DEAL SECTION -->
-<div class="row">
-  <div class="col-md-12">
-    <div class="hot-deal">
-      <ul class="hot-deal-countdown">
-        <li><div><h3></h3><span></span></div></li>
-        <li><div><h3></h3><span></span></div></li>
-        <li><div><h3></h3><span></span></div></li>
-        <li><div><h3></h3><span></span></div></li>
-      </ul>
-      <h2 class="text-uppercase"></h2>
-      <p></p>
-      <a class="" href="#"></a>
-    </div>
-  </div>
-</div>
+
 
 <!-- =========================
      POST PAGE LAYOUT
@@ -1184,8 +1174,8 @@ ${post.featured_image ? `
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->
-<script src="/js/jquery.min.js"></script>
-<script src="/js/bootstrap.min.js"></script>
+<script src="/js/main.js" defer></script>
+<script src="/js/bootstrap.min.js" defer></script>
 <script src="/js/main.js" defer></script>
 
 <script>
