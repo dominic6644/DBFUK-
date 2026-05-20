@@ -8,6 +8,8 @@ const nodemailer = require('nodemailer');
 const path = require('path');
 const { GoogleAuth } = require('google-auth-library');
 const bodyParser = require('body-parser');
+const compression = require("compression");
+
 
 
 const app = express();
@@ -50,7 +52,7 @@ async function notifyGoogle(url) {
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(compression());
 
 
 
@@ -1174,7 +1176,7 @@ ${post.featured_image ? `
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->
-<script src="/js/main.js" defer></script>
+
 <script src="/js/bootstrap.min.js" defer></script>
 <script src="/js/main.js" defer></script>
 
