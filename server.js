@@ -10,11 +10,20 @@ const { GoogleAuth } = require('google-auth-library');
 const bodyParser = require('body-parser');
 const compression = require("compression");
 
-
+// IMAGE PIPELINE
+const multer = require('multer');
+const { processImage } = require('./utils/imagePipeline');
 
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+const upload = multer({
+  dest: 'temp/',
+  limits: {
+    fileSize: 10 * 1024 * 1024
+  }
+});
 
 // PostgreSQL
 const pool = new Pool({
@@ -71,11 +80,45 @@ app.use(express.static(path.join(__dirname), {
   }
 }));
 
+app.use('/uploads', express.static('uploads', {
+  maxAge: '365d',
+  immutable: true
+}));
+
 
 
 // Example route (optional, just loads index.html at root)
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// IMAGE UPLOAD ROUTE
+app.post('/api/upload-image', upload.single('image'), async (req, res) => {
+  try {
+
+    const processed = await processImage(req.file.path);
+
+    // delete temp file
+    const fs = require('fs');
+    fs.unlinkSync(req.file.path);
+
+    res.json(processed);
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Image processing failed' });
+  }
+});
+
+
+// Example route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
 
 app.listen(port, () => {
