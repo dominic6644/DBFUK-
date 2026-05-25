@@ -145,7 +145,7 @@
     <input type="text" id="slug" placeholder="Slug" required>
     <textarea id="content" placeholder="Content" required></textarea>
     <input type="text" id="author" placeholder="Author" required>
-    <input type="text" id="featured_image" placeholder="Featured Image URL">
+   <input type="file" id="imageUpload">
 	<input type="text" id="youtube_url" placeholder="YouTube Video URL (optional)">
 			<input type="datetime-local" id="published_date" required>
 <textarea id="meta_description" placeholder="Meta description (max 160 chars)" maxlength="160"></textarea>
@@ -156,6 +156,8 @@
   <option value="trials">Trials</option>
   <option value="article">General Article</option>
 </select>
+
+			
 			
 
     <button type="submit">Publish Post</button>
@@ -277,32 +279,58 @@ document.getElementById('title').addEventListener('input', function () {
 });
 
 			
-   document.getElementById('postForm').addEventListener('submit', async function(e) {
+ document.getElementById('postForm').addEventListener('submit', async function(e) {
     e.preventDefault();
 
-   const post = {
-    title: document.getElementById('title').value.trim(),
-    slug: document.getElementById('slug').value.trim(),
-    content: document.getElementById('content').value.trim(),
-    author: document.getElementById('author').value.trim(),
-    featured_image: document.getElementById('featured_image').value.trim(),
-    youtube_url: document.getElementById('youtube_url').value.trim(),
+    try {
+        // 1. Get image file
+        const file = document.getElementById('imageUpload').files[0];
 
-    // NEW FIELDS
-    published_date: document.getElementById('published_date').value,
-    meta_description: document.getElementById('meta_description').value.trim(),
-    article_type: document.getElementById('article_type').value
-};
+        let images = null;
 
+        // 2. Upload image FIRST (if user selected one)
+        if (file) {
+            const formData = new FormData();
+            formData.append('image', file);
 
- try {
-    const res = await fetch('https://dbfuk.onrender.com/api/posts', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(post)
-    });
+            const uploadRes = await fetch('https://dbfuk.onrender.com/api/upload-image', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!uploadRes.ok) {
+                throw new Error('Image upload failed');
+            }
+
+            images = await uploadRes.json();
+        }
+
+        // 3. Build post AFTER image upload
+        const post = {
+            title: document.getElementById('title').value.trim(),
+            slug: document.getElementById('slug').value.trim(),
+            content: document.getElementById('content').value.trim(),
+            author: document.getElementById('author').value.trim(),
+
+            // ✅ use processed images from Sharp pipeline
+            featured_image: images ? images.large : null,
+            image_small: images ? images.small : null,
+            image_medium: images ? images.medium : null,
+
+            youtube_url: document.getElementById('youtube_url').value.trim(),
+            published_date: document.getElementById('published_date').value,
+            meta_description: document.getElementById('meta_description').value.trim(),
+            article_type: document.getElementById('article_type').value
+        };
+
+        // 4. Send post to API
+        const res = await fetch('https://dbfuk.onrender.com/api/posts', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(post)
+        });
 
         if (res.ok) {
             alert('Post published!');
@@ -311,12 +339,12 @@ document.getElementById('title').addEventListener('input', function () {
             const errData = await res.json();
             alert('Error: ' + (errData.error || 'Something went wrong'));
         }
+
     } catch (err) {
         console.error('Submit failed:', err);
-        alert('Network error. Please try again.');
+        alert('Network or upload error. Please try again.');
     }
 });
-
   </script>
 
 
