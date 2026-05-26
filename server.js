@@ -450,7 +450,6 @@ ${urls}
   }
 });
 
-
 // Add a new blog post
 app.post('/api/posts', async (req, res) => {
   const {
@@ -458,7 +457,12 @@ app.post('/api/posts', async (req, res) => {
     slug,
     content,
     author,
+
+    // image versions
     featured_image,
+    image_medium,
+    image_small,
+
     youtube_url,
     published_date,
     meta_description,
@@ -470,17 +474,37 @@ app.post('/api/posts', async (req, res) => {
   }
 
   try {
+
     // 1️⃣ Insert the blog post
     await pool.query(
       `INSERT INTO blog_posts
-      (title, slug, content, author, featured_image, youtube_url, published_date, meta_description, article_type)
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+      (
+        title,
+        slug,
+        content,
+        author,
+
+        featured_image,
+        featured_image_medium,
+        featured_image_small,
+
+        youtube_url,
+        published_date,
+        meta_description,
+        article_type
+      )
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+
       [
         title,
         slug,
         content,
         author,
+
         featured_image || null,
+        image_medium || null,
+        image_small || null,
+
         youtube_url || null,
         published_date,
         meta_description || null,
@@ -488,7 +512,6 @@ app.post('/api/posts', async (req, res) => {
       ]
     );
 
-	 
 
     // 2️⃣ Prepare all URLs to ping
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
@@ -979,26 +1002,32 @@ ${breadcrumbLd}
 		</nav>
 		<!-- /NAVIGATION -->
 
-        <!-- ARTICLE HERO IMAGE -->
+<!-- ARTICLE HERO IMAGE -->
 ${post.featured_image ? `
 <figure id="article-hero" style="margin:0;">
 
   <picture>
 
-    ${post.featured_image_small_webp && post.featured_image_medium_webp && post.featured_image_webp ? `
+    ${post.featured_image_small && post.featured_image_medium ? `
     <source
       type="image/webp"
       srcset="
-        ${post.featured_image_small_webp} 480w,
-        ${post.featured_image_medium_webp} 768w,
-        ${post.featured_image_webp} 1200w
+        ${post.featured_image_small} 400w,
+        ${post.featured_image_medium} 768w,
+        ${post.featured_image} 1200w
       "
-      sizes="(max-width: 768px) 100vw, 1200px"
+      sizes="100vw"
     >
     ` : ''}
 
     <img
       src="${post.featured_image}"
+      srcset="
+        ${post.featured_image_small || post.featured_image} 400w,
+        ${post.featured_image_medium || post.featured_image} 768w,
+        ${post.featured_image} 1200w
+      "
+      sizes="100vw"
       alt="${post.title}"
       width="1200"
       height="630"
@@ -1016,8 +1045,6 @@ ${post.featured_image ? `
 
 </figure>
 ` : ''}
-
-
 
 <!-- =========================
      POST PAGE LAYOUT
