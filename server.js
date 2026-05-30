@@ -116,7 +116,26 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/debug/uploads', (req, res) => {
+  const fs = require('fs');
 
+  try {
+    res.json({
+      uploadDir: '/var/data/uploads',
+      exists: fs.existsSync('/var/data/uploads'),
+      largeExists: fs.existsSync('/var/data/uploads/large'),
+      mediumExists: fs.existsSync('/var/data/uploads/medium'),
+      smallExists: fs.existsSync('/var/data/uploads/small'),
+      files: fs.existsSync('/var/data/uploads/large')
+        ? fs.readdirSync('/var/data/uploads/large')
+        : []
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: err.message
+    });
+  }
+});
 
 
 app.listen(port, () => {
