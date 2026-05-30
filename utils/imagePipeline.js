@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
-const uploadDir = path.join(__dirname, '../uploads');
+const uploadDir = '/var/data/uploads';
 
 function ensureDirs() {
   ['original', 'large', 'medium', 'small'].forEach(dir => {
