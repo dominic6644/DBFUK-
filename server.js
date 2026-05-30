@@ -80,7 +80,7 @@ app.use(express.static(path.join(__dirname), {
   }
 }));
 
-app.use('/uploads', express.static('uploads', {
+app.use('/uploads', express.static('/var/data/uploads', {
   maxAge: '365d',
   immutable: true
 }));
