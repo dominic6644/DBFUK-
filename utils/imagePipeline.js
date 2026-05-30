@@ -3,40 +3,35 @@ const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
-// Render disk path
-const uploadDir = process.env.UPLOAD_DIR || '/var/data/uploads';
+// Render persistent disk location
+const uploadDir = '/var/data/uploads';
 
 function ensureDirs() {
-try {
 // Create base uploads folder
 if (!fs.existsSync(uploadDir)) {
 fs.mkdirSync(uploadDir, { recursive: true });
-console.log('Created upload directory:', uploadDir);
 }
 
-```
 // Create image size folders
-['original', 'large', 'medium', 'small'].forEach(dir => {
-  const fullPath = path.join(uploadDir, dir);
+const folders = ['original', 'large', 'medium', 'small'];
 
-  if (!fs.existsSync(fullPath)) {
-    fs.mkdirSync(fullPath, { recursive: true });
-    console.log('Created directory:', fullPath);
-  }
-});
+folders.forEach(folder => {
+const folderPath = path.join(uploadDir, folder);
+
+```
+if (!fs.existsSync(folderPath)) {
+  fs.mkdirSync(folderPath, { recursive: true });
+  console.log('Created folder:', folderPath);
+}
 ```
 
-} catch (err) {
-console.error('Failed creating upload directories:', err);
-throw err;
-}
+});
 }
 
 async function processImage(filePath) {
 ensureDirs();
 
-const imageId = uuidv4();
-const fileName = `${imageId}.webp`;
+const fileName = `${uuidv4()}.webp`;
 
 const originalOut = path.join(uploadDir, 'original', fileName);
 const largeOut = path.join(uploadDir, 'large', fileName);
@@ -44,10 +39,7 @@ const mediumOut = path.join(uploadDir, 'medium', fileName);
 const smallOut = path.join(uploadDir, 'small', fileName);
 
 console.log('Processing image:', filePath);
-console.log('Saving original:', originalOut);
-console.log('Saving large:', largeOut);
-console.log('Saving medium:', mediumOut);
-console.log('Saving small:', smallOut);
+console.log('Saving to:', originalOut);
 
 try {
 // Original
@@ -56,7 +48,7 @@ await sharp(filePath)
 .toFile(originalOut);
 
 ```
-// Large
+// Large (1200px)
 await sharp(filePath)
   .resize({
     width: 1200,
@@ -65,7 +57,7 @@ await sharp(filePath)
   .webp({ quality: 80 })
   .toFile(largeOut);
 
-// Medium
+// Medium (768px)
 await sharp(filePath)
   .resize({
     width: 768,
@@ -74,7 +66,7 @@ await sharp(filePath)
   .webp({ quality: 75 })
   .toFile(mediumOut);
 
-// Small
+// Small (400px)
 await sharp(filePath)
   .resize({
     width: 400,
@@ -83,24 +75,25 @@ await sharp(filePath)
   .webp({ quality: 70 })
   .toFile(smallOut);
 
-// Verify files actually exist
 console.log('Original exists:', fs.existsSync(originalOut));
 console.log('Large exists:', fs.existsSync(largeOut));
 console.log('Medium exists:', fs.existsSync(mediumOut));
 console.log('Small exists:', fs.existsSync(smallOut));
 
 return {
-  original: `/uploads/original/${fileName}`,
-  large: `/uploads/large/${fileName}`,
-  medium: `/uploads/medium/${fileName}`,
-  small: `/uploads/small/${fileName}`
+  original: '/uploads/original/' + fileName,
+  large: '/uploads/large/' + fileName,
+  medium: '/uploads/medium/' + fileName,
+  small: '/uploads/small/' + fileName
 };
 ```
 
 } catch (err) {
-console.error('Image processing failed:', err);
+console.error('Image processing error:', err);
 throw err;
 }
 }
 
-module.exports = { processImage };
+module.exports = {
+processImage
+};
