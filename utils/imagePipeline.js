@@ -3,55 +3,104 @@ const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 
-const uploadDir = '/var/data/uploads';
+// Render disk path
+const uploadDir = process.env.UPLOAD_DIR || '/var/data/uploads';
 
 function ensureDirs() {
-  ['original', 'large', 'medium', 'small'].forEach(dir => {
-    const full = path.join(uploadDir, dir);
-    if (!fs.existsSync(full)) fs.mkdirSync(full, { recursive: true });
-  });
+try {
+// Create base uploads folder
+if (!fs.existsSync(uploadDir)) {
+fs.mkdirSync(uploadDir, { recursive: true });
+console.log('Created upload directory:', uploadDir);
+}
+
+```
+// Create image size folders
+['original', 'large', 'medium', 'small'].forEach(dir => {
+  const fullPath = path.join(uploadDir, dir);
+
+  if (!fs.existsSync(fullPath)) {
+    fs.mkdirSync(fullPath, { recursive: true });
+    console.log('Created directory:', fullPath);
+  }
+});
+```
+
+} catch (err) {
+console.error('Failed creating upload directories:', err);
+throw err;
+}
 }
 
 async function processImage(filePath) {
-  ensureDirs();
+ensureDirs();
 
-  const id = uuidv4();
-  const baseName = id + '.webp';
+const imageId = uuidv4();
+const fileName = `${imageId}.webp`;
 
-  const originalOut = path.join(uploadDir, 'original', baseName);
-  const largeOut = path.join(uploadDir, 'large', baseName);
-  const mediumOut = path.join(uploadDir, 'medium', baseName);
-  const smallOut = path.join(uploadDir, 'small', baseName);
+const originalOut = path.join(uploadDir, 'original', fileName);
+const largeOut = path.join(uploadDir, 'large', fileName);
+const mediumOut = path.join(uploadDir, 'medium', fileName);
+const smallOut = path.join(uploadDir, 'small', fileName);
 
-  // 1. Save original (compressed slightly)
-  await sharp(filePath)
-    .webp({ quality: 85 })
-    .toFile(originalOut);
+console.log('Processing image:', filePath);
+console.log('Saving original:', originalOut);
+console.log('Saving large:', largeOut);
+console.log('Saving medium:', mediumOut);
+console.log('Saving small:', smallOut);
 
-  // 2. Large (hero image - LCP focus)
-  await sharp(filePath)
-    .resize(1200)
-    .webp({ quality: 80 })
-    .toFile(largeOut);
+try {
+// Original
+await sharp(filePath)
+.webp({ quality: 85 })
+.toFile(originalOut);
 
-  // 3. Medium (article body)
-  await sharp(filePath)
-    .resize(768)
-    .webp({ quality: 75 })
-    .toFile(mediumOut);
+```
+// Large
+await sharp(filePath)
+  .resize({
+    width: 1200,
+    withoutEnlargement: true
+  })
+  .webp({ quality: 80 })
+  .toFile(largeOut);
 
-  // 4. Small (thumbnails / previews)
-  await sharp(filePath)
-    .resize(400)
-    .webp({ quality: 70 })
-    .toFile(smallOut);
+// Medium
+await sharp(filePath)
+  .resize({
+    width: 768,
+    withoutEnlargement: true
+  })
+  .webp({ quality: 75 })
+  .toFile(mediumOut);
 
-  return {
-    original: `/uploads/original/${baseName}`,
-    large: `/uploads/large/${baseName}`,
-    medium: `/uploads/medium/${baseName}`,
-    small: `/uploads/small/${baseName}`
-  };
+// Small
+await sharp(filePath)
+  .resize({
+    width: 400,
+    withoutEnlargement: true
+  })
+  .webp({ quality: 70 })
+  .toFile(smallOut);
+
+// Verify files actually exist
+console.log('Original exists:', fs.existsSync(originalOut));
+console.log('Large exists:', fs.existsSync(largeOut));
+console.log('Medium exists:', fs.existsSync(mediumOut));
+console.log('Small exists:', fs.existsSync(smallOut));
+
+return {
+  original: `/uploads/original/${fileName}`,
+  large: `/uploads/large/${fileName}`,
+  medium: `/uploads/medium/${fileName}`,
+  small: `/uploads/small/${fileName}`
+};
+```
+
+} catch (err) {
+console.error('Image processing failed:', err);
+throw err;
+}
 }
 
 module.exports = { processImage };
