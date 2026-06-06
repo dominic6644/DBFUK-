@@ -1276,9 +1276,10 @@ ${post.featured_image ? `
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->
-
+<script src="/js/jquery.zoom.min.js" defer></script>
 <script src="/js/bootstrap.min.js" defer></script>
 <script src="/js/main.js" defer></script>
+<script src="/js/jquery.min.js" defer></script>
 
 <script>
 const adObserver = new IntersectionObserver((entries, observer) => {
