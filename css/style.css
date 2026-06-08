@@ -402,12 +402,12 @@ ul, ol {
 /*----------------------------*\
 	responsive nav
 \*----------------------------*/
-
 @media only screen and (max-width: 991px) {
   .header-ctn .menu-toggle {
     display: inline-block;
     color: #000;
   }
+
   #responsive-nav {
     position: fixed;
     left: 0;
@@ -417,7 +417,10 @@ ul, ol {
     max-width: 250px;
     width: 0%;
     overflow: hidden;
-    z-index: 22;
+
+    /* Increased */
+    z-index: 999999;
+
     padding-top: 60px;
     -webkit-transform: translateX(-100%);
     -ms-transform: translateX(-100%);
@@ -425,47 +428,61 @@ ul, ol {
     -webkit-transition: 0.2s all;
     transition: 0.2s all;
   }
+
   #responsive-nav.active {
     -webkit-transform: translateX(0%);
     -ms-transform: translateX(0%);
     transform: translateX(0%);
     width: 100%;
   }
+
   .main-nav {
     margin: 0px;
     float: none;
   }
-  .main-nav>li {
+
+  .main-nav > li {
     display: block;
     float: none;
   }
-  .main-nav>li+li {
+
+  .main-nav > li + li {
     margin-left: 0px;
   }
-  .main-nav>li>a {
+
+  .main-nav > li > a {
     padding: 15px;
     color: #FFF;
   }
 
   .menu-toggle {
-  display: inline-block;
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 30;
-}
+    display: inline-block;
+    position: absolute;
+    top: 20px;
+    right: 20px;
 
+    /* Increased */
+    z-index: 1000000;
+  }
 }
 
 .menu-toggle {
   display: none;
   cursor: pointer;
   color: #000;
+
+  /* Added */
+  position: relative;
+  z-index: 1000000;
 }
 
 #menu-icon {
-  color: #000; /* Or any other color you want */
-  font-size: 24px; /* Optional: makes it easier to see */
+  color: #000;
+  font-size: 24px;
+
+  /* Added */
+  position: relative;
+  z-index: 1000001;
 }
 
 .menu-icon {
@@ -475,12 +492,12 @@ ul, ol {
   display: block;
   position: relative;
   transition: all 0.3s ease-in-out;
+  z-index: 1000001;
 }
 
 .menu-icon {
   transition: transform 1s ease-in-out;
 }
-
 
 .menu-icon::before,
 .menu-icon::after {
@@ -515,8 +532,6 @@ ul, ol {
   transform: rotate(-45deg);
   top: 0;
 }
-
-
 
 /*=========================================================
 	04 -> CATEGORY SHOP
