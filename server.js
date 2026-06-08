@@ -1279,6 +1279,7 @@ ${post.featured_image ? `
 <script defer src="/js/jquery.min.js"></script>
 <script defer src="/js/bootstrap.min.js"></script>
 <script defer src="/js/jquery.zoom.min.js"></script>
+<script defer src="/js/slick.min.js"></script>
 <script defer src="/js/main.js"></script>
 <script>
 
