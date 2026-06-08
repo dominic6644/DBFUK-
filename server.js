@@ -1002,7 +1002,7 @@ ${breadcrumbLd}
 
 
 				<!-- responsive-nav -->
-				<div id="responsive-nav">
+				<div id="navbar-links">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li><a href="/index.html">Home</a></li>
@@ -1276,11 +1276,10 @@ ${post.featured_image ? `
 		<!-- /FOOTER -->
 
 		<!-- jQuery Plugins -->
-<script src="/js/jquery.zoom.min.js" defer></script>
-<script src="/js/bootstrap.min.js" defer></script>
-<script src="/js/main.js" defer></script>
-<script src="/js/jquery.min.js" defer></script>
-
+<script defer src="/js/jquery.min.js"></script>
+<script defer src="/js/bootstrap.min.js"></script>
+<script defer src="/js/jquery.zoom.min.js"></script>
+<script defer src="/js/main.js"></script>
 <script>
 const adObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
