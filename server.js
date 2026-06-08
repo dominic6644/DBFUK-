@@ -1002,7 +1002,7 @@ ${breadcrumbLd}
 
 
 				<!-- responsive-nav -->
-				<div id="navbar-links">
+				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li><a href="/index.html">Home</a></li>
@@ -1281,6 +1281,15 @@ ${post.featured_image ? `
 <script defer src="/js/jquery.zoom.min.js"></script>
 <script defer src="/js/main.js"></script>
 <script>
+
+document.getElementById('nav-toggle-btn').addEventListener('click', () => {
+    const navbarLinks = document.getElementById('responsive-nav');
+
+    if (navbarLinks) {
+        navbarLinks.classList.toggle('active');
+    }
+});
+
 const adObserver = new IntersectionObserver((entries, observer) => {
   entries.forEach(entry => {
     if (!entry.isIntersecting) return;
