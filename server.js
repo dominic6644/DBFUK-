@@ -622,9 +622,9 @@ const related = await pool.query(
       post.meta_description ||
       post.content.replace(/<[^>]+>/g, '').slice(0, 160);
 
-    const image =
-      post.featured_image ||
-      'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
+const image = post.featured_image
+  ? `https://dirtbikefinderuk.co.uk${post.featured_image.startsWith('/') ? '' : '/'}${post.featured_image}`
+  : 'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
 
     const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
 
