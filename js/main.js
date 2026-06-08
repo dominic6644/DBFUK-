@@ -1,7 +1,14 @@
 (function($) {
 	"use strict"
 
-	
+	// Mobile Nav toggle
+	 $(document).ready(function () {
+    $('#nav-toggle-btn').on('click', function (e) {
+      e.preventDefault();
+      $('#responsive-nav').toggleClass('active');
+      $('#menu-icon').toggleClass('fa-bars fa-times');
+    });
+  });
 
 
 
