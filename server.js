@@ -92,6 +92,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/news', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'news.html'));
+});
+
 // IMAGE UPLOAD ROUTE
 app.post('/api/upload-image', upload.single('image'), async (req, res) => {
   try {
@@ -303,36 +307,47 @@ app.post('/submit-form', (req, res) => {
 // --- BLOG ROUTES ---
 // Get all posts
 app.get('/api/posts', async (req, res) => {
+  const { category, subcategory } = req.query;
   const limit = Number(req.query.limit) || 15;
   const page = Number(req.query.page) || 1;
   const offset = (page - 1) * limit;
 
   try {
-    const result = await pool.query(
-      `SELECT * FROM blog_posts
-       ORDER BY published_date DESC
-       LIMIT $1 OFFSET $2`,
-      [limit, offset]
-    );
+    let query = 'SELECT * FROM blog_posts';
+    const values = [];
 
+    if (category) {
+      query += ' WHERE category = $1';
+      values.push(category);
+      if (subcategory) {
+        query += ' AND subcategory = $2';
+        values.push(subcategory);
+      }
+    } else if (subcategory) {
+      query += ' WHERE subcategory = $1';
+      values.push(subcategory);
+    }
+
+    query += ' ORDER BY published_date DESC';
+    const result = await pool.query(query, values);
     res.json(result.rows);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error fetching posts' });
+    res.status(500).json({ error: 'Error fetching blog posts' });
   }
 });
 
-// Get single post by slug (API)
-app.get('/api/posts/:slug', async (req, res) => {
-    const { slug } = req.params;
-    try {
-        const result = await pool.query('SELECT * FROM blog_posts WHERE slug = $1', [slug]);
-        if (result.rows.length === 0) return res.status(404).json({ error: 'Post not found' });
-        res.json(result.rows[0]);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Error fetching blog post' });
-    }
+// Get single post by ID (for editing)
+app.get('/api/posts/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    const result = await pool.query('SELECT * FROM blog_posts WHERE id = $1', [id]);
+    if (result.rows.length === 0) return res.status(404).json({ error: 'Post not found' });
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error fetching blog post' });
+  }
 });
 
 app.get('/rss.xml', async (req, res) => {
@@ -469,68 +484,94 @@ ${urls}
   }
 });
 
-// Add a new blog post
+// Create a new post
 app.post('/api/posts', async (req, res) => {
   const {
-    title,
-    slug,
-    content,
-    author,
-
-    // image versions
-    featured_image,
-    image_medium,
-    image_small,
-
-    youtube_url,
-    published_date,
-    meta_description,
-    article_type
+    title, slug, content, author, featured_image || null,
+        image_medium || null,
+        image_small || null, youtube_url,
+    published_date, meta_description, article_type, category, subcategory
   } = req.body;
 
-  if (!title || !slug || !content || !author || !published_date) {
+  if (!title || !slug || !content || !author || !category) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
-
-    // 1️⃣ Insert the blog post
     await pool.query(
       `INSERT INTO blog_posts
-      (
-        title,
-        slug,
-        content,
-        author,
+      (title, slug, content, author, featured_image, youtube_url, published_date, meta_description, article_type, category, subcategory)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      [title, slug, content, author, featured_image, youtube_url || null, published_date, meta_description, article_type, category, subcategory || null]
+    );
+    res.status(201).json({ message: 'Blog post added successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error adding blog post' });
+  }
+});
 
-        featured_image,
-        featured_image_medium,
-        featured_image_small,
+// Update a post
+app.put('/api/posts/:id', async (req, res) => {
+  const id = req.params.id;
+  const {
+    title, slug, content, author, featured_image, youtube_url,
+    published_date, meta_description, article_type, category, subcategory
+  } = req.body;
 
-        youtube_url,
-        published_date,
-        meta_description,
-        article_type
-      )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+  if (!title || !slug || !content || !author || !category) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
 
+  try {
+    await pool.query(
+      `UPDATE blog_posts SET
+        title = $1,
+        slug = $2,
+        content = $3,
+        author = $4,
+        featured_image = $5,
+        youtube_url = $6,
+        published_date = $7,
+        meta_description = $8,
+        article_type = $9,
+        category = $10,
+        subcategory = $11
+      WHERE id = $12`,
       [
         title,
         slug,
         content,
         author,
-
         featured_image || null,
-        image_medium || null,
-        image_small || null,
-
         youtube_url || null,
         published_date,
         meta_description || null,
-        article_type || 'article'
+        article_type || null,
+        category,
+        subcategory || null,
+        id
       ]
     );
+    res.json({ message: 'Post updated successfully' });
+  } catch (err) {
+    console.error('Error updating post:', err);
+    res.status(500).json({ error: 'Error updating blog post', details: err.message });
+  }
+});
 
+// Delete a post
+app.delete('/api/posts/:id', async (req, res) => {
+  const id = req.params.id;
+  try {
+    await pool.query('DELETE FROM blog_posts WHERE id = $1', [id]);
+    res.json({ message: 'Post deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error deleting blog post' });
+  }
+});
+        
 
     // 2️⃣ Prepare all URLs to ping
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
@@ -593,20 +634,25 @@ function getYouTubeEmbedUrl(url) {
 
 // Serve post page
 
-app.get('/post/:slug', async (req, res) => {
-  const slug = decodeURIComponent(req.params.slug);
+app.get('/news', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'news.html'));
+});
 
+// Serve news by category/subcategory
+app.get('/news/:subcategory?', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'news.html'));
+});
+
+// Serve single post with hierarchical URL
+app.get('/news/:subcategory/:slug', async (req, res) => {
+  const {subcategory, slug } = req.params;
   try {
     const result = await pool.query(
-      'SELECT * FROM blog_posts WHERE slug ILIKE $1',
-      [slug]
+      'SELECT * FROM blog_posts WHERE slug = $1 AND category = $2 AND subcategory = $3',
+      [slug, category, subcategory]
     );
+    if (result.rows.length === 0) return res.status(404).send('<h1>404 - Post not found</h1>');
 
-    if (result.rows.length === 0) {
-      return res.status(404).send('<h1>404 - Post not found</h1>');
-    }
-
-    const post = result.rows[0];
 
 	  // RELATED POSTS
 const related = await pool.query(
