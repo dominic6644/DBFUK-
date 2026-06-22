@@ -487,11 +487,25 @@ ${urls}
 // Create a new post
 app.post('/api/posts', async (req, res) => {
   const {
-    title, slug, content, author, featured_image || null,
-        image_medium || null,
-        image_small || null, youtube_url,
-    published_date, meta_description, article_type, category, subcategory
+    title,
+    slug,
+    content,
+    author,
+    featured_image,
+    image_medium,
+    image_small,
+    youtube_url,
+    published_date,
+    meta_description,
+    article_type,
+    category,
+    subcategory
   } = req.body;
+
+  // Apply fallback values
+  const finalFeaturedImage = featured_image || null;
+  const finalImageMedium = image_medium || null;
+  const finalImageSmall = image_small || null;
 
   if (!title || !slug || !content || !author || !category) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -502,14 +516,8 @@ app.post('/api/posts', async (req, res) => {
       `INSERT INTO blog_posts
       (title, slug, content, author, featured_image, youtube_url, published_date, meta_description, article_type, category, subcategory)
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-      [title, slug, content, author, featured_image, youtube_url || null, published_date, meta_description, article_type, category, subcategory || null]
+      [title, slug, content, author, finalFeaturedImage, youtube_url || null, published_date, meta_description, article_type, category, subcategory || null]
     );
-    res.status(201).json({ message: 'Blog post added successfully' });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error adding blog post' });
-  }
-});
 
 // Update a post
 app.put('/api/posts/:id', async (req, res) => {
@@ -634,18 +642,8 @@ function getYouTubeEmbedUrl(url) {
 
 // Serve post page
 
-app.get('/news', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'news.html'));
-});
-
-// Serve news by category/subcategory
-app.get('/news/:subcategory?', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'news.html'));
-});
-
-// Serve single post with hierarchical URL
-app.get('/news/:subcategory/:slug', async (req, res) => {
-  const {subcategory, slug } = req.params;
+app.get('/news/:category/:subcategory/:slug', async (req, res) => {
+  const { category, subcategory, slug } = req.params;
   try {
     const result = await pool.query(
       'SELECT * FROM blog_posts WHERE slug = $1 AND category = $2 AND subcategory = $3',
@@ -653,7 +651,13 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
     );
     if (result.rows.length === 0) return res.status(404).send('<h1>404 - Post not found</h1>');
 
-
+    const post = result.rows[0];
+    // Rest of your code...
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('<h1>Server error loading post.</h1>');
+  }
+});
 	  // RELATED POSTS
 const related = await pool.query(
   `SELECT title, slug
