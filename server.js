@@ -92,9 +92,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/news', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'news.html'));
-});
+
 
 // IMAGE UPLOAD ROUTE
 app.post('/api/upload-image', upload.single('image'), async (req, res) => {
