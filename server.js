@@ -639,51 +639,58 @@ function getYouTubeEmbedUrl(url) {
     
 
 // Serve post page
+app.get('/news/:subcategory/:slug', async (req, res) => {
+  const { subcategory, slug } = req.params;
 
-app.get('/news/:category/:subcategory/:slug', async (req, res) => {
-  const { category, subcategory, slug } = req.params;
   try {
     const result = await pool.query(
-      'SELECT * FROM blog_posts WHERE slug = $1 AND category = $2 AND subcategory = $3',
-      [slug, category, subcategory]
+      `SELECT *
+       FROM blog_posts
+       WHERE slug = $1
+       AND subcategory = $2`,
+      [slug, subcategory]
     );
-    if (result.rows.length === 0) return res.status(404).send('<h1>404 - Post not found</h1>');
+
+    if (result.rows.length === 0) {
+      return res.status(404).send('<h1>404 - Post not found</h1>');
+    }
 
     const post = result.rows[0];
-    // Rest of your code...
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('<h1>Server error loading post.</h1>');
-  }
-});
-	  // RELATED POSTS
-const related = await pool.query(
-  `SELECT title, slug
-   FROM blog_posts
-   WHERE slug != $1
-   ORDER BY published_date DESC
-   LIMIT 5`,
-  [slug]
-);
+
+    // RELATED POSTS
+    const related = await pool.query(
+      `SELECT title, slug, subcategory
+       FROM blog_posts
+       WHERE slug != $1
+       ORDER BY published_date DESC
+       LIMIT 5`,
+      [slug]
+    );
 
     const description =
       post.meta_description ||
       post.content.replace(/<[^>]+>/g, '').slice(0, 160);
 
-const image = post.featured_image
-  ? `https://dirtbikefinderuk.co.uk${post.featured_image.startsWith('/') ? '' : '/'}${post.featured_image}`
-  : 'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
+    const image = post.featured_image
+      ? `https://dirtbikefinderuk.co.uk${
+          post.featured_image.startsWith('/') ? '' : '/'
+        }${post.featured_image}`
+      : 'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
 
     const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
 
     const publishedISO = new Date(post.published_date).toISOString();
 
-	  const wordCount = post.content.replace(/<[^>]+>/g, '').split(' ').length;
-const readTime = Math.max(1, Math.ceil(wordCount / 200));
+    const wordCount = post.content
+      .replace(/<[^>]+>/g, '')
+      .split(' ').length;
 
-    // ✅ JSON-LD Structured Data
-   
-  const jsonLd = `
+    const readTime = Math.max(1, Math.ceil(wordCount / 200));
+
+    const articleUrl =
+      `https://dirtbikefinderuk.co.uk/news/${post.subcategory}/${post.slug}`;
+
+    const jsonLd = `
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -691,126 +698,70 @@ const readTime = Math.max(1, Math.ceil(wordCount / 200));
 
   "headline": ${JSON.stringify(post.title)},
   "description": ${JSON.stringify(description)},
-  "image": [{
-  "@type": "ImageObject",
-  "url": "${image}",
-  "width": 1200,
-  "height": 630
-}],
+
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "${articleUrl}"
+  },
 
   "datePublished": "${publishedISO}",
   "dateModified": "${
-  post.updated_at
-    ? new Date(post.updated_at).toISOString()
-    : publishedISO
-}",
+    post.updated_at
+      ? new Date(post.updated_at).toISOString()
+      : publishedISO
+  }",
 
   "author": {
     "@type": "Person",
-    "name": ${JSON.stringify(post.author)},
-    "url": "https://dirtbikefinderuk.co.uk/author.html"
-  },
-
-  "speakable": {
-    "@type": "SpeakableSpecification",
-    "cssSelector": ["h1", ".content p"]
+    "name": ${JSON.stringify(post.author)}
   },
 
   "publisher": {
     "@type": "Organization",
     "name": "Dirt Bike Finder UK",
-   "logo": {
-  "@type": "ImageObject",
-  "url": "https://dirtbikefinderuk.co.uk/images/logo.png",
-  "width": 600,
-  "height": 60
-},
-    "sameAs": [
-      "https://www.instagram.com/dirtbikefinder_uk/",
-	  "https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#",
-	  "https://www.youtube.com/@DirtbikefinderUK",
-	  "https://x.com/dirtbikefinder?s=21 "
-    ]
-  },
-
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://dirtbikefinderuk.co.uk/post/${post.slug}"
-  },
-
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "Dirt Bike Finder UK",
-    "url": "https://dirtbikefinderuk.co.uk"
-  },
-
-  "inLanguage": "en-GB",
- "articleSection": ${
-  JSON.stringify(
-    post.article_type === "mx" ? "Motocross" :
-    post.article_type === "enduro" ? "Enduro" :
-    post.article_type === "trials" ? "Trials" :
-    post.article_type === "news" ? "News" :
-    "Motorsport"
-  )
-},
-  "keywords": ["motocross","supercross","enduro","trials"],
-
-  "wordCount": ${post.content.replace(/<[^>]+>/g, '').split(' ').length},
-
-  "articleBody": ${JSON.stringify(
-    post.content.replace(/<[^>]+>/g, '').slice(0, 5000)
-  )},
-
-  "isAccessibleForFree": true
-
-
- ${youtubeEmbed ? `,
-  "video": {
-    "@type": "VideoObject",
-    "name": ${JSON.stringify(post.title)},
-    "description": ${JSON.stringify(description)},
-    "thumbnailUrl": [
-      "https://img.youtube.com/vi/${youtubeEmbed.split('/embed/')[1]}/maxresdefault.jpg"
-    ],
-    "uploadDate": "${publishedISO}",
-    "duration": "PT5M32S",
-    "embedUrl": "${youtubeEmbed}",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Dirt Bike Finder UK",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
-      }
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
     }
-  }` : ''}
+  }
 }
-</script>
-`;
-	  const breadcrumbLd = `
+</script>`;
+
+    const breadcrumbLd = `
 <script type="application/ld+json">
 {
- "@context": "https://schema.org",
- "@type": "BreadcrumbList",
- "itemListElement": [{
-   "@type": "ListItem",
-   "position": 1,
-   "name": "Home",
-   "item": "https://dirtbikefinderuk.co.uk"
- },{
-   "@type": "ListItem",
-   "position": 2,
-   "name": "News",
-   "item": "https://dirtbikefinderuk.co.uk/news"
- },{
-   "@type": "ListItem",
-   "position": 3,
-   "name": ${JSON.stringify(post.title)},
-   "item": "https://dirtbikefinderuk.co.uk/post/${post.slug}"
- }]
+ "@context":"https://schema.org",
+ "@type":"BreadcrumbList",
+ "itemListElement":[
+   {
+     "@type":"ListItem",
+     "position":1,
+     "name":"Home",
+     "item":"https://dirtbikefinderuk.co.uk"
+   },
+   {
+     "@type":"ListItem",
+     "position":2,
+     "name":"News",
+     "item":"https://dirtbikefinderuk.co.uk/news"
+   },
+   {
+     "@type":"ListItem",
+     "position":3,
+     "name":${JSON.stringify(post.subcategory)},
+     "item":"https://dirtbikefinderuk.co.uk/news/${post.subcategory}"
+   },
+   {
+     "@type":"ListItem",
+     "position":4,
+     "name":${JSON.stringify(post.title)},
+     "item":"${articleUrl}"
+   }
+ ]
 }
-</script>
+</script>`;
+
+
 `;
 		
 res.send(`
