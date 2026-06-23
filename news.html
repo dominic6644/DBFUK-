@@ -380,29 +380,70 @@
 		
 <script>
 
-	document.getElementById('nav-toggle-btn').addEventListener('click', () => {
-    const navbarLinks = document.getElementById('navbar-links');
-    if (navbarLinks) {
+document.addEventListener('DOMContentLoaded', () => {
+
+  // =========================
+  // MENU TOGGLE
+  // =========================
+
+  const navBtn = document.getElementById('nav-toggle-btn');
+
+  if (navBtn) {
+    navBtn.addEventListener('click', () => {
+      const navbarLinks = document.getElementById('navbar-links');
+
+      if (navbarLinks) {
         navbarLinks.classList.toggle('active');
-    }
-});
-	
-(() => {
+      }
+    });
+  }
 
- // Hardcode the category for this page
+  // =========================
+  // PAGE SETTINGS
+  // =========================
+
   const PAGE_CATEGORY = '';
-  const PAGE_SUBCATEGORY = ''; // Leave empty for all subcategories
+  const PAGE_SUBCATEGORY = '';
 
- async function loadPosts(category = PAGE_CATEGORY) {
+  // =========================
+  // LOAD POSTS
+  // =========================
+
+  async function loadPosts(category = PAGE_CATEGORY) {
+
     try {
-      let url = `/api/posts?category=${PAGE_CATEGORY}`;
-      if (PAGE_SUBCATEGORY) url += `&subcategory=${PAGE_SUBCATEGORY}`;
+
+      let url = '/api/posts';
+
+      const params = [];
+
+      if (category) {
+        params.push(`category=${encodeURIComponent(category)}`);
+      }
+
+      if (PAGE_SUBCATEGORY) {
+        params.push(`subcategory=${encodeURIComponent(PAGE_SUBCATEGORY)}`);
+      }
+
+      if (params.length) {
+        url += '?' + params.join('&');
+      }
 
       const res = await fetch(url);
-      if (!res.ok) throw new Error('Failed to fetch posts');
+
+      if (!res.ok) {
+        throw new Error(`HTTP ${res.status}`);
+      }
 
       const posts = await res.json();
+
       const container = document.getElementById('posts');
+
+      if (!container) {
+        console.error('Posts container not found');
+        return;
+      }
+
       container.innerHTML = '';
 
       if (!posts.length) {
@@ -410,93 +451,149 @@
         return;
       }
 
-     posts.forEach(post => {
-  // Extract a short description from the content (first 100 characters)
-  const description = post.content.replace(/<[^>]+>/g, '').slice(0, 100) + '...';
+      posts.forEach(post => {
 
-  container.innerHTML += `
-    <a href="/news/${post.category}/${post.subcategory || 'general'}/${post.slug}" class="article-card">
-      <div class="article-image">
-        ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}">` : '<div class="no-image">No Image Available</div>'}
-      </div>
-      <div class="red-divider"></div>
-      <div class="article-text">
-        <p class="date">${new Date(post.published_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: '2-digit' })}</p>
-        <h2>${post.title}</h2>
-        <p class="article-description">${post.category}</p>
-		 <p class="article-description">${post.subcategory}</p>
-      </div>
-    </a>
-  `;
-});
+        container.innerHTML += `
+          <a href="/news/${post.subcategory || 'general'}/${post.slug}" class="article-card">
+
+            <div class="article-image">
+              ${
+                post.featured_image
+                  ? `<img src="${post.featured_image}" alt="${post.title}">`
+                  : `<div class="no-image">No Image Available</div>`
+              }
+            </div>
+
+            <div class="red-divider"></div>
+
+            <div class="article-text">
+
+              <p class="date">
+                ${new Date(post.published_date).toLocaleDateString(
+                  'en-GB',
+                  {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric'
+                  }
+                )}
+              </p>
+
+              <h2>${post.title}</h2>
+
+              ${
+                post.category
+                  ? `<p class="article-description">${post.category}</p>`
+                  : ''
+              }
+
+              ${
+                post.subcategory
+                  ? `<p class="article-description">${post.subcategory}</p>`
+                  : ''
+              }
+
+            </div>
+
+          </a>
+        `;
+      });
+
     } catch (err) {
-      console.error(err);
-      document.getElementById('posts').innerHTML = '<p>Error loading posts.</p>';
+
+      console.error('Error loading posts:', err);
+
+      const container = document.getElementById('posts');
+
+      if (container) {
+        container.innerHTML = '<p>Error loading posts.</p>';
+      }
     }
   }
 
-  // Load posts on page load
-  document.addEventListener('DOMContentLoaded', loadPosts);
+  // =========================
+  // INITIAL LOAD
+  // =========================
 
-
-
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-
-  // initial load
   loadPosts();
 
   // =========================
-  // NAVBAR DROPDOWN FILTERS
+  // DROPDOWN FILTERS
   // =========================
+
   document.querySelectorAll('.dropdown-menu a').forEach(link => {
+
     link.addEventListener('click', e => {
+
       e.preventDefault();
 
       const category = e.currentTarget.dataset.category;
 
       loadPosts(category);
 
-      // close mobile dropdown if open
-      document.querySelectorAll('.dropdown').forEach(d => {
-        d.classList.remove('open');
+      document.querySelectorAll('.dropdown').forEach(dropdown => {
+        dropdown.classList.remove('open');
       });
+
     });
+
   });
 
   // =========================
-  // MOBILE SELECT FILTER
+  // MOBILE SELECT
   // =========================
-  const mobileSelect = document.getElementById('mobileCategorySelect');
+
+  const mobileSelect =
+    document.getElementById('mobileCategorySelect');
 
   if (mobileSelect) {
+
     mobileSelect.addEventListener('change', function () {
       loadPosts(this.value);
     });
+
+  }
+
+  // =========================
+  // DROPDOWN TOGGLE
+  // =========================
+
+  document.querySelectorAll('.dropdown-toggle').forEach(btn => {
+
+    btn.addEventListener('click', e => {
+
+      e.preventDefault();
+
+      btn.parentElement.classList.toggle('open');
+
+    });
+
+  });
+
+  // =========================
+  // MOBILE NAV
+  // =========================
+
+  const mobileToggle =
+    document.querySelector('.mobile-nav-toggle');
+
+  const mainNav =
+    document.getElementById('mainNav');
+
+  if (mobileToggle && mainNav) {
+
+    mobileToggle.addEventListener('click', e => {
+
+      e.preventDefault();
+
+      mainNav.classList.toggle('open');
+
+    });
+
   }
 
 });
-
-document.querySelectorAll('.dropdown-toggle').forEach(btn => {
-  btn.addEventListener('click', e => {
-    e.preventDefault();
-    const parent = btn.parentElement;
-    parent.classList.toggle('open');
-  });
-});
-
-document.querySelector('.mobile-nav-toggle').addEventListener('click', function (e) {
-  e.preventDefault();
-  document.getElementById('mainNav').classList.toggle('open');
-});
 </script>
-
-
-	   
-
-
 
 	</body>
 </html>
