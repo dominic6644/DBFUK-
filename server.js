@@ -762,7 +762,7 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
 </script>`;
 
 
-`;
+
 		
 res.send(`
 <!DOCTYPE html>
