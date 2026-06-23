@@ -393,7 +393,7 @@
   const PAGE_CATEGORY = '';
   const PAGE_SUBCATEGORY = ''; // Leave empty for all subcategories
 
-  async function loadPosts() {
+ async function loadPosts(category = PAGE_CATEGORY) {
     try {
       let url = `/api/posts?category=${PAGE_CATEGORY}`;
       if (PAGE_SUBCATEGORY) url += `&subcategory=${PAGE_SUBCATEGORY}`;
