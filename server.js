@@ -616,7 +616,6 @@ app.delete('/api/posts/:id', async (req, res) => {
 // =============================================
 app.get('/news/:subcategory/:slug', async (req, res) => {
   const { subcategory, slug } = req.params;
-  console.log('Fetching post with subcategory:', subcategory, 'and slug:', slug); // Debug log
 
   try {
     const result = await pool.query(
@@ -625,17 +624,12 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      console.log('No post found for subcategory:', subcategory, 'and slug:', slug); // Debug log
       return res.status(404).send('<h1>404 - Post not found</h1>');
     }
-    // Rest of your code...
-  } catch (err) {
-    console.error('Error fetching post:', err); // Debug log
-    res.status(500).send('<h1>Server error loading post.</h1>');
-  }
-});
 
-    // Get related posts (same category or subcategory)
+    const post = result.rows[0];
+
+    // This is INSIDE the try block and async function
     const related = await pool.query(
       `SELECT title, slug, subcategory
        FROM blog_posts
@@ -645,6 +639,13 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
        LIMIT 5`,
       [slug, post.category, post.subcategory]
     );
+
+    // Rest of your code...
+  } catch (err) {
+    console.error('Error fetching post:', err);
+    res.status(500).send('<h1>Server error loading post.</h1>');
+  }
+});
 
     // Generate metadata
     const description = post.meta_description || post.content.replace(/<[^>]+>/g, '').slice(0, 160);
