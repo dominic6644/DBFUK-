@@ -785,7 +785,7 @@ res.send(`
 <meta property="og:title" content="${post.title}">
 <meta property="og:description" content="${description}">
 <meta property="og:url" content="https://dirtbikefinderuk.co.uk/post/${post.slug}">
-<meta property="og:image" content="${image}">
+<meta property="og:image" content="${imageUrl}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Dirt Bike Finder UK">
@@ -815,7 +815,7 @@ res.send(`
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${post.title}">
 <meta name="twitter:description" content="${description}">
-<meta name="twitter:image" content="${image}">
+<meta name="twitter:image" content="${imageUrl}">
 
 <!-- Author -->
 <meta name="author" content="${post.author}">
