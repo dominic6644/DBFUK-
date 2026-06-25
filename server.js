@@ -637,6 +637,29 @@ app.delete('/api/posts/:id', async (req, res) => {
 // =============================================
 // SERVE DYNAMIC POST PAGES
 // =============================================
+app.get('/post/:slug', async (req, res) => {
+  const { slug } = req.params;
+
+  try {
+    const result = await pool.query(
+      `SELECT subcategory FROM blog_posts WHERE slug = $1`,
+      [slug]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).send('<h1>Post not found</h1>');
+    }
+
+    const { subcategory } = result.rows[0];
+
+    return res.redirect(301, `/news/${subcategory}/${slug}`);
+
+  } catch (err) {
+    console.error('Redirect error:', err);
+    return res.status(500).send('Server error');
+  }
+});
+
 app.get('/news/:subcategory/:slug', async (req, res) => {
   const { subcategory, slug } = req.params;
 
