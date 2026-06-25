@@ -640,12 +640,7 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
       [slug, post.category, post.subcategory]
     );
 
-    // Rest of your code...
-  } catch (err) {
-    console.error('Error fetching post:', err);
-    res.status(500).send('<h1>Server error loading post.</h1>');
-  }
-});
+   
 
     // Generate metadata
     const description = post.meta_description || post.content.replace(/<[^>]+>/g, '').slice(0, 160);
