@@ -112,6 +112,29 @@ app.post('/api/upload-image', upload.single('image'), async (req, res) => {
   }
 });
 
+function getYouTubeEmbedUrl(url) {
+  if (!url) return null;
+
+  try {
+    // handle youtu.be links
+    if (url.includes('youtu.be')) {
+      const id = url.split('/').pop().split('?')[0];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+
+    // handle normal youtube links
+    const match = url.match(/[?&]v=([^&]+)/);
+    if (match && match[1]) {
+      return `https://www.youtube.com/embed/${match[1]}`;
+    }
+
+    return null;
+  } catch (err) {
+    console.error('YouTube parse error:', err);
+    return null;
+  }
+}
+
 
 // Example route
 app.get('/', (req, res) => {
