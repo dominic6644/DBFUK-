@@ -297,13 +297,11 @@ app.post('/submit-form', (req, res) => {
     });
 });
 
+/ =============================================
+// BLOG ROUTES
+// =============================================
 
-
-
-// === BLOG ROUTES ===
-
-// --- BLOG ROUTES ---
-// Get all posts
+// Get all posts (with optional category/subcategory filtering)
 app.get('/api/posts', async (req, res) => {
   const { category, subcategory } = req.query;
   const limit = Number(req.query.limit) || 15;
@@ -326,11 +324,13 @@ app.get('/api/posts', async (req, res) => {
       values.push(subcategory);
     }
 
-    query += ' ORDER BY published_date DESC';
+    query += ' ORDER BY published_date DESC LIMIT $' + (values.length + 1) + ' OFFSET $' + (values.length + 2);
+    values.push(limit, offset);
+
     const result = await pool.query(query, values);
     res.json(result.rows);
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching posts:', err);
     res.status(500).json({ error: 'Error fetching blog posts' });
   }
 });
@@ -343,31 +343,35 @@ app.get('/api/posts/:id', async (req, res) => {
     if (result.rows.length === 0) return res.status(404).json({ error: 'Post not found' });
     res.json(result.rows[0]);
   } catch (err) {
-    console.error(err);
+    console.error('Error fetching post by ID:', err);
     res.status(500).json({ error: 'Error fetching blog post' });
   }
 });
 
+// =============================================
+// SITEMAPS AND RSS
+// =============================================
+
+// RSS Feed (updated to use /news/:subcategory/:slug)
 app.get('/rss.xml', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT title, slug, meta_description, published_date
+      SELECT title, slug, subcategory, meta_description, published_date
       FROM blog_posts
       WHERE published_date >= NOW() - INTERVAL '7 days'
       ORDER BY published_date DESC
       LIMIT 50
     `);
 
-    const siteUrl = 'https://www.dirtbikefinderuk.co.uk';
-
+    const siteUrl = 'https://dirtbikefinderuk.co.uk';
     const items = result.rows.map(post => {
+      const postUrl = `${siteUrl}/news/${post.subcategory || 'general'}/${post.slug}`;
       return `
         <item>
           <title><![CDATA[${post.title}]]></title>
-          <link>${siteUrl}/post/${post.slug}</link>
-          <guid>${siteUrl}/post/${post.slug}</guid>
+          <link>${postUrl}</link>
+          <guid>${postUrl}</guid>
           <pubDate>${new Date(post.published_date).toUTCString()}</pubDate>
-
           <news:news>
             <news:publication>
               <news:name>Dirt Bike Finder UK</news:name>
@@ -376,17 +380,13 @@ app.get('/rss.xml', async (req, res) => {
             <news:publication_date>${new Date(post.published_date).toISOString()}</news:publication_date>
             <news:title><![CDATA[${post.title}]]></news:title>
           </news:news>
-
-          <description><![CDATA[${
-            post.meta_description || 'Latest motocross, supercross and enduro results.'
-          }]]></description>
+          <description><![CDATA[${post.meta_description || 'Latest motocross, supercross and enduro results.'}]]></description>
         </item>
       `;
     }).join('');
 
     const rss = `<?xml version="1.0" encoding="UTF-8"?>
-      <rss version="2.0"
-           xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+      <rss version="2.0" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
         <channel>
           <title>Dirt Bike Finder UK</title>
           <link>${siteUrl}</link>
@@ -394,37 +394,38 @@ app.get('/rss.xml', async (req, res) => {
           <language>en-gb</language>
           ${items}
         </channel>
-      </rss>
-    `;
+      </rss>`;
 
     res.set('Content-Type', 'application/rss+xml');
     res.send(rss);
-
   } catch (err) {
-    console.error(err);
+    console.error('Error generating RSS feed:', err);
     res.status(500).send('Error generating RSS feed');
   }
 });
 
+// Sitemap for all posts (updated to use /news/:subcategory/:slug)
 app.get('/sitemap-posts.xml', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT slug, published_date
+      SELECT slug, subcategory, published_date
       FROM blog_posts
       ORDER BY published_date DESC
       LIMIT 5000
     `);
 
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
-
-    const urls = result.rows.map(post => `
-      <url>
-        <loc>${baseUrl}/post/${post.slug}</loc>
-        <lastmod>${new Date(post.published_date).toISOString()}</lastmod>
-        <changefreq>daily</changefreq>
-        <priority>0.9</priority>
-      </url>
-    `).join('');
+    const urls = result.rows.map(post => {
+      const postUrl = `${baseUrl}/news/${post.subcategory || 'general'}/${post.slug}`;
+      return `
+        <url>
+          <loc>${postUrl}</loc>
+          <lastmod>${new Date(post.published_date).toISOString()}</lastmod>
+          <changefreq>daily</changefreq>
+          <priority>0.9</priority>
+        </url>
+      `;
+    }).join('');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -433,17 +434,17 @@ ${urls}
 
     res.header('Content-Type', 'application/xml');
     res.send(sitemap);
-
   } catch (err) {
-    console.error(err);
+    console.error('Error generating sitemap:', err);
     res.status(500).send('Error generating sitemap');
   }
 });
 
+// News-specific sitemap (updated to use /news/:subcategory/:slug)
 app.get('/news-sitemap.xml', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT slug, title, published_date
+      SELECT slug, title, subcategory, published_date
       FROM blog_posts
       WHERE article_type = 'news'
       AND published_date >= NOW() - INTERVAL '2 days'
@@ -452,58 +453,49 @@ app.get('/news-sitemap.xml', async (req, res) => {
     `);
 
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
-
-    const urls = result.rows.map(post => `
-      <url>
-        <loc>${baseUrl}/post/${post.slug}</loc>
-        <news:news>
-          <news:publication>
-            <news:name>Dirt Bike Finder UK</news:name>
-            <news:language>en</news:language>
-          </news:publication>
-          <news:publication_date>${new Date(post.published_date).toISOString()}</news:publication_date>
-          <news:title><![CDATA[${post.title}]]></news:title>
-        </news:news>
-      </url>
-    `).join('');
+    const urls = result.rows.map(post => {
+      const postUrl = `${baseUrl}/news/${post.subcategory || 'general'}/${post.slug}`;
+      return `
+        <url>
+          <loc>${postUrl}</loc>
+          <news:news>
+            <news:publication>
+              <news:name>Dirt Bike Finder UK</news:name>
+              <news:language>en</news:language>
+            </news:publication>
+            <news:publication_date>${new Date(post.published_date).toISOString()}</news:publication_date>
+            <news:title><![CDATA[${post.title}]]></news:title>
+          </news:news>
+        </url>
+      `;
+    }).join('');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 ${urls}
 </urlset>`;
 
     res.set('Content-Type', 'application/xml');
     res.send(sitemap);
-
   } catch (err) {
-    console.error(err);
+    console.error('Error generating news sitemap:', err);
     res.status(500).send('Error generating news sitemap');
   }
 });
 
+// =============================================
+// POST CRUD OPERATIONS
+// =============================================
+
 // Create a new post
 app.post('/api/posts', async (req, res) => {
   const {
-    title,
-    slug,
-    content,
-    author,
-    featured_image,
-    image_medium,
-    image_small,
-    youtube_url,
-    published_date,
-    meta_description,
-    article_type,
-    category,
-    subcategory
+    title, slug, content, author, featured_image,
+    image_medium, image_small, youtube_url,
+    published_date, meta_description, article_type,
+    category, subcategory
   } = req.body;
-
-  // Apply fallback values
-  const finalFeaturedImage = featured_image || null;
-  const finalImageMedium = image_medium || null;
-  const finalImageSmall = image_small || null;
 
   if (!title || !slug || !content || !author || !category) {
     return res.status(400).json({ error: 'Missing required fields' });
@@ -512,17 +504,56 @@ app.post('/api/posts', async (req, res) => {
   try {
     await pool.query(
       `INSERT INTO blog_posts
-      (title, slug, content, author, featured_image, youtube_url, published_date, meta_description, article_type, category, subcategory)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-      [title, slug, content, author, finalFeaturedImage, youtube_url || null, published_date, meta_description, article_type, category, subcategory || null]
+      (title, slug, content, author, featured_image, image_medium, image_small, youtube_url, published_date, meta_description, article_type, category, subcategory)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
+      [
+        title, slug, content, author,
+        featured_image || null,
+        image_medium || null,
+        image_small || null,
+        youtube_url || null,
+        published_date,
+        meta_description || null,
+        article_type || null,
+        category,
+        subcategory || null
+      ]
     );
+
+    // Ping search engines with updated sitemaps
+    const baseUrl = 'https://dirtbikefinderuk.co.uk';
+    const urlsToPing = [
+      `${baseUrl}/sitemap-posts.xml`,
+      `${baseUrl}/news-sitemap.xml`,
+      `${baseUrl}/rss.xml`
+    ];
+
+    // Fire-and-forget: Don't wait for pings to complete
+    urlsToPing.forEach(url => {
+      fetch(`https://www.google.com/ping?sitemap=${url}`)
+        .then(() => console.log(`✅ Google pinged: ${url}`))
+        .catch(err => console.error(`❌ Google ping error: ${url}`, err));
+
+      fetch(`https://www.bing.com/webmaster/ping.aspx?siteMap=${url}`)
+        .then(() => console.log(`✅ Bing pinged: ${url}`))
+        .catch(err => console.error(`❌ Bing ping error: ${url}`, err));
+    });
+
+    res.status(201).json({ message: 'Post created successfully' });
+  } catch (err) {
+    console.error('Error creating post:', err);
+    res.status(500).json({ error: 'Error creating blog post' });
+  }
+});
 
 // Update a post
 app.put('/api/posts/:id', async (req, res) => {
   const id = req.params.id;
   const {
-    title, slug, content, author, featured_image, youtube_url,
-    published_date, meta_description, article_type, category, subcategory
+    title, slug, content, author, featured_image,
+    image_medium, image_small, youtube_url,
+    published_date, meta_description, article_type,
+    category, subcategory
   } = req.body;
 
   if (!title || !slug || !content || !author || !category) {
@@ -537,19 +568,20 @@ app.put('/api/posts/:id', async (req, res) => {
         content = $3,
         author = $4,
         featured_image = $5,
-        youtube_url = $6,
-        published_date = $7,
-        meta_description = $8,
-        article_type = $9,
-        category = $10,
-        subcategory = $11
-      WHERE id = $12`,
+        image_medium = $6,
+        image_small = $7,
+        youtube_url = $8,
+        published_date = $9,
+        meta_description = $10,
+        article_type = $11,
+        category = $12,
+        subcategory = $13
+      WHERE id = $14`,
       [
-        title,
-        slug,
-        content,
-        author,
+        title, slug, content, author,
         featured_image || null,
+        image_medium || null,
+        image_small || null,
         youtube_url || null,
         published_date,
         meta_description || null,
@@ -559,10 +591,11 @@ app.put('/api/posts/:id', async (req, res) => {
         id
       ]
     );
+
     res.json({ message: 'Post updated successfully' });
   } catch (err) {
     console.error('Error updating post:', err);
-    res.status(500).json({ error: 'Error updating blog post', details: err.message });
+    res.status(500).json({ error: 'Error updating blog post' });
   }
 });
 
@@ -573,81 +606,22 @@ app.delete('/api/posts/:id', async (req, res) => {
     await pool.query('DELETE FROM blog_posts WHERE id = $1', [id]);
     res.json({ message: 'Post deleted successfully' });
   } catch (err) {
-    console.error(err);
+    console.error('Error deleting post:', err);
     res.status(500).json({ error: 'Error deleting blog post' });
   }
 });
-        
 
-    // 2️⃣ Prepare all URLs to ping
-    const baseUrl = 'https://dirtbikefinderuk.co.uk';
-const postUrl = `${baseUrl}/post/${slug}`;
-    const urlsToPing = [
-      `${baseUrl}/sitemap-posts.xml`,
-      `${baseUrl}/news-sitemap.xml`,
-      `${baseUrl}/rss.xml`
-    ];
+// =============================================
+// SERVE DYNAMIC POST PAGES
+// =============================================
 
-    // 3️⃣ Ping Google & Bing for each URL
-    const pingPromises = urlsToPing.flatMap(url => [
-      fetch(`https://www.google.com/ping?sitemap=${url}`).then(() => console.log(`✅ Google pinged: ${url}`)).catch(err => console.error(`❌ Google ping error: ${url}`, err)),
-      fetch(`https://www.bing.com/webmaster/ping.aspx?siteMap=${url}`).then(() => console.log(`✅ Bing pinged: ${url}`)).catch(err => console.error(`❌ Bing ping error: ${url}`, err))
-    ]);
-
-    // Run all pings asynchronously without blocking response
-    Promise.all(pingPromises).then(() => {
-      console.log('All sitemap & RSS pings completed.');
-    });
-
-    // 4️⃣ Return success response immediately
-    res.status(201).json({ message: 'Blog post added successfully and search engines notified.' });
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Error adding blog post' });
-  }
-});
-
-//helper
-function getYouTubeEmbedUrl(url) {
-    if (!url) return null;
-
-    url = url.trim(); // 
-
-    try {
-        const parsed = new URL(url);
-
-        if (parsed.hostname.includes('youtu.be')) {
-            return `https://www.youtube.com/embed/${parsed.pathname.slice(1)}`;
-        }
-
-        if (parsed.hostname.includes('youtube.com')) {
-            const id = parsed.searchParams.get('v');
-            if (id) return `https://www.youtube.com/embed/${id}`;
-        }
-    } catch (e) {
-        console.error('Invalid YouTube URL:', url);
-        return null;
-    }
-
-    return null;
-	
-}
-
-
-
-    
-
-// Serve post page
+// Serve post page at /news/:subcategory/:slug
 app.get('/news/:subcategory/:slug', async (req, res) => {
   const { subcategory, slug } = req.params;
 
   try {
     const result = await pool.query(
-      `SELECT *
-       FROM blog_posts
-       WHERE slug = $1
-       AND subcategory = $2`,
+      `SELECT * FROM blog_posts WHERE slug = $1 AND subcategory = $2`,
       [slug, subcategory]
     );
 
@@ -657,65 +631,47 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
 
     const post = result.rows[0];
 
-    // RELATED POSTS
+    // Get related posts (same category or subcategory)
     const related = await pool.query(
       `SELECT title, slug, subcategory
        FROM blog_posts
        WHERE slug != $1
+       AND (category = $2 OR subcategory = $3)
        ORDER BY published_date DESC
        LIMIT 5`,
-      [slug]
+      [slug, post.category, post.subcategory]
     );
 
-    const description =
-      post.meta_description ||
-      post.content.replace(/<[^>]+>/g, '').slice(0, 160);
-
-    const image = post.featured_image
-      ? `https://dirtbikefinderuk.co.uk${
-          post.featured_image.startsWith('/') ? '' : '/'
-        }${post.featured_image}`
+    // Generate metadata
+    const description = post.meta_description || post.content.replace(/<[^>]+>/g, '').slice(0, 160);
+    const imageUrl = post.featured_image
+      ? `https://dirtbikefinderuk.co.uk${post.featured_image.startsWith('/') ? '' : '/'}${post.featured_image}`
       : 'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
 
     const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
-
     const publishedISO = new Date(post.published_date).toISOString();
-
-    const wordCount = post.content
-      .replace(/<[^>]+>/g, '')
-      .split(' ').length;
-
+    const wordCount = post.content.replace(/<[^>]+>/g, '').split(' ').length;
     const readTime = Math.max(1, Math.ceil(wordCount / 200));
+    const articleUrl = `https://dirtbikefinderuk.co.uk/news/${post.subcategory}/${post.slug}`;
 
-    const articleUrl =
-      `https://dirtbikefinderuk.co.uk/news/${post.subcategory}/${post.slug}`;
-
+    // Generate JSON-LD for SEO
     const jsonLd = `
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "${post.article_type === 'news' ? 'NewsArticle' : 'Article'}",
-
   "headline": ${JSON.stringify(post.title)},
   "description": ${JSON.stringify(description)},
-
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "${articleUrl}"
   },
-
   "datePublished": "${publishedISO}",
-  "dateModified": "${
-    post.updated_at
-      ? new Date(post.updated_at).toISOString()
-      : publishedISO
-  }",
-
+  "dateModified": "${post.updated_at ? new Date(post.updated_at).toISOString() : publishedISO}",
   "author": {
     "@type": "Person",
     "name": ${JSON.stringify(post.author)}
   },
-
   "publisher": {
     "@type": "Organization",
     "name": "Dirt Bike Finder UK",
@@ -723,47 +679,47 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
       "@type": "ImageObject",
       "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
     }
-  }
+  },
+  ${post.featured_image ? `"image": "${imageUrl}"` : ''}
 }
 </script>`;
 
+    // Generate breadcrumb JSON-LD
     const breadcrumbLd = `
 <script type="application/ld+json">
 {
- "@context":"https://schema.org",
- "@type":"BreadcrumbList",
- "itemListElement":[
-   {
-     "@type":"ListItem",
-     "position":1,
-     "name":"Home",
-     "item":"https://dirtbikefinderuk.co.uk"
-   },
-   {
-     "@type":"ListItem",
-     "position":2,
-     "name":"News",
-     "item":"https://dirtbikefinderuk.co.uk/news"
-   },
-   {
-     "@type":"ListItem",
-     "position":3,
-     "name":${JSON.stringify(post.subcategory)},
-     "item":"https://dirtbikefinderuk.co.uk/news/${post.subcategory}"
-   },
-   {
-     "@type":"ListItem",
-     "position":4,
-     "name":${JSON.stringify(post.title)},
-     "item":"${articleUrl}"
-   }
- ]
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://dirtbikefinderuk.co.uk"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "News",
+      "item": "https://dirtbikefinderuk.co.uk/news"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": ${JSON.stringify(post.subcategory)},
+      "item": "https://dirtbikefinderuk.co.uk/news/${post.subcategory}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 4,
+      "name": ${JSON.stringify(post.title)},
+      "item": "${articleUrl}"
+    }
+  ]
 }
 </script>`;
 
 
-
-		
 res.send(`
 <!DOCTYPE html>
 <html lang="en">
