@@ -477,12 +477,10 @@
         `);
 
         // Insert ad banner after every 6 posts
-        if ((index + 1) % 6 === 0) {
-          container.insertAdjacentHTML('beforeend', adBanner);
-          // Manually push the ad to AdSense
-          (adsbygoogle = window.adsbygoogle || []).push({});
-        }
-      });
+    if ((index + 1) % 6 === 0) {
+    container.insertAdjacentHTML("beforeend", adBanner);
+    (adsbygoogle = window.adsbygoogle || []).push({});
+}
 
       // Show the "Load More" button if more posts might exist
       if (posts.length >= 15) {
