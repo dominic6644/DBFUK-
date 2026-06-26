@@ -1916,6 +1916,13 @@ label {
   border-radius: 0; /* Remove rounding for fallback */
 }
 
+.ad-banner{
+    grid-column:1 / -1;
+    width:100%;
+    margin:30px 0;
+    text-align:center;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   #posts {
