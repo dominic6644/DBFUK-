@@ -377,21 +377,15 @@
         <script src="js/filter.js"></script>
 
        
-		
-<script>
-
+	  <script>	
 document.addEventListener('DOMContentLoaded', () => {
-
   // =========================
   // MENU TOGGLE
   // =========================
-
   const navBtn = document.getElementById('nav-toggle-btn');
-
   if (navBtn) {
     navBtn.addEventListener('click', () => {
       const navbarLinks = document.getElementById('navbar-links');
-
       if (navbarLinks) {
         navbarLinks.classList.toggle('active');
       }
@@ -401,42 +395,33 @@ document.addEventListener('DOMContentLoaded', () => {
   // =========================
   // PAGE SETTINGS
   // =========================
-
   const PAGE_CATEGORY = '';
   const PAGE_SUBCATEGORY = '';
+  let currentPage = 1;
+  const loadMoreButton = document.getElementById('load-more');
 
   // =========================
   // LOAD POSTS
   // =========================
-
-  async function loadPosts(category = PAGE_CATEGORY) {
-
+  async function loadPosts(category = PAGE_CATEGORY, page = 1, replace = false) {
     try {
-
-      let url = '/api/posts';
-
+      let url = `/api/posts?page=${page}&limit=15`;
       const params = [];
 
       if (category) {
         params.push(`category=${encodeURIComponent(category)}`);
       }
-
       if (PAGE_SUBCATEGORY) {
         params.push(`subcategory=${encodeURIComponent(PAGE_SUBCATEGORY)}`);
       }
-
       if (params.length) {
-        url += '?' + params.join('&');
+        url += '&' + params.join('&');
       }
 
       const res = await fetch(url);
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const posts = await res.json();
-
       const container = document.getElementById('posts');
 
       if (!container) {
@@ -444,157 +429,123 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      container.innerHTML = '';
+      // Replace or append posts
+      if (replace) {
+        container.innerHTML = '';
+        currentPage = 1; // Reset page counter on filter change
+      }
 
       if (!posts.length) {
-        container.innerHTML = '<p>No posts found.</p>';
+        if (replace) {
+          container.innerHTML = '<p>No posts found.</p>';
+        } else {
+          container.innerHTML += '<p>No more posts to load.</p>';
+        }
+        loadMoreButton.style.display = 'none';
         return;
       }
 
       posts.forEach(post => {
-
         container.innerHTML += `
           <a href="/news/${post.subcategory || 'general'}/${post.slug}" class="article-card">
-
             <div class="article-image">
-              ${
-                post.featured_image
-                  ? `<img src="${post.featured_image}" alt="${post.title}">`
-                  : `<div class="no-image">No Image Available</div>`
-              }
+              ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}">` : `<div class="no-image">No Image Available</div>`}
             </div>
-
             <div class="red-divider"></div>
-
             <div class="article-text">
-
-              <p class="date">
-                ${new Date(post.published_date).toLocaleDateString(
-                  'en-GB',
-                  {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric'
-                  }
-                )}
-              </p>
-
+              <p class="date">${new Date(post.published_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
               <h2>${post.title}</h2>
-
-              ${
-                post.category
-                  ? `<p class="article-description">${post.category}</p>`
-                  : ''
-              }
-
-              ${
-                post.subcategory
-                  ? `<p class="article-description">${post.subcategory}</p>`
-                  : ''
-              }
-
+              ${post.category ? `<p class="article-description">${post.category}</p>` : ''}
+              ${post.subcategory ? `<p class="article-description">${post.subcategory}</p>` : ''}
             </div>
-
           </a>
         `;
       });
 
-    } catch (err) {
-
-      console.error('Error loading posts:', err);
-
-      const container = document.getElementById('posts');
-
-      if (container) {
-        container.innerHTML = '<p>Error loading posts.</p>';
+      // Show the "Load More" button if more posts might exist
+      if (posts.length >= 15) {
+        loadMoreButton.style.display = 'block';
+      } else {
+        loadMoreButton.style.display = 'none';
       }
+
+      // Only increment page if appending (not replacing)
+      if (!replace) {
+        currentPage++;
+      }
+    } catch (err) {
+      console.error('Error loading posts:', err);
+      const container = document.getElementById('posts');
+      if (container) {
+        if (replace) {
+          container.innerHTML = '<p>Error loading posts.</p>';
+        } else {
+          container.innerHTML += '<p>Error loading more posts.</p>';
+        }
+      }
+      loadMoreButton.style.display = 'none';
     }
   }
 
   // =========================
   // INITIAL LOAD
   // =========================
-
   loadPosts();
+
+  // =========================
+  // LOAD MORE BUTTON
+  // =========================
+  loadMoreButton.addEventListener('click', () => {
+    loadPosts(PAGE_CATEGORY, currentPage);
+  });
 
   // =========================
   // DROPDOWN FILTERS
   // =========================
-
   document.querySelectorAll('.dropdown-menu a').forEach(link => {
-
     link.addEventListener('click', e => {
-
       e.preventDefault();
-
       const category = e.currentTarget.dataset.category;
-
-      loadPosts(category);
-
+      loadPosts(category, 1, true); // Replace posts and reset page
       document.querySelectorAll('.dropdown').forEach(dropdown => {
         dropdown.classList.remove('open');
       });
-
     });
-
   });
 
   // =========================
   // MOBILE SELECT
   // =========================
-
-  const mobileSelect =
-    document.getElementById('mobileCategorySelect');
-
+  const mobileSelect = document.getElementById('mobileCategorySelect');
   if (mobileSelect) {
-
     mobileSelect.addEventListener('change', function () {
-      loadPosts(this.value);
+      loadPosts(this.value, 1, true); // Replace posts and reset page
     });
-
   }
 
   // =========================
   // DROPDOWN TOGGLE
   // =========================
-
   document.querySelectorAll('.dropdown-toggle').forEach(btn => {
-
     btn.addEventListener('click', e => {
-
       e.preventDefault();
-
       btn.parentElement.classList.toggle('open');
-
     });
-
   });
 
   // =========================
   // MOBILE NAV
   // =========================
-
-  const mobileToggle =
-    document.querySelector('.mobile-nav-toggle');
-
-  const mainNav =
-    document.getElementById('mainNav');
-
+  const mobileToggle = document.querySelector('.mobile-nav-toggle');
+  const mainNav = document.getElementById('mainNav');
   if (mobileToggle && mainNav) {
-
     mobileToggle.addEventListener('click', e => {
-
       e.preventDefault();
-
       mainNav.classList.toggle('open');
-
     });
-
   }
-
 });
-</script>
-
+	</script>
 	</body>
 </html>
 
