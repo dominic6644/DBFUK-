@@ -229,17 +229,18 @@
 <!---News ---->
 <!-- === News Section === -->
 <div class="news-container">
-  <!-- Left: News content -->
   <div class="news-content">
     <div class="news-title">
       <h1>Latest News Posts</h1>
       <div id="posts"></div>
-		<div style="text-align:center; margin:40px 0;">
-  <button id="load-more" class="read-more">Load More</button>
-</div>
+      <!-- Ad Banner Container (Full Width) -->
+      <div class="full-width-ad-container"></div>
+      <div style="text-align:center; margin:40px 0;">
+        <button id="load-more" class="read-more">Load More</button>
+      </div>
     </div>
   </div>
-
+</div>
  
 
 <!---news end -->
@@ -378,9 +379,10 @@
 
        
 <script>
-	
 	document.addEventListener('DOMContentLoaded', () => {
-  // Ad Banner HTML (without script tags)
+  // =========================
+  // AD BANNER CONFIGURATION
+  // =========================
   const adBanner = `
     <div class="ad-banner">
       <ins class="adsbygoogle"
@@ -394,81 +396,85 @@
   `;
 
   // =========================
-  // MENU TOGGLE
+  // DOM ELEMENTS
   // =========================
+  const postsContainer = document.getElementById('posts');
+  const loadMoreButton = document.getElementById('load-more');
   const navBtn = document.getElementById('nav-toggle-btn');
-  if (navBtn) {
-    navBtn.addEventListener('click', () => {
-      const navbarLinks = document.getElementById('navbar-links');
-      if (navbarLinks) {
-        navbarLinks.classList.toggle('active');
-      }
-    });
+  const navbarLinks = document.getElementById('navbar-links');
+  const mobileToggle = document.querySelector('.mobile-nav-toggle');
+  const mainNav = document.getElementById('mainNav');
+  const mobileSelect = document.getElementById('mobileCategorySelect');
+
+  // Create ad container if it doesn't exist
+  let adContainer = document.querySelector('.full-width-ad-container');
+  if (!adContainer) {
+    adContainer = document.createElement('div');
+    adContainer.className = 'full-width-ad-container';
+    postsContainer.parentNode.insertBefore(adContainer, postsContainer.nextSibling);
   }
 
   // =========================
-  // PAGE SETTINGS
+  // GLOBAL VARIABLES
   // =========================
+  let currentPage = 1;
   const PAGE_CATEGORY = '';
   const PAGE_SUBCATEGORY = '';
-  let currentPage = 1;
-  const loadMoreButton = document.getElementById('load-more');
 
   // =========================
-  // LOAD POSTS
+  // LOAD POSTS FUNCTION
   // =========================
   async function loadPosts(category = PAGE_CATEGORY, page = 1, replace = false) {
     try {
+      // Build URL with parameters
       let url = `/api/posts?page=${page}&limit=15`;
       const params = [];
 
-      if (category) {
-        params.push(`category=${encodeURIComponent(category)}`);
-      }
-      if (PAGE_SUBCATEGORY) {
-        params.push(`subcategory=${encodeURIComponent(PAGE_SUBCATEGORY)}`);
-      }
-      if (params.length) {
-        url += '&' + params.join('&');
-      }
+      if (category) params.push(`category=${encodeURIComponent(category)}`);
+      if (PAGE_SUBCATEGORY) params.push(`subcategory=${encodeURIComponent(PAGE_SUBCATEGORY)}`);
+      if (params.length) url += '&' + params.join('&');
 
+      // Fetch posts
       const res = await fetch(url);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
       const posts = await res.json();
-      const container = document.getElementById('posts');
 
-      if (!container) {
-        console.error('Posts container not found');
-        return;
-      }
-
-      // Replace or append posts
+      // Clear containers if replacing
       if (replace) {
-        container.innerHTML = '';
-        currentPage = 1; // Reset page counter on filter change
+        postsContainer.innerHTML = '';
+        adContainer.innerHTML = '';
+        currentPage = 1;
       }
 
+      // Handle empty results
       if (!posts.length) {
-        if (replace) {
-          container.innerHTML = '<p>No posts found.</p>';
-        } else {
-          container.innerHTML += '<p>No more posts to load.</p>';
-        }
+        postsContainer.innerHTML = replace
+          ? '<p>No posts found.</p>'
+          : '<p>No more posts to load.</p>';
         loadMoreButton.style.display = 'none';
         return;
       }
 
-      // Loop through posts and insert ad banner after every 6 posts
+      // Insert posts and ads
       posts.forEach((post, index) => {
-        container.insertAdjacentHTML('beforeend', `
+        // Insert post
+        postsContainer.insertAdjacentHTML('beforeend', `
           <a href="/news/${post.subcategory || 'general'}/${post.slug}" class="article-card">
             <div class="article-image">
-              ${post.featured_image ? `<img src="${post.featured_image}" alt="${post.title}">` : `<div class="no-image">No Image Available</div>`}
+              ${post.featured_image
+                ? `<img src="${post.featured_image}" alt="${post.title}">`
+                : `<div class="no-image">No Image Available</div>`}
             </div>
             <div class="red-divider"></div>
             <div class="article-text">
-              <p class="date">${new Date(post.published_date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</p>
+              <p class="date">
+                ${new Date(post.published_date).toLocaleDateString('en-GB', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric'
+                })}
+              </p>
               <h2>${post.title}</h2>
               ${post.category ? `<p class="article-description">${post.category}</p>` : ''}
               ${post.subcategory ? `<p class="article-description">${post.subcategory}</p>` : ''}
@@ -477,48 +483,45 @@
         `);
 
         // Insert ad banner after every 6 posts
-    if ((index + 1) % 6 === 0) {
-    container.insertAdjacentHTML("beforeend", adBanner);
-    (adsbygoogle = window.adsbygoogle || []).push({});
-}
-		        });
+        if ((index + 1) % 6 === 0) {
+          adContainer.insertAdjacentHTML('beforeend', adBanner);
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        }
+      });
 
-      // Show the "Load More" button if more posts might exist
-      if (posts.length >= 15) {
-        loadMoreButton.style.display = 'block';
-      } else {
-        loadMoreButton.style.display = 'none';
-      }
+      // Show/hide Load More button
+      loadMoreButton.style.display = posts.length >= 15 ? 'block' : 'none';
 
-      // Only increment page if appending (not replacing)
-      if (!replace) {
-        currentPage++;
-      }
+      // Increment page if appending
+      if (!replace) currentPage++;
+
     } catch (err) {
       console.error('Error loading posts:', err);
-      const container = document.getElementById('posts');
-      if (container) {
-        if (replace) {
-          container.innerHTML = '<p>Error loading posts.</p>';
-        } else {
-          container.innerHTML += '<p>Error loading more posts.</p>';
-        }
-      }
+      postsContainer.innerHTML = replace
+        ? '<p>Error loading posts.</p>'
+        : '<p>Error loading more posts.</p>';
       loadMoreButton.style.display = 'none';
     }
   }
 
   // =========================
-  // INITIAL LOAD
+  // MENU TOGGLE
   // =========================
-  loadPosts();
+  if (navBtn && navbarLinks) {
+    navBtn.addEventListener('click', () => {
+      navbarLinks.classList.toggle('active');
+    });
+  }
 
   // =========================
-  // LOAD MORE BUTTON
+  // MOBILE NAV
   // =========================
-  loadMoreButton.addEventListener('click', () => {
-    loadPosts(PAGE_CATEGORY, currentPage);
-  });
+  if (mobileToggle && mainNav) {
+    mobileToggle.addEventListener('click', e => {
+      e.preventDefault();
+      mainNav.classList.toggle('open');
+    });
+  }
 
   // =========================
   // DROPDOWN FILTERS
@@ -527,7 +530,7 @@
     link.addEventListener('click', e => {
       e.preventDefault();
       const category = e.currentTarget.dataset.category;
-      loadPosts(category, 1, true); // Replace posts and reset page
+      loadPosts(category, 1, true);
       document.querySelectorAll('.dropdown').forEach(dropdown => {
         dropdown.classList.remove('open');
       });
@@ -537,10 +540,9 @@
   // =========================
   // MOBILE SELECT
   // =========================
-  const mobileSelect = document.getElementById('mobileCategorySelect');
   if (mobileSelect) {
-    mobileSelect.addEventListener('change', function () {
-      loadPosts(this.value, 1, true); // Replace posts and reset page
+    mobileSelect.addEventListener('change', function() {
+      loadPosts(this.value, 1, true);
     });
   }
 
@@ -555,17 +557,20 @@
   });
 
   // =========================
-  // MOBILE NAV
+  // INITIAL LOAD
   // =========================
-  const mobileToggle = document.querySelector('.mobile-nav-toggle');
-  const mainNav = document.getElementById('mainNav');
-  if (mobileToggle && mainNav) {
-    mobileToggle.addEventListener('click', e => {
-      e.preventDefault();
-      mainNav.classList.toggle('open');
+  loadPosts();
+
+  // =========================
+  // LOAD MORE BUTTON
+  // =========================
+  if (loadMoreButton) {
+    loadMoreButton.addEventListener('click', () => {
+      loadPosts(PAGE_CATEGORY, currentPage);
     });
   }
 });
+	
 </script>
 	</body>
 </html>
