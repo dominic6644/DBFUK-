@@ -379,7 +379,7 @@
 
        
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', () => {
   // =========================
   // AD BANNER CONFIGURATION
   // =========================
@@ -405,14 +405,6 @@
   const mobileToggle = document.querySelector('.mobile-nav-toggle');
   const mainNav = document.getElementById('mainNav');
   const mobileSelect = document.getElementById('mobileCategorySelect');
-
-  // Create ad container if it doesn't exist
-  let adContainer = document.querySelector('.full-width-ad-container');
-  if (!adContainer) {
-    adContainer = document.createElement('div');
-    adContainer.className = 'full-width-ad-container';
-    postsContainer.parentNode.insertBefore(adContainer, postsContainer.nextSibling);
-  }
 
   // =========================
   // GLOBAL VARIABLES
@@ -440,10 +432,9 @@
 
       const posts = await res.json();
 
-      // Clear containers if replacing
+      // Clear container if replacing
       if (replace) {
         postsContainer.innerHTML = '';
-        adContainer.innerHTML = '';
         currentPage = 1;
       }
 
@@ -484,7 +475,7 @@
 
         // Insert ad banner after every 6 posts
         if ((index + 1) % 6 === 0) {
-          adContainer.insertAdjacentHTML('beforeend', adBanner);
+          postsContainer.insertAdjacentHTML('beforeend', adBanner);
           (adsbygoogle = window.adsbygoogle || []).push({});
         }
       });
@@ -569,8 +560,7 @@
       loadPosts(PAGE_CATEGORY, currentPage);
     });
   }
-});
-	
+});	
 </script>
 	</body>
 </html>
