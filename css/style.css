@@ -1809,138 +1809,65 @@ label {
 
 /* === News Grid Layout === */
 
-#posts {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 per row on desktop */
-  gap: 10px; /* Small gap between cards */
-  padding: 10px; /* Padding around grid */
+/* News Container */
+.news-container {
+  width: 100%;
+  max-width: 1200px; /* Adjust as needed */
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
-/* Article card container */
+/* Posts Grid */
+#posts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px;
+}
+
+/* Full-width ad container */
+.full-width-ad-container {
+  width: 100%;
+  margin: 20px 0;
+  clear: both; /* Ensure it breaks out of any float context */
+}
+
+/* Ad Banner */
+.ad-banner {
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Article Card */
 .article-card {
   display: block;
   text-decoration: none;
   color: #333;
-  aspect-ratio: 1 / 1; /* Force square */
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #e0e0e0; /* Light border for separation */
-  border-radius: 0; /* Remove all rounding */
-  padding: 0; /* Remove padding to maintain square shape */
-}
-
-.article-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Image container - fills top 60% of the square */
-.article-image {
-  width: 100%;
-  height: 60%; /* Takes up 60% of the square */
-  overflow: hidden;
-  position: relative;
-  border-radius: 0; /* Remove rounding for images */
-}
-
-.article-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 0; /* Ensure images are not rounded */
-}
-
-/* Red divider line */
-.red-divider {
-  height: 4px;
-  background: #ff0000; /* Ducati-style red */
-  width: 100%;
-  margin: 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 0;
   padding: 0;
 }
 
-/* Text container - fills bottom 40% of the square */
-.article-text {
-  padding: 12px;
-  height: calc(40% - 4px); /* 40% minus divider height */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  background: #fff;
-  border-radius: 0; /* Remove rounding for text container */
-}
-
-.article-text .date {
-  font-size: 1.5rem;
-  color: #666;
-  margin: 0 0 6px;
-  font-weight: 500;
-}
-
-.article-text h2 {
-  font-size: 2rem;
-  margin: 0 0 8px;
-  color: #222;
-  line-height: 1;
-  flex-grow: 1;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-.article-text .article-description {
-  font-size: 1.5rem;
-  color: #555;
-  margin: 0;
-  line-height: 1.4;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
-/* Fallback for no image */
-.no-image {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  color: #aaa;
-  background: #f5f5f5;
-  width: 100%;
-  height: 100%;
-  border-radius: 0; /* Remove rounding for fallback */
-}
-
-.ad-banner{
-    grid-column:1 / -1;
-    width:100%;
-    margin:30px 0;
-    text-align:center;
-}
-
-/* Responsive adjustments */
+/* Responsive Adjustments */
 @media (max-width: 1024px) {
   #posts {
-    grid-template-columns: repeat(2, 1fr); /* 2 per row on tablets */
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
   #posts {
-    grid-template-columns: 1fr; /* Single column on mobile */
+    grid-template-columns: 1fr;
   }
-
   .article-text h2 {
     font-size: 1.1rem;
   }
 }
-
-
 
 /*admin*/
 
