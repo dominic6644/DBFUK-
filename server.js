@@ -324,40 +324,69 @@ app.post('/submit-form', (req, res) => {
 // BLOG ROUTES
 // =============================================
 
-// Get all posts (with optional category/subcategory filtering)
 app.get('/api/posts', async (req, res) => {
+
   const { category, subcategory } = req.query;
-  const limit = Number(req.query.limit) || 15;
-  const page = Number(req.query.page) || 1;
-  const offset = (page - 1) * limit;
+
+  const limit =
+    req.query.limit ? Number(req.query.limit) : null;
+
+  const page =
+    Number(req.query.page) || 1;
+
+  const offset =
+    limit ? (page - 1) * limit : 0;
 
   try {
-    let query = 'SELECT * FROM blog_posts';
+
+    let query = `
+      SELECT *
+      FROM blog_posts
+    `;
+
     const values = [];
 
     if (category) {
-      query += ' WHERE category = $1';
+      query += ` WHERE category = $1`;
       values.push(category);
+
       if (subcategory) {
-        query += ' AND subcategory = $2';
+        query += ` AND subcategory = $2`;
         values.push(subcategory);
       }
+
     } else if (subcategory) {
-      query += ' WHERE subcategory = $1';
+
+      query += ` WHERE subcategory = $1`;
       values.push(subcategory);
+
     }
 
-    query += ' ORDER BY published_date DESC LIMIT $' + (values.length + 1) + ' OFFSET $' + (values.length + 2);
-    values.push(limit, offset);
+    query += ` ORDER BY published_date DESC`;
+
+    if (limit) {
+      query += ` LIMIT $${values.length + 1}`;
+      values.push(limit);
+
+      query += ` OFFSET $${values.length + 1}`;
+      values.push(offset);
+    }
 
     const result = await pool.query(query, values);
-    res.json(result.rows);
-  } catch (err) {
-    console.error('Error fetching posts:', err);
-    res.status(500).json({ error: 'Error fetching blog posts' });
-  }
-});
 
+    res.json(result.rows);
+
+  } catch(err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      error: 'Error fetching posts'
+    });
+
+  }
+
+});
 // Get single post by ID (for editing)
 app.get('/api/posts/:id', async (req, res) => {
   const id = req.params.id;
