@@ -1857,7 +1857,7 @@ label {
 
 .article-image{
     width:100%;
-    aspect-ratio:16/10;
+    aspect-ratio:1/1;
     overflow:hidden;
     margin:0;
     padding:0;
@@ -1985,6 +1985,7 @@ label {
     grid-template-columns:repeat(2,1fr);
     gap:16px;
     padding:16px;
+	overflow:hidden;
 }
 
 .article-text h2{
@@ -2021,6 +2022,7 @@ label {
     padding:8px;
 
     gap:14px;
+	overflow:hidden;
 }
 
 
@@ -2029,7 +2031,7 @@ label {
     width:100%;
 
     margin:0;
-
+overflow:hidden;
 }
 
 
@@ -2091,7 +2093,7 @@ label {
     padding:4px;
 
     gap:10px;
-
+overflow:hidden;
 }
 
 .article-text{
