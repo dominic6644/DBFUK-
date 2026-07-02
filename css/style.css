@@ -1862,7 +1862,7 @@ label {
 /* Text container */
 .article-text {
     padding: 12px;
-    height: calc(58% - 4px);
+    height: calc(40% - 4px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1938,7 +1938,7 @@ label {
         grid-template-columns: 1fr;
         justify-items: center; /* Centre cards */
         padding: 10px;
-		margin-left: -25px
+		margin-right: 100px
     }
 
     .article-card {
