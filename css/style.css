@@ -1862,7 +1862,7 @@ label {
 /* Text container */
 .article-text {
     padding: 12px;
-    height: calc(40% - 4px);
+    height: calc(58% - 4px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1886,7 +1886,7 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Increased from 2 */
+    -webkit-line-clamp: 4; /* Increased from 2 */
     -webkit-box-orient: vertical;
 }
 
@@ -1938,6 +1938,7 @@ label {
         grid-template-columns: 1fr;
         justify-items: center; /* Centre cards */
         padding: 10px;
+		margin-left: -25px
     }
 
     .article-card {
@@ -1948,7 +1949,7 @@ label {
     .article-text h2 {
         font-size: 1.25rem;
         line-height: 1.25;
-        -webkit-line-clamp: 3; /* Show more of the title */
+        -webkit-line-clamp: 4; /* Show more of the title */
     }
 
 }
