@@ -1862,7 +1862,7 @@ label {
 /* Text container */
 .article-text {
     padding: 12px;
-    height: calc(40% - 4px);
+    height: calc(58% - 4px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -1886,7 +1886,7 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 4; /* Increased from 2 */
+    -webkit-line-clamp: 3; /* Increased from 2 */
     -webkit-box-orient: vertical;
 }
 
@@ -1898,7 +1898,7 @@ label {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 }
 
@@ -1944,6 +1944,8 @@ label {
     .article-card {
         width: 100%;
         max-width: 450px; /* Prevents drifting on wider phones */
+		margin-right: 100px
+		margin-left: -100px
     }
 
     .article-text h2 {
