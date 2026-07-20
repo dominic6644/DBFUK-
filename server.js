@@ -802,7 +802,7 @@ res.send(`
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${post.title} | Dirt Bike Finder UK</title>
-<link rel="canonical" href="https://dirtbikefinderuk.co.uk/post/${post.slug}" />
+<link rel="canonical" href="https://dirtbikefinderuk.co.uk/news/${post.subcategory}" />
 
 <!-- Primary SEO -->
 <meta name="description" content="${description}">
@@ -813,7 +813,7 @@ res.send(`
 <meta property="og:type" content="article">
 <meta property="og:title" content="${post.title}">
 <meta property="og:description" content="${description}">
-<meta property="og:url" content="https://dirtbikefinderuk.co.uk/post/${post.slug}">
+<meta property="og:url" content="https://dirtbikefinderuk.co.uk/news/${post.subcategory}">
 <meta property="og:image" content="${imageUrl}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
