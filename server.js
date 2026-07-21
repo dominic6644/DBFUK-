@@ -719,9 +719,9 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
 
     // Generate metadata
     const description = post.meta_description || post.content.replace(/<[^>]+>/g, '').slice(0, 160);
-    const imageUrl = post.featured_image
-      ? `https://dirtbikefinderuk.co.uk${post.featured_image.startsWith('/') ? '' : '/'}${post.featured_image}`
-      : 'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
+   const imageUrl = post.featured_image
+  ? `https://dirtbikefinderuk.co.uk${post.featured_image.startsWith('/') ? '' : '/'}${post.featured_image}`
+  : 'https://dirtbikefinderuk.co.uk/images/default-image.jpg';
 
     const youtubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
     const publishedISO = new Date(post.published_date).toISOString();
@@ -809,15 +809,17 @@ res.send(`
 <meta name="robots" content="index, follow, max-image-preview:large">
 
 
-<!-- Open Graph (Facebook / Google / Discover) -->
+<!-- Open Graph (Facebook) - UPDATED -->
 <meta property="og:type" content="article">
 <meta property="og:title" content="${post.title}">
 <meta property="og:description" content="${description}">
-<meta property="og:url" content="https://dirtbikefinderuk.co.uk/news/${post.subcategory}">
+<meta property="og:url" content="https://dirtbikefinderuk.co.uk/news/${post.subcategory}/${post.slug}">
 <meta property="og:image" content="${imageUrl}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="Dirt Bike Finder UK">
+<meta property="og:locale" content="en_GB">
+
 
 
 <!-- Article meta -->
