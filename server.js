@@ -802,7 +802,7 @@ res.send(`
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${post.title} | Dirt Bike Finder UK</title>
-<link rel="canonical" href="https://dirtbikefinderuk.co.uk/news/${post.subcategory}" />
+<link rel="canonical"<link rel="canonical" href="https://dirtbikefinderuk.co.uk/news/${post.subcategory}/${post.slug}"/>
 
 <!-- Primary SEO -->
 <meta name="description" content="${description}">
