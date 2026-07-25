@@ -1901,7 +1901,7 @@ label {
    ========================================================== */
 
 .article-text .date {
-    font-size: .95rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: #666;
     margin-bottom: 12px;
@@ -1925,7 +1925,7 @@ label {
    ========================================================== */
 
 .article-text .article-description {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
     line-height: 1.7;
     color: #555;
     margin: 0;
@@ -2038,7 +2038,7 @@ label {
     }
 
     .article-text{
-        padding:18px;
+        padding:10px;
     }
 
     .article-description{
