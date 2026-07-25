@@ -1886,7 +1886,7 @@ label {
    Category
    ========================================================== */
 
-.article-category {
+.article-description {
     display: inline-block;
     font-size: .85rem;
     font-weight: 700;
@@ -2006,7 +2006,7 @@ label {
         padding:20px;
     }
 
-    .article-category{
+    .article-description{
         font-size:.9rem;
     }
 
@@ -2041,7 +2041,7 @@ label {
         padding:18px;
     }
 
-    .article-category{
+    .article-description{
         font-size:.95rem;
     }
 
