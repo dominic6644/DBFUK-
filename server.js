@@ -403,80 +403,130 @@ app.get('/api/posts/:id', async (req, res) => {
 // =============================================
 // SITEMAPS AND RSS
 // =============================================
-
-// RSS Feed (updated to use /news/:subcategory/:slug)
+// ============================================================
+// RSS FEED
+// URL: /rss.xml
+// ============================================================
 app.get('/rss.xml', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT title, slug, subcategory, meta_description, published_date
+      SELECT
+        title,
+        slug,
+        subcategory,
+        meta_description,
+        published_date
       FROM blog_posts
-      WHERE published_date >= NOW() - INTERVAL '7 days'
+      WHERE published_date IS NOT NULL
+        AND published_date >= NOW() - INTERVAL '7 days'
       ORDER BY published_date DESC
       LIMIT 50
     `);
 
     const siteUrl = 'https://dirtbikefinderuk.co.uk';
+
+    // Escape XML characters
+    const escapeXml = (value = '') => {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    };
+
     const items = result.rows.map(post => {
-      const postUrl = `${siteUrl}/news/${post.subcategory || 'general'}/${post.slug}`;
+      const subcategory = post.subcategory || 'general';
+
+      const postUrl =
+        `${siteUrl}/news/${encodeURIComponent(subcategory)}/${encodeURIComponent(post.slug)}`;
+
+      const title = post.title || 'Dirt Bike Finder UK';
+      const description =
+        post.meta_description ||
+        'Latest motocross, supercross, enduro and trials news and results.';
+
+      const publishedDate = new Date(post.published_date);
+
       return `
-        <item>
-          <title><![CDATA[${post.title}]]></title>
-          <link>${postUrl}</link>
-          <guid>${postUrl}</guid>
-          <pubDate>${new Date(post.published_date).toUTCString()}</pubDate>
-          <news:news>
-            <news:publication>
-              <news:name>Dirt Bike Finder UK</news:name>
-              <news:language>en</news:language>
-            </news:publication>
-            <news:publication_date>${new Date(post.published_date).toISOString()}</news:publication_date>
-            <news:title><![CDATA[${post.title}]]></news:title>
-          </news:news>
-          <description><![CDATA[${post.meta_description || 'Latest motocross, supercross and enduro results.'}]]></description>
-        </item>
-      `;
+    <item>
+      <title><![CDATA[${title}]]></title>
+      <link>${escapeXml(postUrl)}</link>
+      <guid isPermaLink="true">${escapeXml(postUrl)}</guid>
+      <pubDate>${publishedDate.toUTCString()}</pubDate>
+      <description><![CDATA[${description}]]></description>
+    </item>`;
     }).join('');
 
     const rss = `<?xml version="1.0" encoding="UTF-8"?>
-      <rss version="2.0" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-        <channel>
-          <title>Dirt Bike Finder UK</title>
-          <link>${siteUrl}</link>
-          <description>Latest motocross, supercross, enduro and trials news and results.</description>
-          <language>en-gb</language>
-          ${items}
-        </channel>
-      </rss>`;
+<rss version="2.0">
+  <channel>
+    <title>Dirt Bike Finder UK</title>
+    <link>${siteUrl}</link>
+    <description>Latest motocross, supercross, enduro and trials news and results.</description>
+    <language>en-gb</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+${items}
+  </channel>
+</rss>`;
 
-    res.set('Content-Type', 'application/rss+xml');
-    res.send(rss);
+    res
+      .status(200)
+      .set('Content-Type', 'application/rss+xml; charset=utf-8')
+      .send(rss);
+
   } catch (err) {
     console.error('Error generating RSS feed:', err);
-    res.status(500).send('Error generating RSS feed');
+
+    res
+      .status(500)
+      .set('Content-Type', 'text/plain; charset=utf-8')
+      .send('Error generating RSS feed');
   }
 });
 
-// Sitemap for all posts (updated to use /news/:subcategory/:slug)
+
+// ============================================================
+// SITEMAP FOR ALL BLOG POSTS
+// URL: /sitemap-posts.xml
+// ============================================================
 app.get('/sitemap-posts.xml', async (req, res) => {
   try {
     const result = await pool.query(`
-      SELECT slug, subcategory, published_date
+      SELECT
+        slug,
+        subcategory,
+        published_date
       FROM blog_posts
+      WHERE published_date IS NOT NULL
       ORDER BY published_date DESC
       LIMIT 5000
     `);
 
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
+
+    const escapeXml = (value = '') => {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    };
+
     const urls = result.rows.map(post => {
-      const postUrl = `${baseUrl}/news/${post.subcategory || 'general'}/${post.slug}`;
+      const subcategory = post.subcategory || 'general';
+
+      const postUrl =
+        `${baseUrl}/news/${encodeURIComponent(subcategory)}/${encodeURIComponent(post.slug)}`;
+
+      const lastModified = new Date(post.published_date);
+
       return `
-        <url>
-          <loc>${postUrl}</loc>
-          <lastmod>${new Date(post.published_date).toISOString()}</lastmod>
-          <changefreq>daily</changefreq>
-          <priority>0.9</priority>
-        </url>
-      `;
+  <url>
+    <loc>${escapeXml(postUrl)}</loc>
+    <lastmod>${lastModified.toISOString()}</lastmod>
+  </url>`;
     }).join('');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -484,57 +534,122 @@ app.get('/sitemap-posts.xml', async (req, res) => {
 ${urls}
 </urlset>`;
 
-    res.header('Content-Type', 'application/xml');
-    res.send(sitemap);
+    res
+      .status(200)
+      .set('Content-Type', 'application/xml; charset=utf-8')
+      .send(sitemap);
+
   } catch (err) {
     console.error('Error generating sitemap:', err);
-    res.status(500).send('Error generating sitemap');
+
+    res
+      .status(500)
+      .set('Content-Type', 'text/plain; charset=utf-8')
+      .send('Error generating sitemap');
   }
 });
 
-// News-specific sitemap (updated to use /news/:subcategory/:slug)
+
+// ============================================================
+// GOOGLE NEWS SITEMAP
+// URL: /news-sitemap.xml
+// ============================================================
 app.get('/news-sitemap.xml', async (req, res) => {
   try {
+    /*
+     * Google News sitemaps should contain only recently published
+     * news articles.
+     *
+     * We use the last 48 hours here.
+     *
+     * IMPORTANT:
+     * We do NOT filter on article_type = 'news'.
+     * This avoids the sitemap being empty if your database uses
+     * a different value (or NULL) for article_type.
+     */
+
     const result = await pool.query(`
-      SELECT slug, title, subcategory, published_date
+      SELECT
+        slug,
+        title,
+        subcategory,
+        published_date
       FROM blog_posts
-      WHERE article_type = 'news'
-      AND published_date >= NOW() - INTERVAL '2 days'
+      WHERE published_date IS NOT NULL
+        AND published_date >= NOW() - INTERVAL '48 hours'
       ORDER BY published_date DESC
       LIMIT 100
     `);
 
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
-    const urls = result.rows.map(post => {
-      const postUrl = `${baseUrl}/news/${post.subcategory || 'general'}/${post.slug}`;
-      return `
-        <url>
-          <loc>${postUrl}</loc>
-          <news:news>
-            <news:publication>
-              <news:name>Dirt Bike Finder UK</news:name>
-              <news:language>en</news:language>
-            </news:publication>
-            <news:publication_date>${new Date(post.published_date).toISOString()}</news:publication_date>
-            <news:title><![CDATA[${post.title}]]></news:title>
-          </news:news>
-        </url>
-      `;
-    }).join('');
+
+    // Escape XML values
+    const escapeXml = (value = '') => {
+      return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+    };
+
+    const urls = result.rows
+      .filter(post => {
+        // Make absolutely sure the date is valid
+        const date = new Date(post.published_date);
+        return !isNaN(date.getTime());
+      })
+      .map(post => {
+        const subcategory = post.subcategory || 'general';
+
+        const postUrl =
+          `${baseUrl}/news/${encodeURIComponent(subcategory)}/${encodeURIComponent(post.slug)}`;
+
+        const publicationDate = new Date(post.published_date);
+
+        const title = post.title || 'Dirt Bike Finder UK';
+
+        return `
+  <url>
+    <loc>${escapeXml(postUrl)}</loc>
+    <news:news>
+      <news:publication>
+        <news:name>Dirt Bike Finder UK</news:name>
+        <news:language>en</news:language>
+      </news:publication>
+      <news:publication_date>${publicationDate.toISOString()}</news:publication_date>
+      <news:title><![CDATA[${title}]]></news:title>
+    </news:news>
+  </url>`;
+      })
+      .join('');
 
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
 ${urls}
 </urlset>`;
 
-    res.set('Content-Type', 'application/xml');
-    res.send(sitemap);
+    console.log(
+      `Google News sitemap generated: ${result.rows.length} articles`
+    );
+
+    res
+      .status(200)
+      .set('Content-Type', 'application/xml; charset=utf-8')
+      .send(sitemap);
+
   } catch (err) {
     console.error('Error generating news sitemap:', err);
-    res.status(500).send('Error generating news sitemap');
+
+    res
+      .status(500)
+      .set('Content-Type', 'text/plain; charset=utf-8')
+      .send('Error generating news sitemap');
   }
 });
+
 
 // =============================================
 // POST CRUD OPERATIONS
