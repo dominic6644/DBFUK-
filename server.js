@@ -827,30 +827,29 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
     console.log('Debug - subcategory:', subcategoryFallback);
 
     // Related posts query
-    const related = await pool.query(`
-      (
-        SELECT title, slug, subcategory
-        FROM blog_posts
-        WHERE slug != $1
-          AND subcategory = $3
-        ORDER BY published_date DESC
-        LIMIT 5
+const related = await pool.query(`
+  SELECT
+    title,
+    slug,
+    subcategory,
+    published_date
+  FROM blog_posts
+  WHERE slug != $1
+    AND (
+      subcategory = $3
+      OR (
+        category = $2
+        AND subcategory != $3
       )
-      UNION ALL
-      (
-        SELECT title, slug, subcategory
-        FROM blog_posts
-        WHERE slug != $1
-          AND category = $2
-          AND subcategory != $3
-        ORDER BY published_date DESC
-        LIMIT 5
-      )
-      ORDER BY published_date DESC
-      LIMIT 5
-    `, [slug, category, subcategoryFallback]);
-
- 
+    )
+  ORDER BY
+    CASE
+      WHEN subcategory = $3 THEN 0
+      ELSE 1
+    END,
+    published_date DESC
+  LIMIT 5
+`, [slug, category, subcategoryFallback]);
 
     // Generate metadata
     const description = post.meta_description || post.content.replace(/<[^>]+>/g, '').slice(0, 160);
@@ -1299,7 +1298,7 @@ ${post.featured_image ? `
         <ul>
           ${related.rows.map(p => `
             <li>
-              <a href="/post/${p.slug}">${p.title}</a>
+              <a href="/news/${encodeURIComponent(p.subcategory)}/${encodeURIComponent(p.slug)}">
             </li>
           `).join('')}
         </ul>
