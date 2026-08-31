@@ -819,29 +819,38 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
 
     const post = result.rows[0];
 
-    // This is INSIDE the try block and async function
-const related = await pool.query(`
-  (
-    SELECT title, slug, subcategory
-    FROM blog_posts
-    WHERE slug != $1
-      AND subcategory = $3
-    ORDER BY published_date DESC
-    LIMIT 5
-  )
-  UNION ALL
-  (
-    SELECT title, slug, subcategory
-    FROM blog_posts
-    WHERE slug != $1
-      AND category = $2
-      AND subcategory != $3
-    ORDER BY published_date DESC
-    LIMIT 5
-  )
-  ORDER BY published_date DESC
-  LIMIT 5
-`, [slug, category, subcategory]);
+	      // Define category and subcategory with fallbacks
+    const category = post.category || 'uncategorized';
+    const subcategoryFallback = post.subcategory || 'general';
+
+    console.log('Debug - category:', category);
+    console.log('Debug - subcategory:', subcategoryFallback);
+
+    // Related posts query
+    const related = await pool.query(`
+      (
+        SELECT title, slug, subcategory
+        FROM blog_posts
+        WHERE slug != $1
+          AND subcategory = $3
+        ORDER BY published_date DESC
+        LIMIT 5
+      )
+      UNION ALL
+      (
+        SELECT title, slug, subcategory
+        FROM blog_posts
+        WHERE slug != $1
+          AND category = $2
+          AND subcategory != $3
+        ORDER BY published_date DESC
+        LIMIT 5
+      )
+      ORDER BY published_date DESC
+      LIMIT 5
+    `, [slug, category, subcategoryFallback]);
+
+ 
 
     // Generate metadata
     const description = post.meta_description || post.content.replace(/<[^>]+>/g, '').slice(0, 160);
