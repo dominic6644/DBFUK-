@@ -820,15 +820,28 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
     const post = result.rows[0];
 
     // This is INSIDE the try block and async function
-    const related = await pool.query(
-      `SELECT title, slug, subcategory
-       FROM blog_posts
-       WHERE slug != $1
-       AND (category = $2 OR subcategory = $3)
-       ORDER BY published_date DESC
-       LIMIT 5`,
-      [slug, post.category, post.subcategory]
-    );
+    const related = await pool.query(`
+  (
+    SELECT title, slug, subcategory
+    FROM blog_posts
+    WHERE slug != $1
+      AND subcategory = $3
+    ORDER BY published_date DESC
+    LIMIT 5
+  )
+  UNION ALL
+  (
+    SELECT title, slug, subcategory
+    FROM blog_posts
+    WHERE slug != $1
+      AND category = $2
+      AND subcategory != $3
+    ORDER BY published_date DESC
+    LIMIT 5
+  )
+  ORDER BY published_date DESC
+  LIMIT 5
+`, [slug, post.category, post.subcategory]);
 
    
 
@@ -858,10 +871,12 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
   },
   "datePublished": "${publishedISO}",
   "dateModified": "${post.updated_at ? new Date(post.updated_at).toISOString() : publishedISO}",
-  "author": {
-    "@type": "Person",
-    "name": ${JSON.stringify(post.author)}
-  },
+ "author": {
+  "@type": "Person",
+  "@id": "https://dirtbikefinderuk.co.uk/author.html#${encodeURIComponent(post.author)}",
+  "name": ${JSON.stringify(post.author)},
+  "url": "https://dirtbikefinderuk.co.uk/author.html"
+},
   "publisher": {
     "@type": "Organization",
     "name": "Dirt Bike Finder UK",
@@ -917,7 +932,7 @@ res.send(`
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>${post.title} | Dirt Bike Finder UK</title>
-<link rel="canonical"<link rel="canonical" href="https://dirtbikefinderuk.co.uk/news/${post.subcategory}/${post.slug}"/>
+<link rel="canonical" href="https://dirtbikefinderuk.co.uk/news/${post.subcategory}/${post.slug}" />
 
 <!-- Primary SEO -->
 <meta name="description" content="${description}">
@@ -944,7 +959,7 @@ res.send(`
     ? new Date(post.updated_at).toISOString()
     : publishedISO
 }">
-<meta property="article:author" content="${post.author}">
+<meta property="article:author" content="https://dirtbikefinderuk.co.uk/author.html">
 <meta property="article:section" content="${
   post.article_type === "mx" ? "Motocross" :
   post.article_type === "enduro" ? "Enduro" :
@@ -1246,17 +1261,17 @@ ${post.featured_image ? `
 
       <h1>${post.title}</h1>
 
-      <p style="color:#777;font-size:14px;">
-        By <strong>${post.author}</strong>
-        ${new Date(post.published_date).toLocaleString('en-GB', {
-          dateStyle: 'medium',
-          timeStyle: 'short'
-        })} • ${readTime} min read
-        ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleString('en-GB', {
-          dateStyle: 'medium',
-          timeStyle: 'short'
-        })}` : ''}
-      </p>
+     <p style="color:#777;font-size:14px;">
+  By <strong><a href="/author.html" rel="author">${post.author}</a></strong>
+  ${new Date(post.published_date).toLocaleString('en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  })} • ${readTime} min read
+  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleString('en-GB', {
+    dateStyle: 'medium',
+    timeStyle: 'short'
+  })}` : ''}
+</p>
 
       <div class="content">${post.content}</div>
 
