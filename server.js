@@ -1298,7 +1298,7 @@ ${post.featured_image ? `
         <ul>
           ${related.rows.map(p => `
             <li>
-              <a href="/news/${encodeURIComponent(p.subcategory)}/${encodeURIComponent(p.slug)}">
+              <a href="/post/${p.slug}">
             </li>
           `).join('')}
         </ul>
