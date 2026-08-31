@@ -820,7 +820,7 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
     const post = result.rows[0];
 
     // This is INSIDE the try block and async function
-    const related = await pool.query(`
+const related = await pool.query(`
   (
     SELECT title, slug, subcategory
     FROM blog_posts
@@ -841,9 +841,7 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
   )
   ORDER BY published_date DESC
   LIMIT 5
-`, [slug, post.category, post.subcategory]);
-
-   
+`, [slug, category, subcategory]);
 
     // Generate metadata
     const description = post.meta_description || post.content.replace(/<[^>]+>/g, '').slice(0, 160);
