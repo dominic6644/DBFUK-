@@ -866,7 +866,8 @@ console.log(
   }))
 );
 
-   ```js
+   
+
 // ==========================================================
 // Generate metadata
 // ==========================================================
@@ -917,20 +918,12 @@ const websiteId =
 const organizationId =
   'https://dirtbikefinderuk.co.uk/#organization';
 
-// Keep this ID stable so every article written by the same author
-// points to the same Person entity on author.html.
 const authorId =
   'https://dirtbikefinderuk.co.uk/author.html#author';
 
 
 // ==========================================================
 // Article type
-// ==========================================================
-//
-// NewsArticle = genuine news/current-event reporting.
-// Article     = evergreen/features/guides/etc.
-//
-// This keeps your existing article_type system intact.
 // ==========================================================
 
 const schemaArticleType =
@@ -940,7 +933,7 @@ const schemaArticleType =
 
 
 // ==========================================================
-// Article section / keywords
+// Article section and keywords
 // ==========================================================
 
 const articleSection = [
@@ -955,235 +948,189 @@ const keywords = [
 
 
 // ==========================================================
-// Generate complete JSON-LD graph
+// Generate JSON-LD
 // ==========================================================
 
 const jsonLd = `
 <script type="application/ld+json">
-${JSON.stringify({
-  "@context": "https://schema.org",
-  "@graph": [
+${JSON.stringify(
+  {
+    "@context": "https://schema.org",
 
-    // ======================================================
-    // ARTICLE
-    // ======================================================
+    "@graph": [
 
-    {
-      "@type": schemaArticleType,
-      "@id": articleId,
+      {
+        "@type": schemaArticleType,
+        "@id": articleId,
+        "url": articleUrl,
+        "headline": post.title,
+        "description": description,
 
-      "url": articleUrl,
-
-      "headline": post.title,
-
-      "description": description,
-
-      "mainEntityOfPage": {
-        "@id": webpageId
-      },
-
-      "datePublished": publishedISO,
-
-      "dateModified": modifiedISO,
-
-      "author": {
-        "@id": authorId
-      },
-
-      "publisher": {
-        "@id": organizationId
-      },
-
-      "image": {
-        "@id": imageId
-      },
-
-      "articleSection": articleSection,
-
-      "keywords": keywords,
-
-      "inLanguage": "en-GB",
-
-      "wordCount": wordCount,
-
-      "thumbnailUrl": imageUrl,
-
-      "copyrightYear": new Date(post.published_date).getFullYear(),
-
-      "copyrightHolder": {
-        "@id": organizationId
-      },
-
-      "isAccessibleForFree": true
-    },
-
-
-    // ======================================================
-    // WEB PAGE
-    // ======================================================
-
-    {
-      "@type": "WebPage",
-      "@id": webpageId,
-
-      "url": articleUrl,
-
-      "name": `${post.title} | Dirt Bike Finder UK`,
-
-      "description": description,
-
-      "isPartOf": {
-        "@id": websiteId
-      },
-
-      "primaryImageOfPage": {
-        "@id": imageId
-      },
-
-      "image": {
-        "@id": imageId
-      },
-
-      "datePublished": publishedISO,
-
-      "dateModified": modifiedISO,
-
-      "breadcrumb": {
-        "@id": breadcrumbId
-      },
-
-      "inLanguage": "en-GB",
-
-      "mainEntity": {
-        "@id": articleId
-      }
-    },
-
-
-    // ======================================================
-    // PRIMARY ARTICLE IMAGE
-    // ======================================================
-
-    {
-      "@type": "ImageObject",
-      "@id": imageId,
-
-      "url": imageUrl,
-
-      "contentUrl": imageUrl,
-
-      "caption": post.title,
-
-      "inLanguage": "en-GB"
-    },
-
-
-    // ======================================================
-    // AUTHOR
-    // ======================================================
-    //
-    // This connects the article directly to:
-    //
-    // https://dirtbikefinderuk.co.uk/author.html#author
-    //
-    // Your author.html page should use this exact same @id.
-    // ======================================================
-
-    {
-      "@type": "Person",
-      "@id": authorId,
-
-      "name": post.author,
-
-      "url": "https://dirtbikefinderuk.co.uk/author.html"
-    },
-
-
-    // ======================================================
-    // PUBLISHER / WEBSITE ORGANIZATION
-    // ======================================================
-
-    {
-      "@type": "NewsMediaOrganization",
-      "@id": organizationId,
-
-      "name": "Dirt Bike Finder UK",
-
-      "url": "https://dirtbikefinderuk.co.uk",
-
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
-      }
-    },
-
-
-    // ======================================================
-    // WEBSITE
-    // ======================================================
-
-    {
-      "@type": "WebSite",
-      "@id": websiteId,
-
-      "url": "https://dirtbikefinderuk.co.uk",
-
-      "name": "Dirt Bike Finder UK",
-
-      "publisher": {
-        "@id": organizationId
-      },
-
-      "inLanguage": "en-GB"
-    },
-
-
-    // ======================================================
-    // BREADCRUMBS
-    // ======================================================
-
-    {
-      "@type": "BreadcrumbList",
-      "@id": breadcrumbId,
-
-      "itemListElement": [
-
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Home",
-          "item": "https://dirtbikefinderuk.co.uk"
+        "mainEntityOfPage": {
+          "@id": webpageId
         },
 
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "News",
-          "item": "https://dirtbikefinderuk.co.uk/news"
+        "datePublished": publishedISO,
+        "dateModified": modifiedISO,
+
+        "author": {
+          "@id": authorId
         },
 
-        {
-          "@type": "ListItem",
-          "position": 3,
-          "name": post.subcategory,
-          "item":
-            `https://dirtbikefinderuk.co.uk/news/${encodeURIComponent(post.subcategory)}`
+        "publisher": {
+          "@id": organizationId
         },
 
-        {
-          "@type": "ListItem",
-          "position": 4,
-          "name": post.title,
-          "item": articleUrl
+        "image": {
+          "@id": imageId
+        },
+
+        "articleSection": articleSection,
+        "keywords": keywords,
+        "inLanguage": "en-GB",
+        "wordCount": wordCount,
+        "thumbnailUrl": imageUrl,
+
+        "copyrightYear": new Date(
+          post.published_date
+        ).getFullYear(),
+
+        "copyrightHolder": {
+          "@id": organizationId
+        },
+
+        "isAccessibleForFree": true
+      },
+
+
+      {
+        "@type": "WebPage",
+        "@id": webpageId,
+        "url": articleUrl,
+        "name": `${post.title} | Dirt Bike Finder UK`,
+        "description": description,
+
+        "isPartOf": {
+          "@id": websiteId
+        },
+
+        "primaryImageOfPage": {
+          "@id": imageId
+        },
+
+        "image": {
+          "@id": imageId
+        },
+
+        "datePublished": publishedISO,
+        "dateModified": modifiedISO,
+
+        "breadcrumb": {
+          "@id": breadcrumbId
+        },
+
+        "inLanguage": "en-GB",
+
+        "mainEntity": {
+          "@id": articleId
         }
+      },
 
-      ]
-    }
 
-  ]
-}, null, 2)}
+      {
+        "@type": "ImageObject",
+        "@id": imageId,
+        "url": imageUrl,
+        "contentUrl": imageUrl,
+        "caption": post.title,
+        "inLanguage": "en-GB"
+      },
+
+
+      {
+        "@type": "Person",
+        "@id": authorId,
+        "name": post.author,
+        "url": "https://dirtbikefinderuk.co.uk/author.html"
+      },
+
+
+      {
+        "@type": "NewsMediaOrganization",
+        "@id": organizationId,
+        "name": "Dirt Bike Finder UK",
+        "url": "https://dirtbikefinderuk.co.uk",
+
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://dirtbikefinderuk.co.uk/images/logo.png"
+        }
+      },
+
+
+      {
+        "@type": "WebSite",
+        "@id": websiteId,
+        "url": "https://dirtbikefinderuk.co.uk",
+        "name": "Dirt Bike Finder UK",
+
+        "publisher": {
+          "@id": organizationId
+        },
+
+        "inLanguage": "en-GB"
+      },
+
+
+      {
+        "@type": "BreadcrumbList",
+        "@id": breadcrumbId,
+
+        "itemListElement": [
+
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://dirtbikefinderuk.co.uk"
+          },
+
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "News",
+            "item": "https://dirtbikefinderuk.co.uk/news"
+          },
+
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": post.subcategory,
+            "item": `https://dirtbikefinderuk.co.uk/news/${encodeURIComponent(post.subcategory)}`
+          },
+
+          {
+            "@type": "ListItem",
+            "position": 4,
+            "name": post.title,
+            "item": articleUrl
+          }
+
+        ]
+      }
+
+    ]
+  },
+  null,
+  2
+)}
 </script>
 `;
+
+
+
+const breadcrumbLd = '';
+
 
 
 res.send(`
