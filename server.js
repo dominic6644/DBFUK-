@@ -1419,7 +1419,7 @@ ${post.featured_image ? `
       sizes="100vw"
       alt="${post.title}"
       width="1200"
-      height="630"
+      height="800"
       style="width:100%; height:auto; max-height:500px; object-fit:cover;"
       loading="eager"
       fetchpriority="high"
