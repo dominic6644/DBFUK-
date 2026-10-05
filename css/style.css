@@ -2496,486 +2496,335 @@ button[type="submit"]:hover {
 
 /*-- post */
 
-
-
-
 /* ==========================================================
-   GLOBAL
+   ARTICLE PAGE - THREE COLUMN LAYOUT
    ========================================================== */
 
-html,
-body {
-  overflow-x: hidden;
-  line-height: 1.6;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-.adsbygoogle {
-  max-width: 100% !important;
-  display: block;
-}
-
-
-/* ==========================================================
-   MAIN ARTICLE PAGE
-   ========================================================== */
-
+/* Prevent the existing Bootstrap layout from interfering */
 .post-page {
-  width: 100%;
-  max-width: 1440px;
-  margin: 40px auto 0;
-  padding: 0 20px;
+    display: grid !important;
 
-  display: grid;
+    grid-template-columns:
+        250px
+        minmax(0, 1fr)
+        220px !important;
 
-  /*
-     LEFT:
-     article discovery
+    column-gap: 30px;
 
-     CENTRE:
-     article
+    width: 100% !important;
+    max-width: 1400px !important;
 
-     RIGHT:
-     advertising
-  */
+    margin: 40px auto !important;
+    padding: 0 20px !important;
 
-  grid-template-columns:
-    270px
-    minmax(0, 1fr)
-    220px;
+    align-items: start;
 
-  gap: 30px;
-
-  align-items: start;
+    box-sizing: border-box;
 }
 
 
 /* ==========================================================
-   LEFT ARTICLE DISCOVERY SIDEBAR
+   LEFT COLUMN
    ========================================================== */
 
 .article-discovery {
-  min-width: 0;
-  width: 100%;
+    display: block !important;
+
+    width: 250px !important;
+    min-width: 250px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 
 /* ==========================================================
-   DISCOVERY SECTION
+   DISCOVERY HEADINGS
    ========================================================== */
 
 .discovery-section {
-  margin-bottom: 40px;
+    display: block;
+
+    width: 100%;
+
+    margin: 0 0 35px;
+    padding: 0;
 }
-
-
-/* ==========================================================
-   SECTION HEADINGS
-   ========================================================== */
 
 .discovery-heading {
-  display: flex;
-  align-items: center;
+    display: flex !important;
 
-  margin-bottom: 14px;
-  padding-bottom: 10px;
+    align-items: center;
 
-  border-bottom: 2px solid #e5e5e5;
+    width: 100%;
 
-  position: relative;
+    margin: 0 0 12px;
+    padding: 0 0 9px;
+
+    border-bottom: 2px solid #e5e5e5;
 }
 
-.discovery-heading span {
-  display: block;
+.discovery-heading > span {
+    display: block !important;
 
-  width: 5px;
-  height: 25px;
+    width: 5px !important;
+    height: 23px !important;
 
-  margin-right: 9px;
+    flex: 0 0 5px;
 
-  background: #d10024;
+    margin: 0 8px 0 0;
 
-  border-radius: 2px;
+    background: #d10024;
+
+    border-radius: 2px;
 }
 
 .discovery-heading h2 {
-  margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
 
-  font-family: "Anton", sans-serif;
+    font-family: "Anton", sans-serif;
 
-  font-size: 21px;
-  font-weight: 400;
+    font-size: 20px !important;
+    line-height: 1.1;
 
-  line-height: 1.1;
+    font-weight: 400;
 
-  color: #151515;
-
-  text-transform: uppercase;
-
-  letter-spacing: 0.3px;
+    color: #222;
 }
 
 
 /* ==========================================================
-   COMPACT ARTICLE CARDS
+   ARTICLE CARD LIST
    ========================================================== */
 
 .article-card-list {
-  display: flex;
-  flex-direction: column;
+    display: flex !important;
 
-  width: 100%;
-}
+    flex-direction: column !important;
 
+    width: 100% !important;
 
-/*
-   The entire card is the link.
-*/
-
-.compact-article-card {
-  display: flex;
-
-  width: 100%;
-
-  padding: 10px 0;
-
-  text-decoration: none;
-
-  color: #222;
-
-  border-bottom: 1px solid #e7e7e7;
-
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-
-/*
-   Remove border from the final card.
-*/
-
-.compact-article-card:last-child {
-  border-bottom: none;
-}
-
-
-/*
-   Image container
-*/
-
-.compact-card-image {
-  flex: 0 0 78px;
-
-  width: 78px;
-  height: 58px;
-
-  margin-right: 11px;
-
-  overflow: hidden;
-
-  background: #eee;
-
-  border-radius: 4px;
-}
-
-
-/*
-   Card image
-*/
-
-.compact-card-image img {
-  display: block;
-
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  transition: transform 0.3s ease;
-}
-
-
-/*
-   Card text
-*/
-
-.compact-card-content {
-  min-width: 0;
-
-  flex: 1;
-
-  display: flex;
-  align-items: center;
-}
-
-
-.compact-card-content h3 {
-  margin: 0;
-
-  font-family: Arial, Helvetica, sans-serif;
-
-  font-size: 14px;
-  font-weight: 600;
-
-  line-height: 1.35;
-
-  color: #222;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-
-  overflow: hidden;
-}
-
-
-/*
-   Hover state
-*/
-
-.compact-article-card:hover {
-  background: #fafafa;
-}
-
-
-.compact-article-card:hover
-.compact-card-content h3 {
-  color: #d10024;
-}
-
-
-.compact-article-card:hover
-.compact-card-image img {
-  transform: scale(1.06);
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 
 /* ==========================================================
-   NO ARTICLES MESSAGE
+   SMALL ARTICLE CARD
    ========================================================== */
 
-.no-articles {
-  margin: 10px 0;
+.article-card-list .compact-article-card {
+    display: flex !important;
 
-  color: #777;
+    flex-direction: row !important;
 
-  font-size: 14px;
+    align-items: center !important;
+
+    width: 100% !important;
+    height: auto !important;
+
+    min-height: 68px !important;
+
+    margin: 0 !important;
+    padding: 9px 0 !important;
+
+    box-sizing: border-box;
+
+    background: transparent;
+
+    border: 0;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    text-decoration: none;
+
+    overflow: hidden;
 }
 
 
 /* ==========================================================
-   MAIN ARTICLE COLUMN
+   CARD IMAGE
+   ========================================================== */
+
+.article-card-list
+.compact-article-card
+.compact-card-image {
+
+    display: block !important;
+
+    flex: 0 0 78px !important;
+
+    width: 78px !important;
+    min-width: 78px !important;
+
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+
+    margin: 0 10px 0 0 !important;
+    padding: 0 !important;
+
+    overflow: hidden !important;
+
+    border-radius: 4px;
+
+    background: #eee;
+}
+
+
+/* VERY IMPORTANT:
+   isolate sidebar images from #post img
+*/
+
+.article-card-list
+.compact-article-card
+.compact-card-image
+img {
+
+    display: block !important;
+
+    width: 78px !important;
+    min-width: 78px !important;
+
+    height: 58px !important;
+    min-height: 58px !important;
+    max-height: 58px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    object-fit: cover !important;
+
+    border: 0 !important;
+
+    border-radius: 4px !important;
+
+    float: none !important;
+}
+
+
+/* ==========================================================
+   CARD TITLE
+   ========================================================== */
+
+.article-card-list
+.compact-card-content {
+
+    display: block !important;
+
+    flex: 1 1 auto !important;
+
+    width: auto !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+
+.article-card-list
+.compact-card-content h3 {
+
+    display: -webkit-box !important;
+
+    width: 100% !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    color: #222;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 13px !important;
+
+    font-weight: 600;
+
+    line-height: 1.35;
+
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    overflow: hidden;
+}
+
+
+/* Hover */
+
+.article-card-list
+.compact-article-card:hover
+.compact-card-content h3 {
+    color: #d10024;
+}
+
+
+/* ==========================================================
+   MIDDLE ARTICLE
    ========================================================== */
 
 .post-container {
-  min-width: 0;
-  width: 100%;
+
+    grid-column: 2;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 
 /* ==========================================================
-   FEATURED IMAGE
+   HERO IMAGE
    ========================================================== */
 
 #article-hero {
-  width: 100%;
 
-  margin: 0 0 22px;
+    display: block;
 
-  padding: 0;
+    width: 100%;
+
+    margin: 0 0 20px;
+    padding: 0;
 }
 
 
 #article-hero picture {
-  display: block;
+    display: block;
 
-  width: 100%;
+    width: 100%;
 }
 
 
 #article-hero img {
-  display: block;
 
-  width: 100%;
-  height: auto;
+    display: block;
 
-  max-height: 520px;
+    width: 100% !important;
+    max-width: 100% !important;
 
-  object-fit: cover;
+    height: auto !important;
 
-  border-radius: 6px;
+    margin: 0 !important;
+
+    object-fit: cover;
+
+    border-radius: 6px;
+
+    float: none !important;
 }
 
 
 #article-hero figcaption {
-  margin-top: 7px;
 
-  padding: 0 3px;
+    margin-top: 6px;
 
-  color: #777;
+    color: #777;
 
-  font-size: 12px;
+    font-size: 12px;
 
-  line-height: 1.4;
-}
-
-
-/* ==========================================================
-   ARTICLE HEADER
-   ========================================================== */
-
-.article-header {
-  margin-bottom: 25px;
-}
-
-
-/* ==========================================================
-   SOCIAL ICONS
-   ========================================================== */
-
-.post-social {
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  margin-bottom: 15px;
-}
-
-
-.post-social span {
-  margin-right: 3px;
-
-  color: #777;
-
-  font-size: 13px;
-}
-
-
-.post-social a {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  width: 34px;
-  height: 34px;
-
-  border-radius: 50%;
-
-  color: #333;
-
-  background: #f3f3f3;
-
-  text-decoration: none;
-
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
-}
-
-
-.post-social i {
-  font-size: 17px;
-}
-
-
-.post-social a:hover {
-  color: #fff;
-
-  background: #d10024;
-
-  transform: translateY(-2px);
-}
-
-
-/* Platform hover colours */
-
-.post-social a:nth-of-type(1):hover {
-  background: #e1306c;
-}
-
-.post-social a:nth-of-type(2):hover {
-  background: #1877f2;
-}
-
-.post-social a:nth-of-type(3):hover {
-  background: #ff0000;
-}
-
-.post-social a:nth-of-type(4):hover {
-  background: #000;
-}
-
-
-/* ==========================================================
-   ARTICLE TITLE
-   ========================================================== */
-
-#post h1 {
-  margin: 0 0 14px;
-
-  color: #151515;
-
-  font-family: "Anton", sans-serif;
-
-  font-size: clamp(32px, 4vw, 48px);
-
-  font-weight: 400;
-
-  line-height: 1.08;
-
-  letter-spacing: 0.2px;
-}
-
-
-/* ==========================================================
-   ARTICLE META
-   ========================================================== */
-
-.article-meta {
-  display: flex;
-
-  flex-wrap: wrap;
-
-  align-items: center;
-
-  gap: 6px;
-
-  margin-bottom: 25px;
-
-  padding-bottom: 18px;
-
-  border-bottom: 1px solid #e5e5e5;
-
-  color: #777;
-
-  font-size: 13px;
-
-  line-height: 1.5;
-}
-
-
-.article-meta a {
-  color: #333;
-
-  text-decoration: none;
-}
-
-
-.article-meta a:hover {
-  color: #d10024;
-}
-
-
-.meta-divider {
-  color: #bbb;
+    line-height: 1.4;
 }
 
 
@@ -2984,231 +2833,70 @@ body {
    ========================================================== */
 
 #post {
-  font-size: 17px;
+    width: 100%;
 
-  color: #292929;
+    min-width: 0;
+
+    font-size: 16px;
 }
 
-
-#post p {
-  margin: 0 0 1.35em;
-
-  line-height: 1.8;
-}
-
-
-#post .content {
-  width: 100%;
-}
-
-
-/* ==========================================================
-   ARTICLE HEADINGS
-   ========================================================== */
-
-#post h2 {
-  margin: 32px 0 15px;
-
-  color: #151515;
-
-  font-size: 28px;
-
-  line-height: 1.25;
-}
-
-
-#post h3 {
-  margin: 28px 0 13px;
-
-  color: #151515;
-
-  font-size: 22px;
-
-  line-height: 1.3;
-}
-
-
-/* ==========================================================
-   ARTICLE IMAGES
-   ========================================================== */
 
 #post img {
-  display: block;
 
-  width: 100%;
-  max-width: 100%;
+    display: block;
 
-  height: auto;
+    width: 100%;
+    max-width: 100%;
 
-  margin: 25px 0;
+    height: auto;
 
-  border-radius: 5px;
+    margin: 25px 0;
 
-  float: none;
-}
+    float: none;
 
-
-/*
-   Prevent embedded content from breaking
-   the middle column.
-*/
-
-#post iframe,
-#post video,
-#post embed {
-  max-width: 100%;
+    border-radius: 5px;
 }
 
 
 /* ==========================================================
-   ARTICLE LINKS
-   ========================================================== */
-
-#post a {
-  color: #d10024;
-
-  text-decoration: underline;
-}
-
-#post a:hover {
-  color: #99001b;
-}
-
-
-/* ==========================================================
-   ARTICLE LISTS
-   ========================================================== */
-
-#post ul,
-#post ol {
-  margin: 0 0 1.5em;
-
-  padding-left: 25px;
-}
-
-
-#post li {
-  margin-bottom: 8px;
-
-  line-height: 1.7;
-}
-
-
-/* ==========================================================
-   ARTICLE QUOTES
-   ========================================================== */
-
-#post blockquote {
-  margin: 25px 0;
-
-  padding: 18px 22px;
-
-  border-left: 4px solid #d10024;
-
-  background: #f7f7f7;
-
-  color: #444;
-
-  font-size: 18px;
-
-  font-style: italic;
-}
-
-
-/* ==========================================================
-   TABLES
-   ========================================================== */
-
-#post table {
-  width: 100%;
-
-  margin: 30px 0;
-
-  border-collapse: collapse;
-
-  font-size: 15px;
-
-  background: #fff;
-}
-
-
-#post th,
-#post td {
-  padding: 10px 12px;
-
-  border: 1px solid #ddd;
-
-  text-align: left;
-}
-
-
-#post th {
-  background: #f4f4f4;
-
-  font-weight: 600;
-}
-
-
-#post tr:nth-child(even) td {
-  background: #fafafa;
-}
-
-
-/* ==========================================================
-   YOUTUBE / VIDEO
-   ========================================================== */
-
-.article-video {
-  position: relative;
-
-  width: 100%;
-
-  height: 0;
-
-  padding-bottom: 56.25%;
-
-  margin: 30px 0;
-}
-
-
-.article-video iframe {
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  border: 0;
-
-  border-radius: 5px;
-}
-
-
-/* ==========================================================
-   RIGHT AD SIDEBAR
+   RIGHT AD COLUMN
    ========================================================== */
 
 .sidebar-ads {
-  width: 220px;
 
-  position: sticky;
+    grid-column: 3;
 
-  top: 20px;
+    display: block !important;
 
-  align-self: start;
+    width: 220px !important;
+    min-width: 220px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    position: sticky;
+
+    top: 20px;
+
+    align-self: start;
 }
 
 
+/* Individual adverts */
+
 .sidebar-ads .ad {
-  width: 100%;
 
-  min-height: 250px;
+    display: block;
 
-  margin-bottom: 25px;
+    width: 220px;
 
-  overflow: hidden;
+    min-height: 250px;
+
+    margin: 0 0 25px;
+
+    padding: 0;
+
+    overflow: hidden;
 }
 
 
@@ -3217,20 +2905,137 @@ body {
    ========================================================== */
 
 .bottom-ad {
-  width: 100%;
 
-  max-width: 1440px;
+    display: block;
 
-  margin: 35px auto 0;
+    width: 100%;
 
-  padding: 0 20px;
+    max-width: 1400px;
+
+    margin: 30px auto 0;
+
+    padding: 0 20px;
+
+    box-sizing: border-box;
 }
 
 
-.bottom-ad .lazy-ad {
-  width: 100%;
+/* ==========================================================
+   ARTICLE TITLE
+   ========================================================== */
 
-  min-height: 250px;
+#post h1 {
+
+    margin: 0 0 15px;
+
+    font-family: "Anton", sans-serif;
+
+    font-size: clamp(32px, 4vw, 48px);
+
+    font-weight: 400;
+
+    line-height: 1.1;
+
+    color: #151515;
+}
+
+
+/* ==========================================================
+   SOCIAL
+   ========================================================== */
+
+.post-social {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-bottom: 15px;
+}
+
+
+.post-social a {
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    padding: 0;
+
+    border-radius: 50%;
+
+    background: #f3f3f3;
+
+    text-decoration: none;
+}
+
+
+.post-social i {
+    font-size: 16px;
+}
+
+
+/* ==========================================================
+   ARTICLE META
+   ========================================================== */
+
+.article-meta {
+
+    display: flex;
+
+    flex-wrap: wrap;
+
+    align-items: center;
+
+    gap: 6px;
+
+    padding-bottom: 15px;
+
+    margin-bottom: 25px;
+
+    border-bottom: 1px solid #e5e5e5;
+
+    color: #777;
+
+    font-size: 13px;
+}
+
+
+/* ==========================================================
+   VIDEO
+   ========================================================== */
+
+.article-video {
+
+    position: relative;
+
+    width: 100%;
+
+    height: 0;
+
+    padding-bottom: 56.25%;
+
+    margin: 30px 0;
+}
+
+
+.article-video iframe {
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    border: 0;
 }
 
 
@@ -3238,86 +3043,140 @@ body {
    TABLET
    ========================================================== */
 
-@media (max-width: 1150px) {
+@media (max-width: 1100px) {
 
-  .post-page {
-    grid-template-columns:
-      230px
-      minmax(0, 1fr)
-      180px;
+    .post-page {
 
-    gap: 20px;
+        grid-template-columns:
+            220px
+            minmax(0, 1fr)
+            180px !important;
 
-    padding: 0 15px;
-  }
+        column-gap: 20px;
 
-
-  .sidebar-ads {
-    width: 180px;
-  }
+        max-width: 1200px !important;
+    }
 
 
-  .compact-card-image {
-    flex-basis: 68px;
+    .article-discovery {
 
-    width: 68px;
-    height: 52px;
-
-    margin-right: 9px;
-  }
+        width: 220px !important;
+        min-width: 220px !important;
+    }
 
 
-  .compact-card-content h3 {
-    font-size: 13px;
-  }
+    .sidebar-ads {
+
+        width: 180px !important;
+        min-width: 180px !important;
+    }
 
 
-  #post {
-    font-size: 16px;
-  }
+    .sidebar-ads .ad {
+
+        width: 180px;
+    }
 
 }
 
 
 /* ==========================================================
-   SMALL TABLET
+   TABLET / SMALLER SCREENS
    ========================================================== */
 
-@media (max-width: 900px) {
+@media (max-width: 850px) {
 
-  .post-page {
-    grid-template-columns:
-      210px
-      minmax(0, 1fr)
-      160px;
+    /*
+       Move discovery below article.
+       Keep ads hidden.
+    */
 
-    gap: 15px;
-  }
+    .post-page {
 
+        display: flex !important;
 
-  .sidebar-ads {
-    width: 160px;
-  }
+        flex-direction: column !important;
 
+        width: 100% !important;
 
-  .compact-card-image {
-    flex-basis: 62px;
+        max-width: 100% !important;
 
-    width: 62px;
-    height: 48px;
-  }
+        margin: 25px auto !important;
+
+        padding: 0 15px !important;
+    }
 
 
-  .compact-card-content h3 {
-    font-size: 12.5px;
+    .post-container {
 
-    -webkit-line-clamp: 3;
-  }
+        order: 1;
+
+        width: 100% !important;
+    }
 
 
-  #post h1 {
-    font-size: 34px;
-  }
+    .article-discovery {
+
+        order: 2;
+
+        width: 100% !important;
+        min-width: 0 !important;
+
+        margin-top: 35px !important;
+    }
+
+
+    .sidebar-ads {
+
+        display: none !important;
+    }
+
+
+    .bottom-ad {
+
+        display: none !important;
+    }
+
+
+    /*
+       Larger mobile/tablet cards
+    */
+
+    .article-card-list
+    .compact-article-card
+    .compact-card-image {
+
+        flex-basis: 100px !important;
+
+        width: 100px !important;
+        min-width: 100px !important;
+
+        height: 70px !important;
+        min-height: 70px !important;
+        max-height: 70px !important;
+    }
+
+
+    .article-card-list
+    .compact-article-card
+    .compact-card-image
+    img {
+
+        width: 100px !important;
+        min-width: 100px !important;
+
+        height: 70px !important;
+        min-height: 70px !important;
+        max-height: 70px !important;
+    }
+
+
+    .article-card-list
+    .compact-card-content
+    h3 {
+
+        font-size: 15px !important;
+    }
 
 }
 
@@ -3326,204 +3185,77 @@ body {
    MOBILE
    ========================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 600px) {
 
-  /*
-     One column.
+    .post-page {
 
-     Article first.
-     Related + latest underneath.
-     Ads completely disabled.
-  */
+        padding: 0 12px !important;
 
-  .post-page {
-    display: flex;
-
-    flex-direction: column;
-
-    width: 100%;
-
-    margin: 25px auto 0;
-
-    padding: 0 15px;
-
-    gap: 0;
-  }
+        margin-top: 20px !important;
+    }
 
 
-  /* Main article */
+    #post h1 {
 
-  .post-container {
-    order: 1;
+        font-size: 30px;
 
-    width: 100%;
-  }
-
-
-  /* Discovery */
-
-  .article-discovery {
-    order: 2;
-
-    width: 100%;
-
-    margin-top: 35px;
-  }
+        line-height: 1.1;
+    }
 
 
-  /*
-     Hide advertising completely on mobile.
-  */
+    #post {
 
-  .sidebar-ads,
-  .bottom-ad {
-    display: none !important;
-  }
+        font-size: 16px;
+    }
 
 
-  /* Hero */
+    .article-card-list
+    .compact-article-card {
 
-  #article-hero {
-    margin-bottom: 18px;
-  }
+        min-height: 72px !important;
 
-
-  #article-hero img {
-    max-height: none;
-
-    border-radius: 4px;
-  }
+        padding: 10px 0 !important;
+    }
 
 
-  /* Article title */
+    .article-card-list
+    .compact-article-card
+    .compact-card-image {
 
-  #post h1 {
-    font-size: 32px;
+        flex-basis: 92px !important;
 
-    line-height: 1.1;
-  }
+        width: 92px !important;
+        min-width: 92px !important;
 
-
-  /* Article text */
-
-  #post {
-    font-size: 16px;
-  }
-
-
-  #post p {
-    line-height: 1.75;
-  }
+        height: 64px !important;
+        min-height: 64px !important;
+        max-height: 64px !important;
+    }
 
 
-  /* Social */
+    .article-card-list
+    .compact-article-card
+    .compact-card-image
+    img {
 
-  .post-social {
-    margin-bottom: 12px;
-  }
+        width: 92px !important;
+        min-width: 92px !important;
 
-
-  /* Discovery headings */
-
-  .discovery-heading h2 {
-    font-size: 20px;
-  }
-
-
-  /*
-     Mobile cards become slightly larger
-     and easier to tap.
-  */
-
-  .compact-article-card {
-    padding: 12px 0;
-  }
+        height: 64px !important;
+        min-height: 64px !important;
+        max-height: 64px !important;
+    }
 
 
-  .compact-card-image {
-    flex: 0 0 105px;
+    .article-card-list
+    .compact-card-content
+    h3 {
 
-    width: 105px;
-    height: 70px;
+        font-size: 14px !important;
 
-    margin-right: 13px;
-
-    border-radius: 4px;
-  }
-
-
-  .compact-card-content h3 {
-    font-size: 15px;
-
-    line-height: 1.35;
-
-    -webkit-line-clamp: 3;
-  }
-
-
-  /*
-     Tables can scroll horizontally
-     without breaking the page.
-  */
-
-  #post table {
-    display: block;
-
-    width: 100%;
-
-    overflow-x: auto;
-
-    white-space: nowrap;
-  }
+        line-height: 1.35;
+    }
 
 }
 
 
-/* ==========================================================
-   SMALL PHONES
-   ========================================================== */
-
-@media (max-width: 480px) {
-
-  .post-page {
-    padding: 0 12px;
-
-    margin-top: 20px;
-  }
-
-
-  #post h1 {
-    font-size: 29px;
-  }
-
-
-  #post {
-    font-size: 16px;
-  }
-
-
-  .article-meta {
-    font-size: 12px;
-  }
-
-
-  .compact-card-image {
-    flex-basis: 92px;
-
-    width: 92px;
-    height: 64px;
-
-    margin-right: 11px;
-  }
-
-
-  .compact-card-content h3 {
-    font-size: 14px;
-  }
-
-
-  .discovery-section {
-    margin-bottom: 30px;
-  }
-
-}
