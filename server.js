@@ -839,8 +839,8 @@ const related = await pool.query(`
     subcategory,
     category,
     featured_image,
-    featured_image_small,
-    featured_image_medium,
+    image_small,
+    image_medium,
     published_date
   FROM blog_posts
   WHERE slug != $1
@@ -873,8 +873,8 @@ const latestPosts = await pool.query(`
     subcategory,
     category,
     featured_image,
-    featured_image_small,
-    featured_image_medium,
+    image_small,
+    image_medium,
     published_date
   FROM blog_posts
   WHERE slug != $1
@@ -883,6 +883,7 @@ const latestPosts = await pool.query(`
 `, [
   slug
 ]);
+
 
 // ==========================================================
 // Generate metadata
@@ -1435,11 +1436,11 @@ ${breadcrumbLd}
           related.rows.length > 0
             ? related.rows.map(p => {
 
-                const cardImage =
-                  p.featured_image_small ||
-                  p.featured_image_medium ||
-                  p.featured_image ||
-                  '/images/default-image.jpg';
+              const cardImage =
+  p.image_small ||
+  p.image_medium ||
+  p.featured_image ||
+  '/images/default-image.jpg';
 
                 return `
                   <a
@@ -1493,11 +1494,11 @@ ${breadcrumbLd}
           latestPosts.rows.length > 0
             ? latestPosts.rows.map(p => {
 
-                const cardImage =
-                  p.featured_image_small ||
-                  p.featured_image_medium ||
-                  p.featured_image ||
-                  '/images/default-image.jpg';
+               const cardImage =
+  p.image_small ||
+  p.image_medium ||
+  p.featured_image ||
+  '/images/default-image.jpg';
 
                 return `
                   <a
