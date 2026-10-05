@@ -1454,6 +1454,8 @@ ${breadcrumbLd}
                         alt="${p.title}"
                         loading="lazy"
                         decoding="async"
+						 width="100"
+                height="100"
                       >
                     </div>
 
@@ -1512,6 +1514,8 @@ ${breadcrumbLd}
                         alt="${p.title}"
                         loading="lazy"
                         decoding="async"
+						 width="100"
+                height="100"
                       >
                     </div>
 
