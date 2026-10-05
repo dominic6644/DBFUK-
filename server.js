@@ -831,11 +831,16 @@ app.get('/news/:subcategory/:slug', async (req, res) => {
 // RELATED POSTS
 // ============================================================
 
+
 const related = await pool.query(`
   SELECT
     title,
     slug,
     subcategory,
+    category,
+    featured_image,
+    featured_image_small,
+    featured_image_medium,
     published_date
   FROM blog_posts
   WHERE slug != $1
@@ -849,24 +854,35 @@ const related = await pool.query(`
       ELSE 1
     END,
     published_date DESC
-  LIMIT 5
+  LIMIT 10
 `, [
   slug,
   subcategoryFallback,
   category
 ]);
 
-console.log(
-  'Related posts found:',
-  related.rows.length,
-  related.rows.map(p => ({
-    title: p.title,
-    slug: p.slug,
-    subcategory: p.subcategory
-  }))
-);
 
-   
+// ============================================================
+// MOST RECENT ARTICLES
+// ============================================================
+
+const latestPosts = await pool.query(`
+  SELECT
+    title,
+    slug,
+    subcategory,
+    category,
+    featured_image,
+    featured_image_small,
+    featured_image_medium,
+    published_date
+  FROM blog_posts
+  WHERE slug != $1
+  ORDER BY published_date DESC
+  LIMIT 10
+`, [
+  slug
+]);
 
 // ==========================================================
 // Generate metadata
@@ -1391,155 +1407,361 @@ ${breadcrumbLd}
 		</nav>
 		<!-- /NAVIGATION -->
 
-<!-- ARTICLE HERO IMAGE -->
-${post.featured_image ? `
-<figure id="article-hero" style="margin:0;">
+<!-- =========================================================
+     ARTICLE PAGE
+     ========================================================= -->
 
-  <picture>
+<main class="post-page">
 
-    ${post.featured_image_small && post.featured_image_medium ? `
-    <source
-      type="image/webp"
-      srcset="
-        ${post.featured_image_small} 400w,
-        ${post.featured_image_medium} 768w,
-        ${post.featured_image} 1200w
-      "
-      sizes="100vw"
-    >
-    ` : ''}
+  <!-- =======================================================
+       LEFT SIDEBAR
+       RELATED + LATEST ARTICLES
+       ======================================================= -->
 
-    <img
-      src="${post.featured_image}"
-      srcset="
-        ${post.featured_image_small || post.featured_image} 400w,
-        ${post.featured_image_medium || post.featured_image} 768w,
-        ${post.featured_image} 1200w
-      "
-      sizes="100vw"
-      alt="${post.title}"
-      width="1200"
-      height="800"
-      style="width:100%; height:auto; max-height:500px; object-fit:cover;"
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-    >
+  <aside class="article-discovery">
 
-  </picture>
+    <!-- RELATED ARTICLES -->
 
-  <figcaption style="font-size:12px; color:#777; padding:5px 10px;">
-    ${post.title}
-  </figcaption>
+    <section class="discovery-section related-section">
 
-</figure>
-` : ''}
-
-<!-- =========================
-     POST PAGE LAYOUT
-     ========================= -->
-<div class="post-page">
-
-  <!-- =========================
-       LEFT COLUMN (POST)
-       ========================= -->
-  <div class="post-container">
-
-    <div class="post-social" style="margin-bottom:10px; display:flex; align-items:center; gap:10px;">
-      <span style="font-size:13px;color:#777;">Follow:</span>
-
-      <a href="https://www.instagram.com/dirtbikefinder_uk/" target="_blank">
-        <i class="fa fa-instagram"></i>
-      </a>
-
-      <a href="https://www.facebook.com/profile.php?id=61584149410522&http_ref=eyJ0cyI6MTc3NTU4OTUzOTAwMCwiciI6IiJ9#" target="_blank">
-        <i class="fa fa-facebook"></i>
-      </a>
-
-      <a href="https://www.youtube.com/@DirtbikefinderUK" target="_blank">
-        <i class="fa fa-youtube"></i>
-      </a>
-
-      <a href="https://x.com/dirtbikefinder?s=21" target="_blank">
-        <i class="fa fa-twitter"></i>
-      </a>
-    </div>
-
-    <div id="post">
-
-      <h1>${post.title}</h1>
-
-     <p style="color:#777;font-size:14px;">
-  By <strong><a href="/author.html" rel="author">${post.author}</a></strong>
-  ${new Date(post.published_date).toLocaleString('en-GB', {
-    dateStyle: 'medium',
-    timeStyle: 'short'
-  })} • ${readTime} min read
-  ${post.updated_at ? ` • Updated ${new Date(post.updated_at).toLocaleString('en-GB', {
-    dateStyle: 'medium',
-    timeStyle: 'short'
-  })}` : ''}
-</p>
-
-      <div class="content">${post.content}</div>
-
-      ${youtubeEmbed ? `
-      <div style="position:relative; padding-bottom:56.25%; height:0; margin:20px 0;">
-        <iframe
-          src="${youtubeEmbed}"
-          frameborder="0"
-          style="position:absolute; top:0; left:0; width:100%; height:100%;"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
+      <div class="discovery-heading">
+        <span></span>
+        <h2>Related Articles</h2>
       </div>
-      ` : ''}
 
-      <div class="related-posts">
-  <h3>Related Articles</h3>
+      <div class="article-card-list">
 
-  ${
-    related.rows.length > 0
-      ? `
-        <ul>
-          ${related.rows.map(p => `
-            <li>
-              <a href="/news/${encodeURIComponent(p.subcategory || 'general')}/${encodeURIComponent(p.slug)}">
-                ${p.title}
-              </a>
-            </li>
-          `).join('')}
-        </ul>
-      `
-      : `
-        <p>No related articles found.</p>
-      `
-  }
-</div>
-    </div>
+        ${
+          related.rows.length > 0
+            ? related.rows.map(p => {
 
-  </div>
+                const cardImage =
+                  p.featured_image_small ||
+                  p.featured_image_medium ||
+                  p.featured_image ||
+                  '/images/default-image.jpg';
 
-  <!-- =========================
-       RIGHT COLUMN (SIDEBAR ADS)
-       ========================= -->
-  <aside class="sidebar-ads">
+                return `
+                  <a
+                    class="compact-article-card"
+                    href="/news/${encodeURIComponent(p.subcategory || 'general')}/${encodeURIComponent(p.slug)}"
+                  >
 
-    <div class="ad lazy-ad" data-slot="1381761821" style="margin-bottom:20px; min-height:250px;"></div>
+                    <div class="compact-card-image">
+                      <img
+                        src="${cardImage}"
+                        alt="${p.title}"
+                        loading="lazy"
+                        decoding="async"
+                      >
+                    </div>
 
-    <div class="ad lazy-ad" data-slot="6184578087" style="margin-bottom:20px; min-height:250px;"></div>
+                    <div class="compact-card-content">
+                      <h3>${p.title}</h3>
+                    </div>
+
+                  </a>
+                `;
+
+              }).join('')
+            : `
+              <p class="no-articles">
+                No related articles found.
+              </p>
+            `
+        }
+
+      </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         MOST RECENT ARTICLES
+         ===================================================== -->
+
+    <section class="discovery-section latest-section">
+
+      <div class="discovery-heading">
+        <span></span>
+        <h2>Latest Articles</h2>
+      </div>
+
+      <div class="article-card-list">
+
+        ${
+          latestPosts.rows.length > 0
+            ? latestPosts.rows.map(p => {
+
+                const cardImage =
+                  p.featured_image_small ||
+                  p.featured_image_medium ||
+                  p.featured_image ||
+                  '/images/default-image.jpg';
+
+                return `
+                  <a
+                    class="compact-article-card"
+                    href="/news/${encodeURIComponent(p.subcategory || 'general')}/${encodeURIComponent(p.slug)}"
+                  >
+
+                    <div class="compact-card-image">
+                      <img
+                        src="${cardImage}"
+                        alt="${p.title}"
+                        loading="lazy"
+                        decoding="async"
+                      >
+                    </div>
+
+                    <div class="compact-card-content">
+                      <h3>${p.title}</h3>
+                    </div>
+
+                  </a>
+                `;
+
+              }).join('')
+            : `
+              <p class="no-articles">
+                No recent articles found.
+              </p>
+            `
+        }
+
+      </div>
+
+    </section>
 
   </aside>
 
-</div>
 
-<!-- =========================
-     BOTTOM AD (FULL WIDTH)
-     ========================= -->
+  <!-- =======================================================
+       MAIN ARTICLE
+       ======================================================= -->
+
+  <article class="post-container">
+
+
+    <!-- FEATURED IMAGE -->
+
+    ${
+      post.featured_image
+        ? `
+          <figure id="article-hero">
+
+            <picture>
+
+              ${
+                post.featured_image_small &&
+                post.featured_image_medium
+                  ? `
+                    <source
+                      type="image/webp"
+                      srcset="
+                        ${post.featured_image_small} 400w,
+                        ${post.featured_image_medium} 768w,
+                        ${post.featured_image} 1200w
+                      "
+                      sizes="(max-width: 768px) 100vw, 760px"
+                    >
+                  `
+                  : ''
+              }
+
+              <img
+                src="${post.featured_image}"
+                srcset="
+                  ${post.featured_image_small || post.featured_image} 400w,
+                  ${post.featured_image_medium || post.featured_image} 768w,
+                  ${post.featured_image} 1200w
+                "
+                sizes="(max-width: 768px) 100vw, 760px"
+                alt="${post.title}"
+                width="1200"
+                height="800"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              >
+
+            </picture>
+
+            <figcaption>
+              ${post.title}
+            </figcaption>
+
+          </figure>
+        `
+        : ''
+    }
+
+
+    <!-- ARTICLE HEADER -->
+
+    <header class="article-header">
+
+      <div class="post-social">
+
+        <span>Follow:</span>
+
+        <a
+          href="https://www.instagram.com/dirtbikefinder_uk/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Dirt Bike Finder UK on Instagram"
+        >
+          <i class="fa fa-instagram" aria-hidden="true"></i>
+        </a>
+
+        <a
+          href="https://www.facebook.com/profile.php?id=61584149410522"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Dirt Bike Finder UK on Facebook"
+        >
+          <i class="fa fa-facebook" aria-hidden="true"></i>
+        </a>
+
+        <a
+          href="https://www.youtube.com/@DirtbikefinderUK"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Dirt Bike Finder UK on YouTube"
+        >
+          <i class="fa fa-youtube" aria-hidden="true"></i>
+        </a>
+
+        <a
+          href="https://x.com/dirtbikefinder?s=21"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Dirt Bike Finder UK on X"
+        >
+          <i class="fa fa-twitter" aria-hidden="true"></i>
+        </a>
+
+      </div>
+
+
+      <h1>${post.title}</h1>
+
+
+      <div class="article-meta">
+
+        <span>
+          By
+          <strong>
+            <a href="/author.html" rel="author">
+              ${post.author}
+            </a>
+          </strong>
+        </span>
+
+        <span class="meta-divider">•</span>
+
+        <span>
+          ${new Date(post.published_date).toLocaleString('en-GB', {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+          })}
+        </span>
+
+        <span class="meta-divider">•</span>
+
+        <span>
+          ${readTime} min read
+        </span>
+
+        ${
+          post.updated_at
+            ? `
+              <span class="meta-divider">•</span>
+
+              <span>
+                Updated
+                ${new Date(post.updated_at).toLocaleString('en-GB', {
+                  dateStyle: 'medium',
+                  timeStyle: 'short'
+                })}
+              </span>
+            `
+            : ''
+        }
+
+      </div>
+
+    </header>
+
+
+    <!-- ARTICLE CONTENT -->
+
+    <div id="post">
+
+      <div class="content">
+        ${post.content}
+      </div>
+
+
+      <!-- YOUTUBE -->
+
+      ${
+        youtubeEmbed
+          ? `
+            <div class="article-video">
+
+              <iframe
+                src="${youtubeEmbed}"
+                title="${post.title}"
+                loading="lazy"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+              </iframe>
+
+            </div>
+          `
+          : ''
+      }
+
+    </div>
+
+  </article>
+
+
+  <!-- =======================================================
+       RIGHT ADVERTISING SIDEBAR
+       ======================================================= -->
+
+  <aside class="sidebar-ads">
+
+    <div
+      class="ad lazy-ad"
+      data-slot="1381761821"
+    ></div>
+
+    <div
+      class="ad lazy-ad"
+      data-slot="6184578087"
+    ></div>
+
+  </aside>
+
+</main>
+
+
+<!-- =========================================================
+     BOTTOM AD
+     ========================================================= -->
+
 <div class="bottom-ad">
-  <div class="lazy-ad" data-slot="3624781783" style="min-height:250px;"></div>
-</div>
 
+  <div
+    class="lazy-ad"
+    data-slot="3624781783"
+  ></div>
+
+</div>
 
   
 <!-- FOOTER -->
