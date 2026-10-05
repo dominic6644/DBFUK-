@@ -2497,172 +2497,1033 @@ button[type="submit"]:hover {
 /*-- post */
 
 
-/* === GLOBAL FIXES === */
-/* =========================
-   GLOBAL FIXES
-========================= */
-html, body {
+
+
+/* ==========================================================
+   GLOBAL
+   ========================================================== */
+
+html,
+body {
   overflow-x: hidden;
   line-height: 1.6;
 }
 
-/* Prevent AdSense breaking layout */
+* {
+  box-sizing: border-box;
+}
+
 .adsbygoogle {
   max-width: 100% !important;
   display: block;
 }
 
-/* =========================
-   MAIN LAYOUT (DESKTOP FIRST)
-========================= */
+
+/* ==========================================================
+   MAIN ARTICLE PAGE
+   ========================================================== */
+
 .post-page {
+  width: 100%;
+  max-width: 1440px;
+  margin: 40px auto 0;
+  padding: 0 20px;
+
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px; /* content | sidebar */
+
+  /*
+     LEFT:
+     article discovery
+
+     CENTRE:
+     article
+
+     RIGHT:
+     advertising
+  */
+
+  grid-template-columns:
+    270px
+    minmax(0, 1fr)
+    220px;
+
   gap: 30px;
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 0 16px;
+
   align-items: start;
 }
 
-/* =========================
-   MAIN CONTENT
-========================= */
-.post-container {
-  min-width: 0; /* prevents overflow bug */
-}
 
-#post {
-  font-size: 16px;
-}
+/* ==========================================================
+   LEFT ARTICLE DISCOVERY SIDEBAR
+   ========================================================== */
 
-#post p {
-  margin-bottom: 1.2em;
-}
-
-/* Featured image fix (IMPORTANT: remove float issues) */
-#post img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  margin: 0 0 20px 0;
-  float: none;
-}
-
-/* =========================
-   SOCIAL ICONS
-========================= */
-.post-social i {
-  font-size: 26px;
-  color: #333;
-  transition: all 0.25s ease;
-}
-
-.post-social a {
-  padding: 6px;
-  display: inline-block;
-}
-
-.post-social a:hover i {
-  color: #d10024;
-  transform: scale(1.2);
-}
-
-/* platform colours */
-.post-social a:nth-child(2):hover i { color: #E1306C; }
-.post-social a:nth-child(3):hover i { color: #1877F2; }
-.post-social a:nth-child(4):hover i { color: #FF0000; }
-.post-social a:nth-child(5):hover i { color: #000000; }
-
-/* =========================
-   SIDEBAR ADS (DESKTOP)
-========================= */
-.sidebar-ads {
-  width: 220px;
-  position: sticky;
-  top: 20px;
-  align-self: start;
-}
-
-.sidebar-ads .ad {
-  margin-bottom: 20px;
-}
-
-/* =========================
-   BOTTOM AD
-========================= */
-.bottom-ad {
-  margin-top: 40px;
+.article-discovery {
+  min-width: 0;
   width: 100%;
 }
 
-/* =========================
-   TABLES
-========================= */
-table {
+
+/* ==========================================================
+   DISCOVERY SECTION
+   ========================================================== */
+
+.discovery-section {
+  margin-bottom: 40px;
+}
+
+
+/* ==========================================================
+   SECTION HEADINGS
+   ========================================================== */
+
+.discovery-heading {
+  display: flex;
+  align-items: center;
+
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+
+  border-bottom: 2px solid #e5e5e5;
+
+  position: relative;
+}
+
+.discovery-heading span {
+  display: block;
+
+  width: 5px;
+  height: 25px;
+
+  margin-right: 9px;
+
+  background: #d10024;
+
+  border-radius: 2px;
+}
+
+.discovery-heading h2 {
+  margin: 0;
+
+  font-family: "Anton", sans-serif;
+
+  font-size: 21px;
+  font-weight: 400;
+
+  line-height: 1.1;
+
+  color: #151515;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.3px;
+}
+
+
+/* ==========================================================
+   COMPACT ARTICLE CARDS
+   ========================================================== */
+
+.article-card-list {
+  display: flex;
+  flex-direction: column;
+
   width: 100%;
-  border-collapse: collapse;
-  margin: 30px 0;
-  font-size: 15px;
-  background: #fff;
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 10px 12px;
-  text-align: left;
+
+/*
+   The entire card is the link.
+*/
+
+.compact-article-card {
+  display: flex;
+
+  width: 100%;
+
+  padding: 10px 0;
+
+  text-decoration: none;
+
+  color: #222;
+
+  border-bottom: 1px solid #e7e7e7;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
-th {
-  background: #f4f4f4;
+
+/*
+   Remove border from the final card.
+*/
+
+.compact-article-card:last-child {
+  border-bottom: none;
+}
+
+
+/*
+   Image container
+*/
+
+.compact-card-image {
+  flex: 0 0 78px;
+
+  width: 78px;
+  height: 58px;
+
+  margin-right: 11px;
+
+  overflow: hidden;
+
+  background: #eee;
+
+  border-radius: 4px;
+}
+
+
+/*
+   Card image
+*/
+
+.compact-card-image img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition: transform 0.3s ease;
+}
+
+
+/*
+   Card text
+*/
+
+.compact-card-content {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+}
+
+
+.compact-card-content h3 {
+  margin: 0;
+
+  font-family: Arial, Helvetica, sans-serif;
+
+  font-size: 14px;
   font-weight: 600;
+
+  line-height: 1.35;
+
+  color: #222;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+
+  overflow: hidden;
 }
 
-tr:nth-child(even) td {
+
+/*
+   Hover state
+*/
+
+.compact-article-card:hover {
   background: #fafafa;
 }
 
-/* =========================
-   RESPONSIVE (THIS FIXES YOUR PROBLEM)
-========================= */
 
-/* TABLET */
-@media (max-width: 900px) {
+.compact-article-card:hover
+.compact-card-content h3 {
+  color: #d10024;
+}
+
+
+.compact-article-card:hover
+.compact-card-image img {
+  transform: scale(1.06);
+}
+
+
+/* ==========================================================
+   NO ARTICLES MESSAGE
+   ========================================================== */
+
+.no-articles {
+  margin: 10px 0;
+
+  color: #777;
+
+  font-size: 14px;
+}
+
+
+/* ==========================================================
+   MAIN ARTICLE COLUMN
+   ========================================================== */
+
+.post-container {
+  min-width: 0;
+  width: 100%;
+}
+
+
+/* ==========================================================
+   FEATURED IMAGE
+   ========================================================== */
+
+#article-hero {
+  width: 100%;
+
+  margin: 0 0 22px;
+
+  padding: 0;
+}
+
+
+#article-hero picture {
+  display: block;
+
+  width: 100%;
+}
+
+
+#article-hero img {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  max-height: 520px;
+
+  object-fit: cover;
+
+  border-radius: 6px;
+}
+
+
+#article-hero figcaption {
+  margin-top: 7px;
+
+  padding: 0 3px;
+
+  color: #777;
+
+  font-size: 12px;
+
+  line-height: 1.4;
+}
+
+
+/* ==========================================================
+   ARTICLE HEADER
+   ========================================================== */
+
+.article-header {
+  margin-bottom: 25px;
+}
+
+
+/* ==========================================================
+   SOCIAL ICONS
+   ========================================================== */
+
+.post-social {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-bottom: 15px;
+}
+
+
+.post-social span {
+  margin-right: 3px;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+
+.post-social a {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  color: #333;
+
+  background: #f3f3f3;
+
+  text-decoration: none;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+.post-social i {
+  font-size: 17px;
+}
+
+
+.post-social a:hover {
+  color: #fff;
+
+  background: #d10024;
+
+  transform: translateY(-2px);
+}
+
+
+/* Platform hover colours */
+
+.post-social a:nth-of-type(1):hover {
+  background: #e1306c;
+}
+
+.post-social a:nth-of-type(2):hover {
+  background: #1877f2;
+}
+
+.post-social a:nth-of-type(3):hover {
+  background: #ff0000;
+}
+
+.post-social a:nth-of-type(4):hover {
+  background: #000;
+}
+
+
+/* ==========================================================
+   ARTICLE TITLE
+   ========================================================== */
+
+#post h1 {
+  margin: 0 0 14px;
+
+  color: #151515;
+
+  font-family: "Anton", sans-serif;
+
+  font-size: clamp(32px, 4vw, 48px);
+
+  font-weight: 400;
+
+  line-height: 1.08;
+
+  letter-spacing: 0.2px;
+}
+
+
+/* ==========================================================
+   ARTICLE META
+   ========================================================== */
+
+.article-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 25px;
+
+  padding-bottom: 18px;
+
+  border-bottom: 1px solid #e5e5e5;
+
+  color: #777;
+
+  font-size: 13px;
+
+  line-height: 1.5;
+}
+
+
+.article-meta a {
+  color: #333;
+
+  text-decoration: none;
+}
+
+
+.article-meta a:hover {
+  color: #d10024;
+}
+
+
+.meta-divider {
+  color: #bbb;
+}
+
+
+/* ==========================================================
+   ARTICLE CONTENT
+   ========================================================== */
+
+#post {
+  font-size: 17px;
+
+  color: #292929;
+}
+
+
+#post p {
+  margin: 0 0 1.35em;
+
+  line-height: 1.8;
+}
+
+
+#post .content {
+  width: 100%;
+}
+
+
+/* ==========================================================
+   ARTICLE HEADINGS
+   ========================================================== */
+
+#post h2 {
+  margin: 32px 0 15px;
+
+  color: #151515;
+
+  font-size: 28px;
+
+  line-height: 1.25;
+}
+
+
+#post h3 {
+  margin: 28px 0 13px;
+
+  color: #151515;
+
+  font-size: 22px;
+
+  line-height: 1.3;
+}
+
+
+/* ==========================================================
+   ARTICLE IMAGES
+   ========================================================== */
+
+#post img {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+
+  height: auto;
+
+  margin: 25px 0;
+
+  border-radius: 5px;
+
+  float: none;
+}
+
+
+/*
+   Prevent embedded content from breaking
+   the middle column.
+*/
+
+#post iframe,
+#post video,
+#post embed {
+  max-width: 100%;
+}
+
+
+/* ==========================================================
+   ARTICLE LINKS
+   ========================================================== */
+
+#post a {
+  color: #d10024;
+
+  text-decoration: underline;
+}
+
+#post a:hover {
+  color: #99001b;
+}
+
+
+/* ==========================================================
+   ARTICLE LISTS
+   ========================================================== */
+
+#post ul,
+#post ol {
+  margin: 0 0 1.5em;
+
+  padding-left: 25px;
+}
+
+
+#post li {
+  margin-bottom: 8px;
+
+  line-height: 1.7;
+}
+
+
+/* ==========================================================
+   ARTICLE QUOTES
+   ========================================================== */
+
+#post blockquote {
+  margin: 25px 0;
+
+  padding: 18px 22px;
+
+  border-left: 4px solid #d10024;
+
+  background: #f7f7f7;
+
+  color: #444;
+
+  font-size: 18px;
+
+  font-style: italic;
+}
+
+
+/* ==========================================================
+   TABLES
+   ========================================================== */
+
+#post table {
+  width: 100%;
+
+  margin: 30px 0;
+
+  border-collapse: collapse;
+
+  font-size: 15px;
+
+  background: #fff;
+}
+
+
+#post th,
+#post td {
+  padding: 10px 12px;
+
+  border: 1px solid #ddd;
+
+  text-align: left;
+}
+
+
+#post th {
+  background: #f4f4f4;
+
+  font-weight: 600;
+}
+
+
+#post tr:nth-child(even) td {
+  background: #fafafa;
+}
+
+
+/* ==========================================================
+   YOUTUBE / VIDEO
+   ========================================================== */
+
+.article-video {
+  position: relative;
+
+  width: 100%;
+
+  height: 0;
+
+  padding-bottom: 56.25%;
+
+  margin: 30px 0;
+}
+
+
+.article-video iframe {
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+
+  border-radius: 5px;
+}
+
+
+/* ==========================================================
+   RIGHT AD SIDEBAR
+   ========================================================== */
+
+.sidebar-ads {
+  width: 220px;
+
+  position: sticky;
+
+  top: 20px;
+
+  align-self: start;
+}
+
+
+.sidebar-ads .ad {
+  width: 100%;
+
+  min-height: 250px;
+
+  margin-bottom: 25px;
+
+  overflow: hidden;
+}
+
+
+/* ==========================================================
+   BOTTOM AD
+   ========================================================== */
+
+.bottom-ad {
+  width: 100%;
+
+  max-width: 1440px;
+
+  margin: 35px auto 0;
+
+  padding: 0 20px;
+}
+
+
+.bottom-ad .lazy-ad {
+  width: 100%;
+
+  min-height: 250px;
+}
+
+
+/* ==========================================================
+   TABLET
+   ========================================================== */
+
+@media (max-width: 1150px) {
+
   .post-page {
-    grid-template-columns: 1fr 180px;
+    grid-template-columns:
+      230px
+      minmax(0, 1fr)
+      180px;
+
     gap: 20px;
+
+    padding: 0 15px;
   }
+
 
   .sidebar-ads {
     width: 180px;
   }
-}
 
-/* MOBILE (CRITICAL FIX) */
-@media (max-width: 768px) {
-  .post-page {
-    grid-template-columns: 1fr; /* STACK EVERYTHING */
+
+  .compact-card-image {
+    flex-basis: 68px;
+
+    width: 68px;
+    height: 52px;
+
+    margin-right: 9px;
   }
 
-  .sidebar-ads {
-    width: 100%;
-    position: relative;
-    top: auto;
-    margin-top: 30px;
-  }
 
-  #post img {
-    width: 100%;
-  }
-
-  table {
-    font-size: 14px;
-  }
-}
-
-/* SMALL PHONES */
-@media (max-width: 480px) {
-  table, th, td {
+  .compact-card-content h3 {
     font-size: 13px;
   }
+
+
+  #post {
+    font-size: 16px;
+  }
+
+}
+
+
+/* ==========================================================
+   SMALL TABLET
+   ========================================================== */
+
+@media (max-width: 900px) {
+
+  .post-page {
+    grid-template-columns:
+      210px
+      minmax(0, 1fr)
+      160px;
+
+    gap: 15px;
+  }
+
+
+  .sidebar-ads {
+    width: 160px;
+  }
+
+
+  .compact-card-image {
+    flex-basis: 62px;
+
+    width: 62px;
+    height: 48px;
+  }
+
+
+  .compact-card-content h3 {
+    font-size: 12.5px;
+
+    -webkit-line-clamp: 3;
+  }
+
+
+  #post h1 {
+    font-size: 34px;
+  }
+
+}
+
+
+/* ==========================================================
+   MOBILE
+   ========================================================== */
+
+@media (max-width: 768px) {
+
+  /*
+     One column.
+
+     Article first.
+     Related + latest underneath.
+     Ads completely disabled.
+  */
+
+  .post-page {
+    display: flex;
+
+    flex-direction: column;
+
+    width: 100%;
+
+    margin: 25px auto 0;
+
+    padding: 0 15px;
+
+    gap: 0;
+  }
+
+
+  /* Main article */
+
+  .post-container {
+    order: 1;
+
+    width: 100%;
+  }
+
+
+  /* Discovery */
+
+  .article-discovery {
+    order: 2;
+
+    width: 100%;
+
+    margin-top: 35px;
+  }
+
+
+  /*
+     Hide advertising completely on mobile.
+  */
+
+  .sidebar-ads,
+  .bottom-ad {
+    display: none !important;
+  }
+
+
+  /* Hero */
+
+  #article-hero {
+    margin-bottom: 18px;
+  }
+
+
+  #article-hero img {
+    max-height: none;
+
+    border-radius: 4px;
+  }
+
+
+  /* Article title */
+
+  #post h1 {
+    font-size: 32px;
+
+    line-height: 1.1;
+  }
+
+
+  /* Article text */
+
+  #post {
+    font-size: 16px;
+  }
+
+
+  #post p {
+    line-height: 1.75;
+  }
+
+
+  /* Social */
+
+  .post-social {
+    margin-bottom: 12px;
+  }
+
+
+  /* Discovery headings */
+
+  .discovery-heading h2 {
+    font-size: 20px;
+  }
+
+
+  /*
+     Mobile cards become slightly larger
+     and easier to tap.
+  */
+
+  .compact-article-card {
+    padding: 12px 0;
+  }
+
+
+  .compact-card-image {
+    flex: 0 0 105px;
+
+    width: 105px;
+    height: 70px;
+
+    margin-right: 13px;
+
+    border-radius: 4px;
+  }
+
+
+  .compact-card-content h3 {
+    font-size: 15px;
+
+    line-height: 1.35;
+
+    -webkit-line-clamp: 3;
+  }
+
+
+  /*
+     Tables can scroll horizontally
+     without breaking the page.
+  */
+
+  #post table {
+    display: block;
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    white-space: nowrap;
+  }
+
+}
+
+
+/* ==========================================================
+   SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 480px) {
+
+  .post-page {
+    padding: 0 12px;
+
+    margin-top: 20px;
+  }
+
+
+  #post h1 {
+    font-size: 29px;
+  }
+
+
+  #post {
+    font-size: 16px;
+  }
+
+
+  .article-meta {
+    font-size: 12px;
+  }
+
+
+  .compact-card-image {
+    flex-basis: 92px;
+
+    width: 92px;
+    height: 64px;
+
+    margin-right: 11px;
+  }
+
+
+  .compact-card-content h3 {
+    font-size: 14px;
+  }
+
+
+  .discovery-section {
+    margin-bottom: 30px;
+  }
+
 }
