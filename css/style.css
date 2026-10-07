@@ -3214,3 +3214,48 @@ button[type="submit"]:hover {
         font-size: 14px !important;
     }
 }
+
+/* ==========================================================
+   MOBILE AD
+   Hidden on desktop/tablet
+   ========================================================== */
+
+.mobile-ad {
+    display: none !important;
+}
+
+
+/* ==========================================================
+   SHOW MOBILE AD ON SMALL SCREENS
+   ========================================================== */
+
+@media (max-width: 850px) {
+
+    .mobile-ad {
+        display: block !important;
+
+        width: 100% !important;
+        max-width: 100% !important;
+
+        margin: 25px 0 !important;
+        padding: 0 !important;
+
+        box-sizing: border-box !important;
+
+        text-align: center !important;
+    }
+
+    .mobile-ad-label {
+        display: block !important;
+
+        margin: 0 0 6px !important;
+
+        font-family: Arial, Helvetica, sans-serif !important;
+        font-size: 10px !important;
+        line-height: 1.2 !important;
+
+        color: #999 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+    }
+}
