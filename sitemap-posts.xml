@@ -1034,7 +1034,41 @@
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
+    <url>
+    <loc>https://dirtbikefinderuk.co.uk/news/sherco-bikes/2027-sherco-300-se-xtrem-revealed-factory-inspired-hard-enduro</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+     <url>
+    <loc>https://dirtbikefinderuk.co.uk/news/trrs-bikes/2027-trrs-one-rr-trials-bike-revealed-fuel-injection-electric-start</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+     <url>
+    <loc>https://dirtbikefinderuk.co.uk/news/hard-enduro/james-moore-retains-junior-hard-enduro-world-championship-at-hixpania-2026</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+     <url>
+    <loc>https://dirtbikefinderuk.co.uk/news/hard-enduro/sandra-gmez-makes-history-as-first-ever-womens-hard-enduro-world-champion</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+     <url>
+    <loc>https://dirtbikefinderuk.co.uk/news/hard-enduro/hixpania-the-lost-road-2026-results-mario-romn-wins</loc>
+    <lastmod>2026-10-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
 
 
 
