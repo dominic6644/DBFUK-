@@ -1816,12 +1816,12 @@ ${breadcrumbLd}
 								<h3 class="footer-title">Information</h3>
 								<ul class="footer-links">
 									<li><a href="/news.html">News</a></li>
-									<li><a href="/about-us.html">News</a></li>
+									<li><a href="/about-us.html">About Us</a></li>
 									<li><a href="/contact.html">Get in Touch</a></li>
 									<li><a href="/p&p.html">Privacy Policy</a></li>
 									<li><a href="/T&C.html">Terms & Conditions</a></li>
 									<li><a href="/login.html">login</a></li>
-									<li><a href="/editorial-policy.html">login</a></li>
+									<li><a href="/editorial-policy.html">Editorial Policy</a></li>
 								</ul>
 							</div>
 						</div>
