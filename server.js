@@ -60,7 +60,15 @@ async function notifyGoogle(url) {
   }
 }
 
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://dirtbikefinderuk.co.uk',
+        'https://www.dirtbikefinderuk.co.uk'
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(compression());
@@ -193,10 +201,7 @@ const pgSession = require('connect-pg-simple')(session);
 
 app.set('trust proxy', 1);
 
-app.use(cors({
-    origin: process.env.FRONTEND_URL,
-    credentials: true
-}));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
