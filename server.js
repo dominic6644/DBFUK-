@@ -219,7 +219,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: true,
-        sameSite: 'lax',
+        sameSite: 'none',
         maxAge: 1000 * 60 * 60 * 4
     }
 }));
@@ -318,7 +318,7 @@ app.post('/api/logout', isAuthenticated, (req, res) => {
         res.clearCookie('dbfuk_admin_session', {
             httpOnly: true,
             secure: true,
-            sameSite: 'lax'
+            sameSite: 'none'
         });
 
         return res.json({
