@@ -95,7 +95,8 @@ app.get('/', (req, res) => {
 
 
 // IMAGE UPLOAD ROUTE
-app.post('/api/upload-image', upload.single('image'), async (req, res) => {
+
+app.post('/api/upload-image', isAuthenticated, upload.single('image'), async (req, res) => {
   try {
 
     const processed = await processImage(req.file.path);
@@ -186,7 +187,143 @@ pool.query('SELECT NOW()', (err, res) => {
     }
 });
 
+const rateLimit = require('express-rate-limit');
+const pgSession = require('connect-pg-simple')(session);
 
+app.set('trust proxy', 1);
+
+app.use(cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+}));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+    store: new pgSession({
+        pool,
+        tableName: 'user_sessions',
+        createTableIfMissing: true
+    }),
+    name: 'dbfuk_admin_session',
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'lax',
+        maxAge: 1000 * 60 * 60 * 4
+    }
+}));
+
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    limit: 5,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: {
+        error: 'Too many login attempts. Please try again later.'
+    }
+});
+
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.admin) {
+        return next();
+    }
+
+    return res.status(401).json({
+        error: 'You must be logged in to do that.'
+    });
+}
+
+app.post('/api/login', loginLimiter, async (req, res) => {
+    try {
+        const { username, password } = req.body;
+
+        if (
+            typeof username !== 'string' ||
+            typeof password !== 'string' ||
+            !username ||
+            !password
+        ) {
+            return res.status(400).json({
+                error: 'Username and password are required.'
+            });
+        }
+
+        const validUsername =
+            username === process.env.ADMIN_USERNAME;
+
+        const validPassword = await bcrypt.compare(
+            password,
+            process.env.ADMIN_PASSWORD_HASH
+        );
+
+        if (!validUsername || !validPassword) {
+            return res.status(401).json({
+                error: 'Invalid username or password.'
+            });
+        }
+
+        // Prevent session fixation by creating a fresh session.
+        req.session.regenerate((err) => {
+            if (err) {
+                console.error('Session regeneration failed:', err);
+                return res.status(500).json({
+                    error: 'Unable to create login session.'
+                });
+            }
+
+            req.session.admin = true;
+
+            req.session.save((saveError) => {
+                if (saveError) {
+                    console.error('Session save failed:', saveError);
+                    return res.status(500).json({
+                        error: 'Unable to save login session.'
+                    });
+                }
+
+                return res.json({
+                    message: 'Login successful.'
+                });
+            });
+        });
+
+    } catch (error) {
+        console.error('Login error:', error);
+
+        return res.status(500).json({
+            error: 'An unexpected login error occurred.'
+        });
+    }
+});
+
+app.post('/api/logout', isAuthenticated, (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({
+                error: 'Unable to log out.'
+            });
+        }
+
+        res.clearCookie('dbfuk_admin_session', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax'
+        });
+
+        return res.json({
+            message: 'Logged out successfully.'
+        });
+    });
+});
+
+app.get('/api/check-auth', isAuthenticated, (req, res) => {
+    res.json({ authenticated: true });
+});
   
 
 
@@ -656,7 +793,8 @@ ${urls}
 // =============================================
 
 // Create a new post
-app.post('/api/posts', async (req, res) => {
+
+app.post('/api/posts', isAuthenticated, async (req, res) => {
   const {
     title, slug, content, author, featured_image,
     image_medium, image_small, youtube_url,
@@ -714,7 +852,8 @@ app.post('/api/posts', async (req, res) => {
 });
 
 // Update a post
-app.put('/api/posts/:id', async (req, res) => {
+
+app.put('/api/posts/:id', isAuthenticated, async (req, res) => {
   const id = req.params.id;
   const {
     title, slug, content, author, featured_image,
@@ -767,7 +906,7 @@ app.put('/api/posts/:id', async (req, res) => {
 });
 
 // Delete a post
-app.delete('/api/posts/:id', async (req, res) => {
+app.delete('/api/posts/:id', isAuthenticated, async (req, res) => {
   const id = req.params.id;
   try {
     await pool.query('DELETE FROM blog_posts WHERE id = $1', [id]);
@@ -1947,53 +2086,6 @@ document.querySelectorAll(".lazy-ad").forEach(ad => {
         console.error(err);
         res.status(500).send('<h1>Server error loading post.</h1>');
     }
-});
-
-
-app.use(session({
-    secret: 'your-secret-key',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
-}));
-
-// Mock user data (replace with database query in a real application)
-const users = [
-    { id: 1, username: 'Dominic123', password: bcrypt.hashSync('Adidas123', 10) }
-];
-
-app.post('/api/login', async (req, res) => {
-    const { username, password } = req.body;
-
-    // Find user in database (mock data for example)
-    const user = users.find(user => user.username === username);
-
-    if (!user) {
-        return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Compare passwords
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordValid) {
-        return res.status(401).json({ error: 'Invalid credentials' });
-    }
-
-    // Set session
-    req.session.user = user;
-    res.json({ message: 'Login successful' });
-});
-
-function isAuthenticated(req, res, next) {
-    if (req.session.user) {
-        return next();
-    }
-    res.status(401).json({ error: 'Unauthorized' });
-}
-
-// Example protected route
-app.get('/api/protected', isAuthenticated, (req, res) => {
-    res.json({ message: 'This is a protected route' });
 });
 
 
