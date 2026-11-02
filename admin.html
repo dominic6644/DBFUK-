@@ -317,6 +317,11 @@
 			<!-- /bottom footer -->
 		</footer>
 		<!-- /FOOTER -->
+		<style>
+    body {
+        visibility: hidden;
+    }
+</style>
 
 		<!-- jQuery Plugins -->
 		<script src="js/jquery.min.js"></script>
@@ -328,6 +333,38 @@
         <script src="js/filter.js"></script>
 
         <script>
+
+			<style>
+    body {
+        visibility: hidden;
+    }
+</style>
+
+
+(async function checkAdminAccess() {
+    try {
+        const response = await fetch(
+            'https://dbfuk.onrender.com/api/check-auth',
+            {
+                method: 'GET',
+                credentials: 'include',
+                cache: 'no-store'
+            }
+        );
+
+        if (!response.ok) {
+            window.location.replace('/login.html');
+            return;
+        }
+
+        document.documentElement.classList.add('admin-authenticated');
+        document.body.style.visibility = 'visible';
+
+    } catch (error) {
+        window.location.replace('/login.html');
+    }
+})();
+
 
 // Auto-generate slug from title
 document.getElementById('title').addEventListener('input', function () {
