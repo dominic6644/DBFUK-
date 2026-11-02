@@ -139,16 +139,35 @@
 			<!-- /container -->
 		</nav>
 		<!-- /NAVIGATION -->
-        <!---login-->
         <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-        <!----login-->
+    <h2>Admin Login</h2>
+
+    <form id="loginForm">
+        <label for="username">Username</label>
+        <input
+            type="text"
+            id="username"
+            name="username"
+            autocomplete="username"
+            placeholder="Username"
+            required
+        >
+
+        <label for="password">Password</label>
+        <input
+            type="password"
+            id="password"
+            name="password"
+            autocomplete="current-password"
+            placeholder="Password"
+            required
+        >
+
+        <button type="submit" id="loginButton">Login</button>
+
+        <p id="loginMessage" role="alert" aria-live="polite"></p>
+    </form>
+</div>
 
 		<!-- FOOTER -->
 		<footer id="footer">
@@ -249,39 +268,49 @@
 		<script src="js/main.js"></script>
         <script src="js/filter.js"></script>
 
-        <script>
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
+       <script>
+document.getElementById('loginForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
+    const button = document.getElementById('loginButton');
+    const message = document.getElementById('loginMessage');
 
-          try {
-    const res = await fetch('https://dbfuk.onrender.com/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username, password })
-    });
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
 
-                if (res.ok) {
-                    const data = await res.json();
-                    alert('Login successful!');
-                    // Redirect to admin page or another page
-                   window.location.href = 'https://dirtbikefinderuk.co.uk/admin.html';
+    button.disabled = true;
+    button.textContent = 'Logging in...';
+    message.textContent = '';
 
-                } else {
-                    const errData = await res.json();
-                    alert('Error: ' + (errData.error || 'Invalid credentials'));
-                }
-            } catch (err) {
-                console.error('Login failed:', err);
-                alert('Network error. Please try again.');
+    try {
+        const response = await fetch(
+            'https://api.dirtbikefinderuk.co.uk/api/login',
+            {
+                method: 'POST',
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
             }
-        });
-    </script>
+        );
 
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.error || 'Invalid username or password');
+        }
+
+        window.location.href = '/admin.html';
+
+    } catch (error) {
+        message.textContent = error.message || 'Unable to log in. Please try again.';
+    } finally {
+        button.disabled = false;
+        button.textContent = 'Login';
+    }
+});
+</script>
        
 
 	</body>
