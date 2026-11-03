@@ -1791,6 +1791,73 @@ ${breadcrumbLd}
           <i class="fa fa-twitter" aria-hidden="true"></i>
         </a>
 
+		<h3>Share this article</h3>
+
+    <p>Found this article useful? Share it with your friends and fellow dirt bike enthusiasts!</p>
+
+    <div class="share-buttons">
+
+        <a href="#" data-share="facebook" aria-label="Share on Facebook">
+            <i class="fa fa-facebook"></i>
+        </a>
+
+        <a href="#" data-share="x" aria-label="Share on X">
+            <i class="fa fa-twitter"></i>
+        </a>
+
+        <a href="#" data-share="whatsapp" aria-label="Share on WhatsApp">
+            <i class="fa fa-whatsapp"></i>
+        </a>
+
+        <a href="#" data-share="pinterest" aria-label="Share on Pinterest">
+            <i class="fa fa-pinterest"></i>
+        </a>
+
+        <a href="#" data-share="reddit" aria-label="Share on Reddit">
+            <i class="fa fa-reddit"></i>
+        </a>
+
+        <a href="#" data-share="linkedin" aria-label="Share on LinkedIn">
+            <i class="fa fa-linkedin"></i>
+        </a>
+
+        <a href="#" data-share="telegram" aria-label="Share on Telegram">
+            <i class="fa fa-telegram"></i>
+        </a>
+
+        <a href="#" data-share="email" aria-label="Share by email">
+            <i class="fa fa-envelope"></i>
+        </a>
+
+        <button type="button" id="copyArticleLink" aria-label="Copy article link">
+            <i class="fa fa-link"></i>
+        </button>
+
+    </div>
+
+    <span id="shareFeedback" aria-live="polite"></span>
+
+
+    <!-- EMBED ARTICLE SECTION -->
+    <div class="article-embed">
+
+        <h3>Embed this article</h3>
+
+        <p>
+            Want to feature this article on your website?
+            Copy the code below and paste it into your website's HTML.
+        </p>
+
+        <textarea id="articleEmbedCode" readonly></textarea>
+
+        <button type="button" id="copyEmbedCode">
+            <i class="fa fa-code"></i> Copy Embed Code
+        </button>
+
+        <span id="embedFeedback" aria-live="polite"></span>
+
+    </div>
+
       </div>
 
 
