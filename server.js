@@ -1791,72 +1791,166 @@ ${breadcrumbLd}
           <i class="fa fa-twitter" aria-hidden="true"></i>
         </a>
 
-		<h3>Share this article</h3>
+		
+<!-- ==========================================================
+     DIRT BIKE FINDER UK - SOCIAL, SHARE & EMBED
+========================================================== -->
 
-    <p>Found this article useful? Share it with your friends and fellow dirt bike enthusiasts!</p>
+<div class="article-tools">
 
-    <div class="share-buttons">
+    <!-- FOLLOW DIRT BIKE FINDER UK -->
+    <div class="post-social">
 
-        <a href="#" data-share="facebook" aria-label="Share on Facebook">
-            <i class="fa fa-facebook"></i>
+        <span class="follow-label">Follow us:</span>
+
+        <a href="https://www.instagram.com/dirtbikefinder_uk/"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Follow us on Instagram">
+            <i class="fa fa-instagram" aria-hidden="true"></i>
         </a>
 
-        <a href="#" data-share="x" aria-label="Share on X">
-            <i class="fa fa-twitter"></i>
+        <a href="https://www.facebook.com/profile.php?id=61584149410522"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Follow us on Facebook">
+            <i class="fa fa-facebook" aria-hidden="true"></i>
         </a>
 
-        <a href="#" data-share="whatsapp" aria-label="Share on WhatsApp">
-            <i class="fa fa-whatsapp"></i>
+        <a href="https://www.youtube.com/@DirtbikefinderUK"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Follow us on YouTube">
+            <i class="fa fa-youtube" aria-hidden="true"></i>
         </a>
 
-        <a href="#" data-share="pinterest" aria-label="Share on Pinterest">
-            <i class="fa fa-pinterest"></i>
+        <a href="https://x.com/dirtbikefinder?s=21"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Follow us on X">
+            <i class="fa fa-twitter" aria-hidden="true"></i>
         </a>
-
-        <a href="#" data-share="reddit" aria-label="Share on Reddit">
-            <i class="fa fa-reddit"></i>
-        </a>
-
-        <a href="#" data-share="linkedin" aria-label="Share on LinkedIn">
-            <i class="fa fa-linkedin"></i>
-        </a>
-
-        <a href="#" data-share="telegram" aria-label="Share on Telegram">
-            <i class="fa fa-telegram"></i>
-        </a>
-
-        <a href="#" data-share="email" aria-label="Share by email">
-            <i class="fa fa-envelope"></i>
-        </a>
-
-        <button type="button" id="copyArticleLink" aria-label="Copy article link">
-            <i class="fa fa-link"></i>
-        </button>
 
     </div>
 
-    <span id="shareFeedback" aria-live="polite"></span>
+
+    <!-- SHARE ARTICLE -->
+    <section class="article-share" aria-labelledby="shareHeading">
+
+        <div class="share-heading">
+            <h3 id="shareHeading">Share this article</h3>
+
+            <p>
+                Found this article useful? Share it with your friends
+                and fellow dirt bike enthusiasts.
+            </p>
+        </div>
+
+        <div class="share-buttons">
+
+            <a href="#" data-share="facebook"
+               aria-label="Share on Facebook"
+               title="Share on Facebook">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="x"
+               aria-label="Share on X"
+               title="Share on X">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="whatsapp"
+               aria-label="Share on WhatsApp"
+               title="Share on WhatsApp">
+                <i class="fa fa-whatsapp" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="pinterest"
+               aria-label="Share on Pinterest"
+               title="Share on Pinterest">
+                <i class="fa fa-pinterest" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="reddit"
+               aria-label="Share on Reddit"
+               title="Share on Reddit">
+                <i class="fa fa-reddit" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="linkedin"
+               aria-label="Share on LinkedIn"
+               title="Share on LinkedIn">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="telegram"
+               aria-label="Share on Telegram"
+               title="Share on Telegram">
+                <i class="fa fa-telegram" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="email"
+               aria-label="Share by email"
+               title="Share by email">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+
+            <button type="button"
+                    id="copyArticleLink"
+                    aria-label="Copy article link"
+                    title="Copy article link">
+                <i class="fa fa-link" aria-hidden="true"></i>
+            </button>
+
+        </div>
+
+        <span id="shareFeedback"
+              class="share-feedback"
+              role="status"
+              aria-live="polite"></span>
+
+    </section>
 
 
-    <!-- EMBED ARTICLE SECTION -->
-    <div class="article-embed">
+    <!-- EMBED ARTICLE -->
+    <section class="article-embed" aria-labelledby="embedHeading">
 
-        <h3>Embed this article</h3>
+        <div class="embed-heading">
+            <h3 id="embedHeading">Embed this article</h3>
 
-        <p>
-            Want to feature this article on your website?
-            Copy the code below and paste it into your website's HTML.
-        </p>
+            <p>
+                Want to feature this article on your website?
+                Copy the code below and paste it into your website's HTML.
+                You'll provide your readers with a direct link back to
+                Dirt Bike Finder UK.
+            </p>
+        </div>
 
-        <textarea id="articleEmbedCode" readonly></textarea>
+        <textarea
+            id="articleEmbedCode"
+            readonly
+            rows="6"
+            aria-label="Article embed HTML code"
+            spellcheck="false"></textarea>
 
-        <button type="button" id="copyEmbedCode">
-            <i class="fa fa-code"></i> Copy Embed Code
-        </button>
+        <div class="embed-actions">
 
-        <span id="embedFeedback" aria-live="polite"></span>
+            <button type="button" id="copyEmbedCode">
+                <i class="fa fa-code" aria-hidden="true"></i>
+                Copy Embed Code
+            </button>
 
-    </div>
+            <span id="embedFeedback"
+                  class="embed-feedback"
+                  role="status"
+                  aria-live="polite"></span>
+
+        </div>
+
+    </section>
+
+</div>
 
       </div>
 
@@ -2102,6 +2196,7 @@ ${breadcrumbLd}
 <script defer src="/js/jquery.zoom.min.js"></script>
 <script defer src="/js/slick.min.js"></script>
 <script defer src="/js/news.js"></script>
+<script defer src="/js/share.js"></script>
 <script>
 
 document.getElementById('nav-toggle-btn').addEventListener('click', () => {
