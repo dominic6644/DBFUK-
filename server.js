@@ -801,35 +801,62 @@ ${urls}
 // Create a new post
 
 app.post('/api/posts', isAuthenticated, async (req, res) => {
-  const {
+const {
     title, slug, content, author, featured_image,
     image_medium, image_small, youtube_url,
-    published_date, meta_description, article_type,
-    category, subcategory
-  } = req.body;
+    published_date, meta_description,
+    primary_keyword, secondary_keywords,
+    article_type, category, subcategory
+} = req.body;
 
   if (!title || !slug || !content || !author || !category) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
-    await pool.query(
-      `INSERT INTO blog_posts
-      (title, slug, content, author, featured_image, image_medium, image_small, youtube_url, published_date, meta_description, article_type, category, subcategory)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
-      [
-        title, slug, content, author,
-        featured_image || null,
-        image_medium || null,
-        image_small || null,
-        youtube_url || null,
-        published_date,
-        meta_description || null,
-        article_type || null,
-        category,
-        subcategory || null
-      ]
-    );
+   await pool.query(
+  `INSERT INTO blog_posts
+  (
+    title,
+    slug,
+    content,
+    author,
+    featured_image,
+    image_medium,
+    image_small,
+    youtube_url,
+    published_date,
+    meta_description,
+    primary_keyword,
+    secondary_keywords,
+    article_type,
+    category,
+    subcategory
+  )
+  VALUES (
+    $1, $2, $3, $4, $5,
+    $6, $7, $8, $9, $10,
+    $11, $12, $13, $14, $15
+  )`,
+  [
+    title,
+    slug,
+    content,
+    author,
+    featured_image || null,
+    image_medium || null,
+    image_small || null,
+    youtube_url || null,
+    published_date,
+    meta_description || null,
+    primary_keyword || null,
+    secondary_keywords || null,
+    article_type || null,
+    category,
+    subcategory || null
+  ]
+);
+
 
     // Ping search engines with updated sitemaps
     const baseUrl = 'https://dirtbikefinderuk.co.uk';
@@ -864,45 +891,54 @@ app.put('/api/posts/:id', isAuthenticated, async (req, res) => {
   const {
     title, slug, content, author, featured_image,
     image_medium, image_small, youtube_url,
-    published_date, meta_description, article_type,
-    category, subcategory
-  } = req.body;
+    published_date, meta_description,
+    primary_keyword, secondary_keywords,
+    article_type, category, subcategory
+} = req.body;
 
   if (!title || !slug || !content || !author || !category) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
   try {
-    await pool.query(
-      `UPDATE blog_posts SET
-        title = $1,
-        slug = $2,
-        content = $3,
-        author = $4,
-        featured_image = $5,
-        image_medium = $6,
-        image_small = $7,
-        youtube_url = $8,
-        published_date = $9,
-        meta_description = $10,
-        article_type = $11,
-        category = $12,
-        subcategory = $13
-      WHERE id = $14`,
-      [
-        title, slug, content, author,
-        featured_image || null,
-        image_medium || null,
-        image_small || null,
-        youtube_url || null,
-        published_date,
-        meta_description || null,
-        article_type || null,
-        category,
-        subcategory || null,
-        id
-      ]
-    );
+    
+await pool.query(
+  `UPDATE blog_posts SET
+    title = $1,
+    slug = $2,
+    content = $3,
+    author = $4,
+    featured_image = $5,
+    image_medium = $6,
+    image_small = $7,
+    youtube_url = $8,
+    published_date = $9,
+    meta_description = $10,
+    primary_keyword = $11,
+    secondary_keywords = $12,
+    article_type = $13,
+    category = $14,
+    subcategory = $15
+  WHERE id = $16`,
+  [
+    title,
+    slug,
+    content,
+    author,
+    featured_image || null,
+    image_medium || null,
+    image_small || null,
+    youtube_url || null,
+    published_date,
+    meta_description || null,
+    primary_keyword || null,
+    secondary_keywords || null,
+    article_type || null,
+    category,
+    subcategory || null,
+    id
+  ]
+);
 
     res.json({ message: 'Post updated successfully' });
   } catch (err) {
@@ -1103,10 +1139,25 @@ const articleSection = [
   post.subcategory
 ].filter(Boolean);
 
+const secondaryKeywordList = post.secondary_keywords
+  ? post.secondary_keywords
+      .split(',')
+      .map(keyword => keyword.trim())
+      .filter(Boolean)
+  : [];
+
+// Build the complete structured-data keyword list.
+
 const keywords = [
+  post.primary_keyword,
+  ...secondaryKeywordList,
   post.category,
   post.subcategory
-].filter(Boolean);
+]
+  .filter(Boolean)
+  .filter((keyword, index, array) =>
+    array.indexOf(keyword) === index
+  );
 
 
 // ==========================================================
@@ -1307,6 +1358,12 @@ res.send(`
 <!-- Primary SEO -->
 <meta name="description" content="${description}">
 <meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="keywords" content="${[
+    post.primary_keyword,
+    ...(post.secondary_keywords || '').split(','),
+    post.category,
+    post.subcategory
+].filter(Boolean).map(keyword => keyword.trim()).join(', ')}">
 
 
 <!-- Open Graph (Facebook) - UPDATED -->
@@ -1793,20 +1850,12 @@ ${breadcrumbLd}
 
 		
 
+<!-- SHARE ARTICLE -->
 
 
 
-      
 
-
-    <!-- SHARE ARTICLE -->
-    <section aria-labelledby="shareHeading">
-
-        <div class="share-heading">
-            <span> id="shareHeading">Share this article </span>
-
-
-        </div>
+   
 
         <div class="share-buttons">
 
@@ -1892,7 +1941,7 @@ ${breadcrumbLd}
           role="status"
           aria-live="polite"></span>
 
-</section>
+
 
 
 </div>
