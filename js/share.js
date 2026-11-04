@@ -137,135 +137,72 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 
-    /* ======================================================
-       GENERATE EMBED CODE
-    ====================================================== */
+  
 
-    const embedTextarea = document.getElementById("articleEmbedCode");
+    
+/* ======================================================
+   GENERATE AND COPY ARTICLE EMBED CODE
+====================================================== */
 
-    const copyEmbedButton = document.getElementById("copyEmbedCode");
+const copyEmbedButton = document.getElementById("copyEmbedCode");
+const embedFeedback = document.getElementById("embedFeedback");
 
-    const embedFeedback = document.getElementById("embedFeedback");
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, function (character) {
+        const entities = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        };
 
+        return entities[character];
+    });
+}
 
-    // Escape HTML characters before inserting article information
-    function escapeHTML(value) {
+if (copyEmbedButton && embedFeedback) {
 
-        return String(value).replace(/[&<>"']/g, function (character) {
+    const safeTitle = escapeHTML(articleTitle);
+    const safeUrl = escapeHTML(articleUrl);
 
-            const entities = {
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            };
+    const embedCode = `
+<div style="max-width:520px;padding:18px;border:1px solid #ddd;border-left:4px solid #D10024;border-radius:6px;background:#fff;font-family:Arial,Helvetica,sans-serif;">
 
-            return entities[character];
-
-        });
-
-    }
-
-
-    if (embedTextarea) {
-
-        const safeTitle = escapeHTML(articleTitle);
-        const safeUrl = escapeHTML(articleUrl);
-
-        const embedCode = `
-<div style="
-    max-width:520px;
-    padding:18px;
-    border:1px solid #dddddd;
-    border-left:4px solid #D10024;
-    border-radius:6px;
-    background:#ffffff;
-    font-family:Arial,Helvetica,sans-serif;
-    box-sizing:border-box;
-">
-
-    <div style="
-        margin-bottom:10px;
-        font-size:11px;
-        font-weight:bold;
-        letter-spacing:1px;
-        text-transform:uppercase;
-        color:#D10024;
-    ">
+    <div style="margin-bottom:10px;font-size:11px;font-weight:bold;letter-spacing:1px;text-transform:uppercase;color:#D10024;">
         Dirt Bike Finder UK
     </div>
 
-    <a href="${safeUrl}"
-       target="_blank"
-       rel="noopener noreferrer"
-       style="
-           display:block;
-           margin-bottom:12px;
-           color:#171717;
-           font-size:17px;
-           font-weight:bold;
-           line-height:1.4;
-           text-decoration:none;
-       ">
+    <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display:block;margin-bottom:12px;color:#171717;font-size:17px;font-weight:bold;line-height:1.4;text-decoration:none;">
         ${safeTitle}
     </a>
 
-    <p style="
-        margin:0;
-        color:#666666;
-        font-size:13px;
-        line-height:1.5;
-    ">
+    <p style="margin:0;color:#666;font-size:13px;line-height:1.5;">
         Read the full article at
-        <a href="${safeUrl}"
-           target="_blank"
-           rel="noopener noreferrer"
-           style="color:#D10024;text-decoration:none;font-weight:bold;">
+        <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:#D10024;text-decoration:none;font-weight:bold;">
             Dirt Bike Finder UK
         </a>.
     </p>
 
 </div>
-        `.trim();
+    `.trim();
 
-        embedTextarea.value = embedCode;
+    copyEmbedButton.addEventListener("click", async function () {
 
-    }
+        try {
 
+            await copyToClipboard(embedCode);
 
-    /* ======================================================
-       COPY EMBED CODE
-    ====================================================== */
+            embedFeedback.textContent = "Embed code copied successfully!";
+            embedFeedback.classList.add("success");
 
-    if (copyEmbedButton && embedTextarea && embedFeedback) {
+        } catch (error) {
 
-        copyEmbedButton.addEventListener("click", async function () {
+            embedFeedback.textContent = "Unable to copy. Please try again.";
+            embedFeedback.classList.remove("success");
 
-            try {
+        }
 
-                await copyToClipboard(embedTextarea.value);
+    });
 
-                embedFeedback.textContent =
-                    "Embed code copied successfully!";
-
-                embedFeedback.classList.add("success");
-
-            } catch (error) {
-
-                embedTextarea.focus();
-                embedTextarea.select();
-
-                embedFeedback.textContent =
-                    "Code selected. Press Ctrl+C to copy.";
-
-                embedFeedback.classList.remove("success");
-
-            }
-
-        });
-
-    }
-
-});
-
+}
