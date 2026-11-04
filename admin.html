@@ -150,6 +150,36 @@
 	<input type="datetime-local" id="published_date" required>
 
 <textarea id="meta_description" placeholder="Meta description (max 160 chars)" maxlength="160"></textarea>
+	 
+<!-- SEO KEYWORDS -->
+
+<div class="seo-keyword-fields">
+
+    <label for="primary_keyword">Primary SEO Keyword</label>
+
+    <input
+        type="text"
+        id="primary_keyword"
+        placeholder="e.g. 2027 Beta Evo trials bike"
+        maxlength="150"
+    >
+
+    <label for="secondary_keywords">Secondary SEO Keywords</label>
+
+    <textarea
+        id="secondary_keywords"
+        placeholder="Enter supporting keywords separated by commas"
+        rows="3"
+        maxlength="1000"
+    ></textarea>
+
+    <small>
+        Add your main search phrase above and supporting keywords below.
+        Separate secondary keywords with commas.
+    </small>
+
+</div>
+
 
 <select id="article_type">
   <option value="breaking">Breaking News</option>
@@ -207,6 +237,35 @@
       <input type="text" id="edit-youtube_url" placeholder="YouTube Video URL (optional)">
       <input type="datetime-local" id="edit-published_date" required>
       <textarea id="edit-meta_description" placeholder="Meta description (max 160 chars)" maxlength="160"></textarea>
+		
+<!-- EDIT SEO KEYWORDS -->
+
+<div class="seo-keyword-fields">
+
+    <label for="edit-primary_keyword">Primary SEO Keyword</label>
+
+    <input
+        type="text"
+        id="edit-primary_keyword"
+        placeholder="Primary SEO keyword"
+        maxlength="150"
+    >
+
+    <label for="edit-secondary_keywords">Secondary SEO Keywords</label>
+
+    <textarea
+        id="edit-secondary_keywords"
+        placeholder="Supporting keywords separated by commas"
+        rows="3"
+        maxlength="1000"
+    ></textarea>
+
+    <small>
+        Separate secondary keywords with commas.
+    </small>
+
+</div>
+
       <select id="edit-article_type">
         <option value="breaking">Breaking News</option>
         <option value="results">Results</option>
@@ -481,6 +540,8 @@ async function editPost(id) {
     document.getElementById('edit-youtube_url').value = post.youtube_url || '';
     document.getElementById('edit-published_date').value = post.published_date || '';
     document.getElementById('edit-meta_description').value = post.meta_description || '';
+	document.getElementById('edit-primary_keyword').value = post.primary_keyword || '';
+document.getElementById('edit-secondary_keywords').value = post.secondary_keywords || '';
     document.getElementById('edit-article_type').value = post.article_type || '';
     document.getElementById('edit-category').value = post.category || '';
 
@@ -568,6 +629,8 @@ async function createPost(e) {
   const youtubeUrl = document.getElementById('youtube_url').value.trim();
   const publishedDate = document.getElementById('published_date').value;
   const metaDescription = document.getElementById('meta_description').value.trim();
+  const primaryKeyword = document.getElementById('primary_keyword').value.trim();
+  const secondaryKeywords = document.getElementById('secondary_keywords').value.trim();
   const articleType = document.getElementById('article_type').value;
   const category = document.getElementById('category').value;
   const subcategory = document.getElementById('subcategory').value;
@@ -601,6 +664,8 @@ async function createPost(e) {
     youtube_url: youtubeUrl || null,
     published_date: publishedDate,
     meta_description: metaDescription || null,
+	primary_keyword: primaryKeyword || null,
+    secondary_keywords: secondaryKeywords || null,
     article_type: articleType || null,
     category,
     subcategory: subcategory || null
@@ -643,6 +708,8 @@ async function updatePost(e) {
   const youtubeUrl = document.getElementById('edit-youtube_url').value.trim();
   const publishedDate = document.getElementById('edit-published_date').value;
   const metaDescription = document.getElementById('edit-meta_description').value.trim();
+  const primaryKeyword = document.getElementById('edit-primary_keyword').value.trim();
+  const secondaryKeywords = document.getElementById('edit-secondary_keywords').value.trim();
   const articleType = document.getElementById('edit-article_type').value;
   const category = document.getElementById('edit-category').value;
   const subcategory = document.getElementById('edit-subcategory').value;
@@ -683,6 +750,8 @@ async function updatePost(e) {
     youtube_url: youtubeUrl || null,
     published_date: publishedDate,
     meta_description: metaDescription || null,
+	primary_keyword: primaryKeyword || null,
+    secondary_keywords: secondaryKeywords || null,
     article_type: articleType || null,
     category,
     subcategory: subcategory || null
