@@ -1792,20 +1792,18 @@ ${breadcrumbLd}
         </a>
 
 		
-<!-- ==========================================================
-     DIRT BIKE FINDER UK - SOCIAL, SHARE & EMBED
-========================================================== -->
 
-<div class="article-tools">
+
+
 
       
 
 
     <!-- SHARE ARTICLE -->
-    <section class="article-share" aria-labelledby="shareHeading">
+    <section aria-labelledby="shareHeading">
 
         <div class="share-heading">
-            <h3 id="shareHeading">Share this article</h3>
+            <span> id="shareHeading">Share this article </span>
 
 
         </div>
@@ -1881,10 +1879,7 @@ ${breadcrumbLd}
     <div class="embed-heading">
         <h3>Embed this article</h3>
 
-        <p>
-            Want to feature this article on your website?
-            Click below to copy the embed code.
-        </p>
+      
     </div>
 
     <button type="button" id="copyEmbedCode">
