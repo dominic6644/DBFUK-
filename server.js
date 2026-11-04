@@ -1798,40 +1798,7 @@ ${breadcrumbLd}
 
 <div class="article-tools">
 
-    <!-- FOLLOW DIRT BIKE FINDER UK -->
-    <div class="post-social">
-
-        <span class="follow-label">Follow us:</span>
-
-        <a href="https://www.instagram.com/dirtbikefinder_uk/"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Follow us on Instagram">
-            <i class="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-
-        <a href="https://www.facebook.com/profile.php?id=61584149410522"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Follow us on Facebook">
-            <i class="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-
-        <a href="https://www.youtube.com/@DirtbikefinderUK"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Follow us on YouTube">
-            <i class="fa fa-youtube" aria-hidden="true"></i>
-        </a>
-
-        <a href="https://x.com/dirtbikefinder?s=21"
-           target="_blank"
-           rel="noopener noreferrer"
-           aria-label="Follow us on X">
-            <i class="fa fa-twitter" aria-hidden="true"></i>
-        </a>
-
-    </div>
+      
 
 
     <!-- SHARE ARTICLE -->
@@ -1840,10 +1807,7 @@ ${breadcrumbLd}
         <div class="share-heading">
             <h3 id="shareHeading">Share this article</h3>
 
-            <p>
-                Found this article useful? Share it with your friends
-                and fellow dirt bike enthusiasts.
-            </p>
+
         </div>
 
         <div class="share-buttons">
@@ -1910,45 +1874,31 @@ ${breadcrumbLd}
               role="status"
               aria-live="polite"></span>
 
-    </section>
+    
+<!-- EMBED ARTICLE -->
+<section class="article-embed">
 
+    <div class="embed-heading">
+        <h3>Embed this article</h3>
 
-    <!-- EMBED ARTICLE -->
-    <section class="article-embed" aria-labelledby="embedHeading">
+        <p>
+            Want to feature this article on your website?
+            Click below to copy the embed code.
+        </p>
+    </div>
 
-        <div class="embed-heading">
-            <h3 id="embedHeading">Embed this article</h3>
+    <button type="button" id="copyEmbedCode">
+        <i class="fa fa-code" aria-hidden="true"></i>
+        Embed Article
+    </button>
 
-            <p>
-                Want to feature this article on your website?
-                Copy the code below and paste it into your website's HTML.
-                You'll provide your readers with a direct link back to
-                Dirt Bike Finder UK.
-            </p>
-        </div>
+    <span id="embedFeedback"
+          class="embed-feedback"
+          role="status"
+          aria-live="polite"></span>
 
-        <textarea
-            id="articleEmbedCode"
-            readonly
-            rows="6"
-            aria-label="Article embed HTML code"
-            spellcheck="false"></textarea>
+</section>
 
-        <div class="embed-actions">
-
-            <button type="button" id="copyEmbedCode">
-                <i class="fa fa-code" aria-hidden="true"></i>
-                Copy Embed Code
-            </button>
-
-            <span id="embedFeedback"
-                  class="embed-feedback"
-                  role="status"
-                  aria-live="polite"></span>
-
-        </div>
-
-    </section>
 
 </div>
 
