@@ -103,24 +103,7 @@ app.get('/', (req, res) => {
 
 
 
-// IMAGE UPLOAD ROUTE
 
-app.post('/api/upload-image', isAuthenticated, upload.single('image'), async (req, res) => {
-  try {
-
-    const processed = await processImage(req.file.path);
-
-    // delete temp file
-    const fs = require('fs');
-    fs.unlinkSync(req.file.path);
-
-    res.json(processed);
-
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Image processing failed' });
-  }
-});
 
 function getYouTubeEmbedUrl(url) {
   if (!url) return null;
@@ -329,6 +312,50 @@ app.post('/api/logout', isAuthenticated, (req, res) => {
 
 app.get('/api/check-auth', isAuthenticated, (req, res) => {
     res.json({ authenticated: true });
+});
+
+// =============================================
+// PROTECTED IMAGE UPLOAD ROUTE
+// =============================================
+
+app.post('/api/upload-image', isAuthenticated, upload.single('image'), async (req, res) => {
+
+    let tempFilePath = req.file?.path;
+
+    try {
+
+        if (!req.file) {
+            return res.status(400).json({
+                error: 'No image file was uploaded.'
+            });
+        }
+
+        const processed = await processImage(tempFilePath);
+
+        return res.json(processed);
+
+    } catch (err) {
+
+        console.error('Image processing error:', err);
+
+        return res.status(500).json({
+            error: 'Image processing failed'
+        });
+
+    } finally {
+
+        if (tempFilePath) {
+            const fs = require('fs');
+
+            if (fs.existsSync(tempFilePath)) {
+                fs.unlink(tempFilePath, (err) => {
+                    if (err) {
+                        console.error('Temporary image cleanup failed:', err);
+                    }
+                });
+            }
+        }
+    }
 });
   
 
