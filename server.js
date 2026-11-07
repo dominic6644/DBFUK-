@@ -1767,6 +1767,100 @@ ${breadcrumbLd}
 
     </section>
 
+	<section>
+
+  <div>
+
+            <a href="#" data-share="facebook"
+               aria-label="Share on Facebook"
+               title="Share on Facebook">
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="x"
+               aria-label="Share on X"
+               title="Share on X">
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="whatsapp"
+               aria-label="Share on WhatsApp"
+               title="Share on WhatsApp">
+                <i class="fa fa-whatsapp" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="pinterest"
+               aria-label="Share on Pinterest"
+               title="Share on Pinterest">
+                <i class="fa fa-pinterest" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="reddit"
+               aria-label="Share on Reddit"
+               title="Share on Reddit">
+                <i class="fa fa-reddit" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="linkedin"
+               aria-label="Share on LinkedIn"
+               title="Share on LinkedIn">
+                <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="telegram"
+               aria-label="Share on Telegram"
+               title="Share on Telegram">
+                <i class="fa fa-telegram" aria-hidden="true"></i>
+            </a>
+
+            <a href="#" data-share="email"
+               aria-label="Share by email"
+               title="Share by email">
+                <i class="fa fa-envelope" aria-hidden="true"></i>
+            </a>
+
+            <button type="button"
+                    id="copyArticleLink"
+                    aria-label="Copy article link"
+                    title="Copy article link">
+                <i class="fa fa-link" aria-hidden="true"></i>
+            </button>
+
+        </div>
+
+        <span id="shareFeedback"
+              class="share-feedback"
+              role="status"
+              aria-live="polite"></span>
+
+    
+<!-- EMBED ARTICLE -->
+<section class="article-embed">
+
+    <div class="embed-heading">
+        <h3>Embed this article</h3>
+
+      
+    </div>
+
+    <button type="button" id="copyEmbedCode">
+        <i class="fa fa-code" aria-hidden="true"></i>
+        Embed Article
+    </button>
+
+    <span id="embedFeedback"
+          class="embed-feedback"
+          role="status"
+          aria-live="polite"></span>
+
+
+
+
+</div>
+
+	
+	</section>
+
   </aside>
 
 
@@ -1877,101 +1971,7 @@ ${breadcrumbLd}
 
 		
 
-<!-- SHARE ARTICLE -->
 
-
-
-
-   
-
-        <div class="share-buttons">
-
-            <a href="#" data-share="facebook"
-               aria-label="Share on Facebook"
-               title="Share on Facebook">
-                <i class="fa fa-facebook" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" data-share="x"
-               aria-label="Share on X"
-               title="Share on X">
-                <i class="fa fa-twitter" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" data-share="whatsapp"
-               aria-label="Share on WhatsApp"
-               title="Share on WhatsApp">
-                <i class="fa fa-whatsapp" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" data-share="pinterest"
-               aria-label="Share on Pinterest"
-               title="Share on Pinterest">
-                <i class="fa fa-pinterest" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" data-share="reddit"
-               aria-label="Share on Reddit"
-               title="Share on Reddit">
-                <i class="fa fa-reddit" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" data-share="linkedin"
-               aria-label="Share on LinkedIn"
-               title="Share on LinkedIn">
-                <i class="fa fa-linkedin" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" data-share="telegram"
-               aria-label="Share on Telegram"
-               title="Share on Telegram">
-                <i class="fa fa-telegram" aria-hidden="true"></i>
-            </a>
-
-            <a href="#" data-share="email"
-               aria-label="Share by email"
-               title="Share by email">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-            </a>
-
-            <button type="button"
-                    id="copyArticleLink"
-                    aria-label="Copy article link"
-                    title="Copy article link">
-                <i class="fa fa-link" aria-hidden="true"></i>
-            </button>
-
-        </div>
-
-        <span id="shareFeedback"
-              class="share-feedback"
-              role="status"
-              aria-live="polite"></span>
-
-    
-<!-- EMBED ARTICLE -->
-<section class="article-embed">
-
-    <div class="embed-heading">
-        <h3>Embed this article</h3>
-
-      
-    </div>
-
-    <button type="button" id="copyEmbedCode">
-        <i class="fa fa-code" aria-hidden="true"></i>
-        Embed Article
-    </button>
-
-    <span id="embedFeedback"
-          class="embed-feedback"
-          role="status"
-          aria-live="polite"></span>
-
-
-
-
-</div>
 
       </div>
 
