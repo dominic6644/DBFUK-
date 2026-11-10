@@ -1414,17 +1414,20 @@ res.send(`
     : publishedISO
 }">
 <meta property="article:author" content="https://dirtbikefinderuk.co.uk/author.html">
-<meta property="article:section" content="${
-  post.article_type === "mx" ? "Motocross" :
-  post.article_type === "enduro" ? "Enduro" :
-  post.article_type === "trials" ? "Trials" :
-  post.article_type === "news" ? "News" :
-  "Motorsport"
-}">
-<meta property="article:tag" content="motocross">
-<meta property="article:tag" content="supercross">
-<meta property="article:tag" content="enduro">
-<meta property="article:tag" content="trials">
+<meta property="article:section" content="${[
+    post.primary_keyword,
+    ...(post.secondary_keywords || '').split(','),
+    post.category,
+    post.subcategory
+]
+.filter(Boolean)
+.map(tag => tag.trim())
+.filter(Boolean)
+.filter((tag, index, array) =>
+    array.findIndex(t => t.toLowerCase() === tag.toLowerCase()) === index
+)
+.map(tag => `<meta property="article:tag" content="${tag.replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">`)
+.join('\n')}
 
 <!-- Twitter (helps Discover previews too) -->
 <meta name="twitter:card" content="summary_large_image">
@@ -1460,7 +1463,6 @@ ${breadcrumbLd}
 }
 </script>
 
-	<meta name="google-adsense-account" content="ca-pub-7960582198518252">
 
 	<!-- Preconnect -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
