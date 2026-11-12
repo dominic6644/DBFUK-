@@ -1806,56 +1806,73 @@ label {
   }
 }
 
+
 /* ==========================================================
-   News Grid
+   NEWS GRID - DESKTOP
    ========================================================== */
 
 #posts {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 28px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
     padding: 24px;
-    align-items: start;
+    box-sizing: border-box;
+    align-items: stretch;
+    justify-items: stretch;
+}
+
+/* Prevent grid children from forcing horizontal overflow */
+#posts > * {
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 /* ==========================================================
-   Article Card
+   ARTICLE CARD
    ========================================================== */
 
 .article-card {
     display: flex;
     flex-direction: column;
     width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin: 0;
     background: #fff;
     text-decoration: none;
     color: #222;
     border: 1px solid #e7e7e7;
     overflow: hidden;
-    transition: .25s ease;
-    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+    box-sizing: border-box;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .article-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,.18);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
 }
 
 /* ==========================================================
-   Image
+   ARTICLE IMAGE
    ========================================================== */
 
 .article-image {
     width: 100%;
     aspect-ratio: 16 / 10;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .article-image img {
+    display: block;
     width: 100%;
     height: 100%;
-    display: block;
     object-fit: cover;
-    transition: transform .35s ease;
+    transition: transform 0.35s ease;
 }
 
 .article-card:hover .article-image img {
@@ -1863,42 +1880,28 @@ label {
 }
 
 /* ==========================================================
-   Divider
+   RED DIVIDER
    ========================================================== */
 
 .red-divider {
+    width: 100%;
     height: 5px;
+    flex-shrink: 0;
     background: #D10024;
 }
 
 /* ==========================================================
-   Text Area
+   ARTICLE TEXT
    ========================================================== */
 
 .article-text {
     display: flex;
     flex-direction: column;
-    padding: 22px;
     flex: 1;
+    min-width: 0;
+    padding: 22px;
+    box-sizing: border-box;
 }
-
-/* ==========================================================
-   Category
-   ========================================================== */
-
-.article-description {
-    display: inline-block;
-    font-size: .85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #D10024;
-    letter-spacing: .6px;
-    margin-bottom: 8px;
-}
-
-/* ==========================================================
-   Date
-   ========================================================== */
 
 .article-text .date {
     font-size: 1.2rem;
@@ -1907,22 +1910,24 @@ label {
     margin-bottom: 12px;
 }
 
-/* ==========================================================
-   Title
-   ========================================================== */
-
 .article-text h2 {
     margin: 0 0 16px;
     font-size: 1.6rem;
     font-weight: 700;
     line-height: 1.35;
     color: #111;
-    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
-/* ==========================================================
-   Description
-   ========================================================== */
+.article-description {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #D10024;
+    letter-spacing: 0.6px;
+    margin-bottom: 8px;
+}
 
 .article-text .article-description {
     font-size: 1.2rem;
@@ -1932,135 +1937,168 @@ label {
 }
 
 /* ==========================================================
-   Placeholder
+   NO IMAGE PLACEHOLDER
    ========================================================== */
 
 .no-image {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    background: #f3f3f3;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background: #f3f3f3;
     color: #888;
 }
 
 /* ==========================================================
-   Advertisement
+   ADVERTISEMENT
    ========================================================== */
 
 .ad-banner {
     grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
     text-align: center;
-    margin: 35px 0;
+    margin: 20px 0;
+    box-sizing: border-box;
 }
 
 /* ==========================================================
-   Large Tablets
+   LARGE TABLETS
    ========================================================== */
 
-@media (max-width:1200px){
+@media (max-width: 1200px) {
 
-    #posts{
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:22px;
-        padding:20px;
+    #posts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 22px;
+        padding: 20px;
     }
 
-    .article-text{
-        padding:20px;
+    .article-text {
+        padding: 18px;
     }
 
-    .article-text h2{
-        font-size:1.45rem;
+    .article-text h2 {
+        font-size: 1.4rem;
     }
 
-    .article-text .article-description{
-        font-size:1rem;
+    .article-text .article-description {
+        font-size: 1rem;
     }
-
 }
 
 /* ==========================================================
-   Tablets
+   MOBILE AND TABLETS
+   SINGLE COLUMN - CENTRED
    ========================================================== */
 
-@media (max-width:768px){
+@media (max-width: 768px) {
 
-    #posts{
-        grid-template-columns:1fr;
-        gap:24px;
-        padding:18px;
+    #posts {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        justify-items: center;
+        align-items: start;
+
+        width: 100%;
+        max-width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+
+        gap: 24px;
+        padding: 20px 16px;
+
+        box-sizing: border-box;
     }
 
-    .article-card{
-        max-width:720px;
-        margin:auto;
+    #posts > * {
+        min-width: 0;
     }
 
-    .article-image{
-        aspect-ratio:16/9;
+    #posts .article-card {
+        display: flex;
+        width: 100%;
+        max-width: 620px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
-    .article-text{
-        padding:20px;
+    .article-image {
+        aspect-ratio: 16 / 9;
     }
 
-    .article-description{
-        font-size:.9rem;
+    .article-text {
+        padding: 18px;
     }
 
-    .article-text .date{
-        font-size:1rem;
+    .article-text .date {
+        font-size: 1rem;
     }
 
-    .article-text h2{
-        font-size:1.55rem;
-        line-height:1.4;
+    .article-text h2 {
+        font-size: 1.4rem;
+        line-height: 1.4;
     }
 
-    .article-text .article-description{
-        font-size:1.08rem;
-        line-height:1.75;
+    .article-text .article-description {
+        font-size: 1rem;
+        line-height: 1.6;
     }
 
+    .ad-banner {
+        grid-column: 1;
+        width: 100%;
+        max-width: 620px;
+        margin: 10px auto;
+    }
 }
 
 /* ==========================================================
-   Phones
+   SMALL PHONES
    ========================================================== */
 
-@media (max-width:480px){
+@media (max-width: 480px) {
 
-    #posts{
-        padding:14px;
-        gap:20px;
+    #posts {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 20px;
+        padding: 16px 12px;
     }
 
-    .article-text{
-        padding:10px;
+    #posts .article-card {
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
     }
 
-    .article-description{
-        font-size:.95rem;
+    .article-image {
+        aspect-ratio: 16 / 9;
     }
 
-    .article-text .date{
-        font-size:1rem;
-        margin-bottom:14px;
+    .article-text {
+        padding: 14px;
     }
 
-    .article-text h2{
-        font-size:1.4rem;
-        line-height:1.45;
-        margin-bottom:14px;
+    .article-text .date {
+        font-size: 0.95rem;
+        margin-bottom: 10px;
     }
 
-    .article-text .article-description{
-        font-size:1rem;
-        line-height:1.7;
+    .article-text h2 {
+        font-size: 1.25rem;
+        line-height: 1.4;
+        margin-bottom: 12px;
     }
 
+    .article-description {
+        font-size: 0.85rem;
+    }
+
+    .article-text .article-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
 }
 
 /*admin*/
